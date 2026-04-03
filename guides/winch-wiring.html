@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cybertruck Winch Wiring Guide — 120v AC Powered | CyberOffroading</title>
+  <meta name="description" content="How to wire a 12,000 lb winch powered by the Cybertruck's 120v AC outlets. PSU wiring, pin references, and parts list.">
+  <link rel="canonical" href="https://cyberoffroading.com/guides/winch-wiring.html">
+
+  <meta property="og:title" content="Cybertruck Winch Wiring Guide — 120v AC Powered">
+  <meta property="og:description" content="Wire a 12k winch using the CT's 120v outlets. PSU parallel wiring, pin 34/33/36 setup, full parts list.">
+  <meta property="og:url" content="https://cyberoffroading.com/guides/winch-wiring.html">
+  <meta property="og:type" content="article">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="guide-page">
+  <div class="container">
+
+    <a href="../#winch" class="guide-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5"/></svg>
+      Back to Winch Build
+    </a>
+
+    <h1>Winch Wiring Guide — <span class="text-cyber">120v AC</span></h1>
+
+    <p>This guide covers how to power a 12,000 lb winch using the Cybertruck's built-in 120v AC outlets and four ATX-style power supplies wired in parallel. The AC side wiring is standardized — the DC side is up to you.</p>
+
+    <h2>Concept</h2>
+
+    <p>The Cybertruck's bed outlets provide 120v AC. ATX power supplies convert that to 12v DC. Four PSUs wired in parallel provide enough current to run the winch motor. The trick is getting the PSUs to turn on without a motherboard — that's where the pin jumpers come in.</p>
+
+    <h2>Parts List</h2>
+
+    <table class="guide-table">
+      <thead>
+        <tr>
+          <th>Part</th>
+          <th>Qty</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://harborfreight.com/12000-lb-winch-with-synthetic-rope-and-wireless-remote-56385.html" target="_blank" rel="noopener noreferrer">12k Winch</a></td>
+          <td>1</td>
+          <td>The winch itself — Badland 12k with synthetic rope</td>
+        </tr>
+        <tr>
+          <td><a href="https://harborfreight.com/12000-lb-winch-hitch-mount-57607.html" target="_blank" rel="noopener noreferrer">Hitch Mount</a></td>
+          <td>1</td>
+          <td>Standard 2" receiver mount</td>
+        </tr>
+        <tr>
+          <td><a href="https://amzn.to/4pYPpVS" target="_blank" rel="noopener noreferrer">Power Supplies</a></td>
+          <td>4</td>
+          <td>120v AC → 12v DC conversion</td>
+        </tr>
+        <tr>
+          <td><a href="https://amzn.to/492Xnrb" target="_blank" rel="noopener noreferrer">AC Cable (Type A)</a></td>
+          <td>4</td>
+          <td>Connect PSUs to CT outlets</td>
+        </tr>
+        <tr>
+          <td><a href="https://amzn.to/3Leg6qq" target="_blank" rel="noopener noreferrer">AC Cable (Type B)</a></td>
+          <td>2</td>
+          <td>Power distribution chain</td>
+        </tr>
+        <tr>
+          <td><a href="https://amzn.to/4awixPx" target="_blank" rel="noopener noreferrer">AC Cable (Type C)</a></td>
+          <td>1</td>
+          <td>Final AC distribution link</td>
+        </tr>
+        <tr>
+          <td><a href="https://amzn.to/45rh7SO" target="_blank" rel="noopener noreferrer">Signal Wire</a></td>
+          <td>1 spool</td>
+          <td>Connects pin 34 across all PSUs</td>
+        </tr>
+        <tr>
+          <td><a href="https://amzn.to/3MWUOxZ" target="_blank" rel="noopener noreferrer">Resistors</a></td>
+          <td>1 pack</td>
+          <td>Low-ohm, jumps pins 33 &amp; 36</td>
+        </tr>
+        <tr>
+          <td><a href="https://amzn.to/4pMZepK" target="_blank" rel="noopener noreferrer">Soldering Kit</a></td>
+          <td>1</td>
+          <td>For all wire connections</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>AC Side Wiring</h2>
+
+    <p>The AC side is straightforward: each power supply connects to one of the CT's 120v outlets via the appropriate cable. The three cable types handle the distribution from the outlets to all four PSUs.</p>
+
+    <h2>PSU Pin Configuration</h2>
+
+    <p>ATX power supplies need two modifications to run without a motherboard:</p>
+
+    <h3>1. Signal Wire — Pin 34 (PS_ON)</h3>
+    <p><strong>Wire all pin 34s together</strong> across all four power supplies using the signal wire. Pin 34 is the PS_ON signal — grounding it tells the PSU to turn on. By wiring them together, all four PSUs turn on and off simultaneously.</p>
+
+    <h3>2. Resistor Jump — Pins 33 &amp; 36</h3>
+    <p><strong>Use a low-ohm resistor to jump pins 33 and 36</strong> on each PSU. This provides a minimum load on the 3.3v rail, which some PSUs require to regulate their 12v output properly. Without this, the PSU may not start or may output unstable voltage.</p>
+
+    <div class="warning-callout" style="margin-left: 0; margin-right: 0; margin-top: 32px;">
+      <p class="warning-callout__label">&#9888; Warning</p>
+      <p>You're working with 120v AC and high-current 12v DC. If you're not comfortable with electrical work, find someone who is. Incorrect wiring can cause fire, equipment damage, or injury.</p>
+    </div>
+
+    <h2>DC Side Wiring</h2>
+
+    <p>How you wire up the DC side is up to you. The four PSUs' 12v outputs need to be combined and connected to the winch motor's power terminals. Common approaches include bus bars, heavy-gauge parallel runs, or custom harnesses.</p>
+
+    <p>Key considerations:</p>
+    <ul>
+      <li>Use wire gauge appropriate for the current draw (the winch can pull 400+ amps at full load across all PSUs)</li>
+      <li>Keep DC runs as short as possible to minimize voltage drop</li>
+      <li>Use proper crimped terminals — no wire nuts on high-current DC</li>
+      <li>Fuse each PSU output individually for safety</li>
+    </ul>
+
+    <div class="info-callout" style="margin-left: 0; margin-right: 0; margin-top: 32px;">
+      <p class="info-callout__label">&#9432; Full Parts List</p>
+      <p>All parts with purchase links are on the <a href="../#winch">main winch build section</a>.</p>
+    </div>
+
+  </div>
+
+  <footer class="site-footer" style="margin-top: 80px;">
+    <div class="site-footer__inner">
+      <div class="site-footer__links">
+        <a href="../">Home</a>
+        <a href="../#winch">Winch Build Parts</a>
+        <a href="roof-glass.html">Roof Glass Guide</a>
+      </div>
+      <p class="site-footer__disclaimer">
+        CyberOffroading.com is a participant in the Amazon Services LLC Associates Program. Links may earn us a commission at no extra cost to you.
+      </p>
+      <p class="site-footer__copyright">&copy; 2026 CyberOffroading.com</p>
+    </div>
+  </footer>
+</body>
+</html>
