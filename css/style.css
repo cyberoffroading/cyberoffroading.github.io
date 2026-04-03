@@ -595,6 +595,200 @@ img {
 }
 
 /* ============================================================
+   GALLERY — Masonry layout with lightbox
+   ============================================================ */
+.gallery-grid {
+  columns: 2;
+  column-gap: 12px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.gallery-item {
+  position: relative;
+  break-inside: avoid;
+  margin-bottom: 12px;
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  border: 1px solid var(--steel-edge);
+  background: var(--steel-dark);
+  cursor: pointer;
+  transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+  /* Scroll reveal */
+  opacity: 0;
+  transform: translateY(24px);
+  animation: cardFallback 0s 1.5s forwards;
+}
+
+.gallery-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease-out, filter 0.4s ease-out;
+  filter: saturate(0.85) brightness(0.95);
+}
+
+/* Cyan accent on top edge */
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyber-blue), transparent 70%);
+  opacity: 0;
+  z-index: 3;
+  transition: opacity 0.2s ease-out;
+}
+
+/* Dark vignette on hover */
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, transparent 50%, rgba(10, 10, 11, 0.6) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+}
+
+.gallery-item:hover {
+  border-color: var(--cyber-blue);
+  box-shadow: 0 0 0 1px var(--cyber-blue), 0 0 30px rgba(0, 212, 255, 0.12);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: saturate(1.1) brightness(1.05);
+}
+
+.gallery-item:hover::before { opacity: 0.7; }
+.gallery-item:hover::after { opacity: 1; }
+
+@media (min-width: 768px) {
+  .gallery-grid {
+    columns: 3;
+    column-gap: 16px;
+    padding: 0 40px;
+  }
+  .gallery-item { margin-bottom: 16px; }
+}
+
+@media (min-width: 1024px) {
+  .gallery-grid { columns: 4; }
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 11, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+  cursor: zoom-out;
+}
+
+.gallery-lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gallery-lightbox img {
+  max-width: 92vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 1px solid var(--steel-edge);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  transform: scale(0.95);
+  transition: transform 0.3s ease-out;
+}
+
+.gallery-lightbox.active img {
+  transform: scale(1);
+}
+
+.gallery-lightbox__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--steel-mid);
+  border: 1px solid var(--steel-edge);
+  color: var(--stainless-dim);
+  font-size: 1.2rem;
+  cursor: pointer;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  transition: color 0.15s ease-out, border-color 0.15s ease-out;
+  z-index: 2;
+}
+
+.gallery-lightbox__close:hover {
+  color: var(--cyber-blue);
+  border-color: var(--cyber-blue);
+}
+
+.gallery-lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--steel-mid);
+  border: 1px solid var(--steel-edge);
+  color: var(--stainless-dim);
+  font-size: 1.4rem;
+  cursor: pointer;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  transition: color 0.15s ease-out, border-color 0.15s ease-out;
+  z-index: 2;
+}
+
+.gallery-lightbox__nav:hover {
+  color: var(--cyber-blue);
+  border-color: var(--cyber-blue);
+}
+
+.gallery-lightbox__nav--prev { left: 16px; }
+.gallery-lightbox__nav--next { right: 16px; }
+
+.gallery-lightbox__counter {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--stainless-dim);
+  z-index: 2;
+}
+
+/* ============================================================
    BACK TO TOP
    ============================================================ */
 .back-to-top {
@@ -689,7 +883,7 @@ img {
    ============================================================ */
 
 /* Large phones */
-@media (min-width: 480px) and (max-width: 767px) {
+@media (min-width: 560px) and (max-width: 767px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
@@ -700,7 +894,7 @@ img {
   }
 
   .product-card__review {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
   }
 }
 
@@ -716,15 +910,45 @@ img {
   }
 
   .nav-pill {
-    padding: 12px 20px;
-    font-size: 0.8rem;
+    padding: 12px 16px;
+    font-size: 0.75rem;
   }
 
   .category-nav__inner {
-    padding: 6px 20px;
-    mask-image: linear-gradient(to right, black 85%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    padding: 6px 12px;
+    mask-image: linear-gradient(to right, black 75%, transparent 98%);
+    -webkit-mask-image: linear-gradient(to right, black 75%, transparent 98%);
   }
+
+  .cta-button {
+    width: 100%;
+    padding: 14px 20px;
+  }
+
+  .owner-bar {
+    font-size: 0.8rem;
+    padding: 10px 16px;
+  }
+
+  .build-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sticky nav fallback */
+.category-nav {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+@supports not (backdrop-filter: blur(12px)) {
+  .category-nav {
+    background: rgba(10, 10, 11, 0.98);
+  }
+}
+
+.owner-bar {
+  border-top: 1px solid var(--steel-edge);
 }
 
 /* Tablet+ */

@@ -88,4 +88,75 @@
     );
     topObserver.observe(hero);
   }
+
+  // --- Gallery scroll reveal ---
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  if (galleryItems.length && !prefersReducedMotion) {
+    const galleryObs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            galleryObs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    galleryItems.forEach((item, i) => {
+      item.style.transitionDelay = `${(i % 4) * 80}ms`;
+      galleryObs.observe(item);
+    });
+  } else {
+    galleryItems.forEach((item) => item.classList.add('revealed'));
+  }
+
+  // --- Gallery lightbox ---
+  const lightbox = document.getElementById('galleryLightbox');
+  if (lightbox && galleryItems.length) {
+    const lbImg = lightbox.querySelector('img');
+    const lbCounter = lightbox.querySelector('.gallery-lightbox__counter');
+    const lbClose = lightbox.querySelector('.gallery-lightbox__close');
+    const lbPrev = lightbox.querySelector('.gallery-lightbox__nav--prev');
+    const lbNext = lightbox.querySelector('.gallery-lightbox__nav--next');
+    let currentIndex = 0;
+    const srcs = Array.from(galleryItems).map((item) => item.querySelector('img').src);
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lbImg.src = srcs[currentIndex];
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + srcs.length;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function navigate(dir) {
+      currentIndex = (currentIndex + dir + srcs.length) % srcs.length;
+      lbImg.src = srcs[currentIndex];
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + srcs.length;
+    }
+
+    galleryItems.forEach((item, i) => {
+      item.addEventListener('click', () => openLightbox(i));
+    });
+
+    lbClose.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+    lbPrev.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
+    lbNext.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+  }
 })();
