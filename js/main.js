@@ -52,11 +52,15 @@
   let scrollTick = false;
   let navClickTarget = null; // when set, locks highlight to this href during smooth scroll
   let scrollIdleTimer = null;
-  let lastActiveId = '';
 
-  function scrollPillIntoView(pill) {
-    const pillLeft = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
-    navInner.scrollTo({ left: pillLeft, behavior: 'smooth' });
+  function ensurePillVisible(pill) {
+    var pillRect = pill.getBoundingClientRect();
+    var navRect = navInner.getBoundingClientRect();
+    // Only scroll if the pill is partially or fully outside the visible nav area
+    if (pillRect.left < navRect.left || pillRect.right > navRect.right) {
+      var pillLeft = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
+      navInner.scrollTo({ left: pillLeft, behavior: 'smooth' });
+    }
   }
 
   function updateActiveNav() {
@@ -70,23 +74,19 @@
       scrollIdleTimer = setTimeout(() => { navClickTarget = null; }, 150);
       return;
     }
-    const navHeight = navEl.offsetHeight;
-    const trigger = navHeight + 40; // point just below sticky nav
-    let currentId = '';
+    var navHeight = navEl.offsetHeight;
+    var trigger = navHeight + 40; // point just below sticky nav
+    var currentId = '';
     sections.forEach((section) => {
       if (section.getBoundingClientRect().top <= trigger) {
         currentId = section.id;
       }
     });
-    // Only update DOM + scroll nav when the active section actually changes
-    if (currentId !== lastActiveId) {
-      lastActiveId = currentId;
-      navPills.forEach((pill) => {
-        const isActive = pill.getAttribute('href') === `#${currentId}`;
-        pill.classList.toggle('active', isActive);
-        if (isActive) scrollPillIntoView(pill);
-      });
-    }
+    navPills.forEach((pill) => {
+      var isActive = pill.getAttribute('href') === '#' + currentId;
+      pill.classList.toggle('active', isActive);
+      if (isActive) ensurePillVisible(pill);
+    });
   }
   window.addEventListener('scroll', () => {
     if (!scrollTick) {
@@ -130,7 +130,7 @@
         const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
-      scrollPillIntoView(pill);
+      ensurePillVisible(pill);
     });
   });
 
