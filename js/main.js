@@ -47,11 +47,12 @@
   // Use scroll listener instead of IntersectionObserver for reliable
   // mobile behaviour (IO percentage rootMargin is buggy on mobile Safari
   // with dynamic viewport and small screens).
+  const navEl = document.querySelector('.category-nav');
   let scrollTick = false;
   let navClickLock = false; // suppress scroll updates during smooth-scroll from tap
   function updateActiveNav() {
     if (navClickLock) return;
-    const navHeight = document.querySelector('.category-nav').offsetHeight;
+    const navHeight = navEl.offsetHeight;
     const trigger = navHeight + 40; // point just below sticky nav
     let currentId = '';
     sections.forEach((section) => {
@@ -76,7 +77,6 @@
   updateActiveNav();
 
   // --- Smooth scroll on nav click + guide modals ---
-  const navBar = document.querySelector('.category-nav');
   navPills.forEach((pill) => {
     pill.addEventListener('click', (e) => {
       const href = pill.getAttribute('href');
@@ -104,33 +104,51 @@
       setTimeout(() => { navClickLock = false; }, 800);
       const target = document.querySelector(href);
       if (target) {
-        const navHeight = navBar.offsetHeight;
+        const navHeight = navEl.offsetHeight;
         const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
       // Scroll the pill into view within the nav (horizontal only)
-      const navInner = navBar.querySelector('.category-nav__inner');
+      const navInner = navEl.querySelector('.category-nav__inner');
       const pillLeft = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
       navInner.scrollTo({ left: pillLeft, behavior: 'smooth' });
     });
   });
 
   // --- Guide modal close handlers ---
-  document.querySelectorAll('.guide-modal').forEach((modal) => {
-    const closeBtn = modal.querySelector('.guide-modal__close');
+  const guideModals = document.querySelectorAll('.guide-modal');
 
-    function closeModal() {
-      modal.classList.remove('active');
-      document.body.style.overflow = '';
-    }
+  function closeGuideModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-    closeBtn.addEventListener('click', closeModal);
+  guideModals.forEach((modal) => {
+    modal.querySelector('.guide-modal__close').addEventListener('click', () => closeGuideModal(modal));
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
+      if (e.target === modal) closeGuideModal(modal);
     });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      guideModals.forEach((modal) => {
+        if (modal.classList.contains('active')) closeGuideModal(modal);
+      });
+    }
+  });
+
+  // Handle inline [data-open-modal] links (e.g. in callouts)
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-open-modal]');
+    if (!trigger) return;
+    e.preventDefault();
+    const modal = document.getElementById(trigger.dataset.openModal);
+    if (modal) {
+      modal.classList.add('active');
+      modal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
   });
 
   // --- Back to top button ---
@@ -175,12 +193,16 @@
     const lbPrev = lightbox.querySelector('.gallery-lightbox__nav--prev');
     const lbNext = lightbox.querySelector('.gallery-lightbox__nav--next');
     let currentIndex = 0;
-    const srcs = Array.from(galleryItems).map((item) => item.querySelector('img').src);
+    const images = Array.from(galleryItems).map((item) => {
+      const img = item.querySelector('img');
+      return { src: img.src, alt: img.alt };
+    });
 
     function openLightbox(index) {
       currentIndex = index;
-      lbImg.src = srcs[currentIndex];
-      lbCounter.textContent = (currentIndex + 1) + ' / ' + srcs.length;
+      lbImg.src = images[currentIndex].src;
+      lbImg.alt = images[currentIndex].alt;
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
@@ -191,9 +213,10 @@
     }
 
     function navigate(dir) {
-      currentIndex = (currentIndex + dir + srcs.length) % srcs.length;
-      lbImg.src = srcs[currentIndex];
-      lbCounter.textContent = (currentIndex + 1) + ' / ' + srcs.length;
+      currentIndex = (currentIndex + dir + images.length) % images.length;
+      lbImg.src = images[currentIndex].src;
+      lbImg.alt = images[currentIndex].alt;
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
     }
 
     galleryItems.forEach((item, i) => {
