@@ -48,9 +48,17 @@
   // mobile behaviour (IO percentage rootMargin is buggy on mobile Safari
   // with dynamic viewport and small screens).
   const navEl = document.querySelector('.category-nav');
+  const navInner = navEl.querySelector('.category-nav__inner');
   let scrollTick = false;
   let navClickTarget = null; // when set, locks highlight to this href during smooth scroll
   let scrollIdleTimer = null;
+  let lastActiveId = '';
+
+  function scrollPillIntoView(pill) {
+    const pillLeft = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
+    navInner.scrollTo({ left: pillLeft, behavior: 'smooth' });
+  }
+
   function updateActiveNav() {
     // While a tap-initiated scroll is in progress, keep the tapped pill highlighted
     if (navClickTarget) {
@@ -70,9 +78,15 @@
         currentId = section.id;
       }
     });
-    navPills.forEach((pill) => {
-      pill.classList.toggle('active', pill.getAttribute('href') === `#${currentId}`);
-    });
+    // Only update DOM + scroll nav when the active section actually changes
+    if (currentId !== lastActiveId) {
+      lastActiveId = currentId;
+      navPills.forEach((pill) => {
+        const isActive = pill.getAttribute('href') === `#${currentId}`;
+        pill.classList.toggle('active', isActive);
+        if (isActive) scrollPillIntoView(pill);
+      });
+    }
   }
   window.addEventListener('scroll', () => {
     if (!scrollTick) {
@@ -116,10 +130,7 @@
         const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
-      // Scroll the pill into view within the nav (horizontal only)
-      const navInner = navEl.querySelector('.category-nav__inner');
-      const pillLeft = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
-      navInner.scrollTo({ left: pillLeft, behavior: 'smooth' });
+      scrollPillIntoView(pill);
     });
   });
 
