@@ -12,7 +12,7 @@
   --steel-edge:     #3a3a42;
 
   --stainless:      #c8c8c0;
-  --stainless-dim:  #78787a;
+  --stainless-dim:  #8e8e90;  /* Bumped for WCAG AA contrast (5.2:1) */
 
   --cyber-blue:     #00d4ff;
   --cyber-glow:     rgba(0, 212, 255, 0.15);
@@ -40,8 +40,9 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.7;
+  letter-spacing: 0.01em;
   color: var(--stainless);
   background: var(--steel-dark);
   -webkit-font-smoothing: antialiased;
@@ -98,6 +99,23 @@ img {
 }
 
 /* ============================================================
+   OWNER BAR
+   ============================================================ */
+.owner-bar {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px 20px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--stainless-dim);
+  letter-spacing: 0.04em;
+}
+
+.owner-bar span {
+  color: var(--cyber-blue);
+}
+
+/* ============================================================
    HERO
    ============================================================ */
 .hero {
@@ -124,17 +142,17 @@ img {
   object-position: center 40%;
 }
 
-/* Diagonal geometric mask overlay */
+/* Diagonal geometric mask overlay — lighter upper portion */
 .hero__bg::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     160deg,
-    rgba(10, 10, 11, 0.3) 0%,
-    rgba(10, 10, 11, 0.7) 40%,
-    rgba(10, 10, 11, 0.92) 70%,
-    rgba(10, 10, 11, 0.98) 100%
+    rgba(10, 10, 11, 0.15) 0%,
+    rgba(10, 10, 11, 0.55) 40%,
+    rgba(10, 10, 11, 0.88) 70%,
+    rgba(10, 10, 11, 0.97) 100%
   );
 }
 
@@ -260,7 +278,7 @@ img {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--stainless-dim);
-  padding: 8px 16px;
+  padding: 10px 22px;
   background: transparent;
   border: 1px solid transparent;
   clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
@@ -286,7 +304,7 @@ img {
    SECTIONS
    ============================================================ */
 .section {
-  padding: 80px 0 60px;
+  padding: 80px 0;
 }
 
 .section--alt {
@@ -341,13 +359,12 @@ img {
   border: 1px solid var(--steel-edge);
   clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
   overflow: hidden;
-  /* Scroll-triggered reveal — starts hidden, JS adds .revealed */
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.15s ease-out, border-color 0.15s ease-out;
 }
 
-/* Fallback: if JS hasn't loaded after 1s, show all cards */
+/* Fallback: show cards after 1.5s if JS fails */
 @keyframes cardFallback {
   to { opacity: 1; transform: translateY(0); }
 }
@@ -376,6 +393,18 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Subtle top-edge accent on card images */
+.product-card__image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyber-blue), transparent 60%);
+  opacity: 0.4;
 }
 
 .product-card__image img {
@@ -408,7 +437,8 @@ img {
   line-height: 1.6;
 }
 
-.product-card__qty {
+.product-card__qty,
+.product-card__price {
   font-size: 0.7rem;
   color: var(--cyber-blue);
   letter-spacing: 0.08em;
@@ -418,26 +448,69 @@ img {
 
 /* --- CTA Button --- */
 .cta-button {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--cyber-blue);
+  color: var(--steel-dark);
+  background: var(--cyber-blue);
   border: 1px solid var(--cyber-blue);
-  padding: 10px 20px;
+  padding: 14px 24px;
   margin-top: 4px;
   text-align: center;
   clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
   position: relative;
   overflow: hidden;
   transition: color 0.15s ease-out, background 0.15s ease-out;
+  min-height: 44px;
 }
 
 .cta-button:hover {
-  color: var(--steel-dark);
+  color: var(--cyber-blue);
+  background: transparent;
+}
+
+/* External link indicator */
+.cta-button::after {
+  content: ' \2197';
+  font-size: 0.65em;
+  margin-left: 4px;
+  opacity: 0.7;
+}
+
+/* Secondary CTA variant (ghost style) */
+.cta-button--secondary {
+  background: transparent;
+  color: var(--cyber-blue);
+  margin-top: 8px;
+}
+
+.cta-button--secondary:hover {
   background: var(--cyber-blue);
+  color: var(--steel-dark);
+}
+
+/* ============================================================
+   WINCH BUILD OVERVIEW IMAGES
+   ============================================================ */
+.build-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: var(--max-width);
+  margin: 0 auto 32px;
+  padding: 0 20px;
+}
+
+.build-gallery img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border: 1px solid var(--steel-edge);
 }
 
 /* ============================================================
@@ -446,8 +519,8 @@ img {
 .warning-callout {
   max-width: var(--max-width);
   margin: 24px auto;
-  padding: 16px 20px 16px 20px;
-  background: var(--steel-light);
+  padding: 16px 20px;
+  background: rgba(255, 42, 42, 0.08);
   border-left: 3px solid var(--warn-red);
   margin-left: 20px;
   margin-right: 20px;
@@ -482,7 +555,7 @@ img {
 .info-callout {
   max-width: var(--max-width);
   margin: 24px auto;
-  padding: 16px 20px 16px 20px;
+  padding: 16px 20px;
   background: var(--steel-light);
   border-left: 3px solid var(--cyber-blue);
   margin-left: 20px;
@@ -512,10 +585,42 @@ img {
 }
 
 /* ============================================================
+   BACK TO TOP
+   ============================================================ */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: var(--steel-mid);
+  border: 1px solid var(--steel-edge);
+  color: var(--stainless-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out, color 0.15s ease-out, border-color 0.15s ease-out;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  color: var(--cyber-blue);
+  border-color: var(--cyber-blue);
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .site-footer {
-  padding: 60px 20px 40px;
+  padding: 48px 20px 32px;
   background: var(--steel-dark);
   border-top: 1px solid var(--steel-edge);
   clip-path: polygon(0 30px, 100% 0, 100% 100%, 0 100%);
@@ -525,6 +630,14 @@ img {
 .site-footer__inner {
   max-width: var(--max-width);
   margin: 0 auto;
+}
+
+.site-footer__brand {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
 }
 
 .site-footer__links {
@@ -565,9 +678,48 @@ img {
    RESPONSIVE
    ============================================================ */
 
+/* Large phones */
+@media (min-width: 480px) and (max-width: 767px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .product-card__info {
+    padding: 14px;
+  }
+
+  .product-card__review {
+    font-size: 0.75rem;
+  }
+}
+
+/* Mobile-specific */
+@media (max-width: 767px) {
+  .hero {
+    min-height: 60vh;
+    padding: 40px 20px;
+  }
+
+  .hero__sub {
+    font-size: 0.85rem;
+  }
+
+  .nav-pill {
+    padding: 12px 20px;
+    font-size: 0.8rem;
+  }
+
+  .category-nav__inner {
+    padding: 6px 20px;
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+}
+
 /* Tablet+ */
 @media (min-width: 768px) {
-  body { font-size: 15px; }
+  body { font-size: 16px; }
 
   .hero {
     min-height: 85vh;
@@ -600,6 +752,11 @@ img {
   .category-nav__inner {
     padding: 8px 0;
     gap: 6px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
   }
 }
 
@@ -658,6 +815,12 @@ img {
 
 .guide-page li {
   margin-bottom: 8px;
+}
+
+.guide-meta {
+  font-size: 0.75rem;
+  color: var(--stainless-dim);
+  margin-bottom: 32px;
 }
 
 .guide-table {

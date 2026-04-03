@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cybertruck Winch Wiring Guide — 120v AC Powered | CyberOffroading</title>
-  <meta name="description" content="How to wire a 12,000 lb winch powered by the Cybertruck's 120v AC outlets. PSU wiring, pin references, and parts list.">
+  <title>Cybertruck Winch Wiring Guide — 240v AC Powered | CyberOffroading</title>
+  <meta name="description" content="How to wire a 12,000 lb winch powered by the Cybertruck's 240v 50A plug. PSU wiring, pin references, and parts list.">
   <link rel="canonical" href="https://cyberoffroading.com/guides/winch-wiring.html">
 
-  <meta property="og:title" content="Cybertruck Winch Wiring Guide — 120v AC Powered">
-  <meta property="og:description" content="Wire a 12k winch using the CT's 120v outlets. PSU parallel wiring, pin 34/33/36 setup, full parts list.">
+  <meta property="og:title" content="Cybertruck Winch Wiring Guide — 240v AC Powered">
+  <meta property="og:description" content="Wire a 12k winch using the CT's 240v 50A plug. PSU parallel wiring, pin 34/33/36 setup, full parts list.">
   <meta property="og:url" content="https://cyberoffroading.com/guides/winch-wiring.html">
   <meta property="og:type" content="article">
 
@@ -26,13 +26,14 @@
       Back to Winch Build
     </a>
 
-    <h1>Winch Wiring Guide — <span class="text-cyber">120v AC</span></h1>
+    <h1>Winch Wiring Guide — <span class="text-cyber">240v AC</span></h1>
+    <p class="guide-meta">Last verified April 2026</p>
 
-    <p>This guide covers how to power a 12,000 lb winch using the Cybertruck's built-in 120v AC outlets and four ATX-style power supplies wired in parallel. The AC side wiring is standardized — the DC side is up to you.</p>
+    <p>This guide covers how to power a 12,000 lb winch using the Cybertruck's 240v 50A plug and four ATX-style power supplies wired in parallel. The 240v is split to all four PSUs. The DC side wiring is up to you.</p>
 
     <h2>Concept</h2>
 
-    <p>The Cybertruck's bed outlets provide 120v AC. ATX power supplies convert that to 12v DC. Four PSUs wired in parallel provide enough current to run the winch motor. The trick is getting the PSUs to turn on without a motherboard — that's where the pin jumpers come in.</p>
+    <p>The Cybertruck's 240v 50A plug provides the power. That 240v is split to four ATX-style power supplies which convert it to 12v DC. The four PSUs wired in parallel provide enough current to run the winch motor. The trick is getting the PSUs to turn on without a motherboard — that's where the pin jumpers come in.</p>
 
     <h2>Parts List</h2>
 
@@ -58,7 +59,7 @@
         <tr>
           <td><a href="https://amzn.to/4pYPpVS" target="_blank" rel="noopener noreferrer">Power Supplies</a></td>
           <td>4</td>
-          <td>120v AC → 12v DC conversion</td>
+          <td>240v AC → 12v DC conversion</td>
         </tr>
         <tr>
           <td><a href="https://amzn.to/492Xnrb" target="_blank" rel="noopener noreferrer">AC Cable (Type A)</a></td>
@@ -95,7 +96,7 @@
 
     <h2>AC Side Wiring</h2>
 
-    <p>The AC side is straightforward: each power supply connects to one of the CT's 120v outlets via the appropriate cable. The three cable types handle the distribution from the outlets to all four PSUs.</p>
+    <p>The AC side is straightforward: the CT's 240v 50A plug is split to all four power supplies via the appropriate cables. The three cable types handle the distribution from the 240v plug to all four PSUs.</p>
 
     <h2>PSU Pin Configuration</h2>
 
@@ -109,7 +110,7 @@
 
     <div class="warning-callout" style="margin-left: 0; margin-right: 0; margin-top: 32px;">
       <p class="warning-callout__label">&#9888; Warning</p>
-      <p>You're working with 120v AC and high-current 12v DC. If you're not comfortable with electrical work, find someone who is. Incorrect wiring can cause fire, equipment damage, or injury.</p>
+      <p>You're working with 240v AC and high-current 12v DC. If you're not comfortable with electrical work, find someone who is. Incorrect wiring can cause fire, equipment damage, or injury.</p>
     </div>
 
     <h2>DC Side Wiring</h2>

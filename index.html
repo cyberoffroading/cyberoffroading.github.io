@@ -50,6 +50,8 @@
   <!-- ============================================================
        STICKY NAV
        ============================================================ -->
+  <div class="owner-bar">Built by <span>Kevin</span> — Cyberbeast owner. Every product on this site is gear I run on my truck.</div>
+
   <nav class="category-nav" aria-label="Product categories">
     <div class="category-nav__inner">
       <a href="#offroad" class="nav-pill active">Offroad</a>
@@ -59,7 +61,6 @@
       <a href="#winch" class="nav-pill">Winch Build</a>
       <a href="#starlink" class="nav-pill">Starlink</a>
       <a href="#comms" class="nav-pill">Comms</a>
-      <a href="#cyberbeast" class="nav-pill">Cyberbeast</a>
       <a href="#essentials" class="nav-pill">Essentials</a>
     </div>
   </nav>
@@ -80,6 +81,7 @@
         </div>
         <div class="product-card__info">
           <h3>Tire Deflators</h3>
+          <p class="product-card__price">~$30</p>
           <p class="product-card__review">Brass construction, adjustable target PSI. Set them and walk away — all 4 tires deflate simultaneously to your preset.</p>
           <a href="https://amzn.to/3LBzMEw" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
@@ -91,6 +93,7 @@
         </div>
         <div class="product-card__info">
           <h3>Tankless Inflator Setup</h3>
+          <p class="product-card__price">~$130</p>
           <p class="product-card__review">Tankless. Inflates all 4 tires 35–50psi simultaneously in 3.5 min. Runs off 120v AC from the CT bed outlet.</p>
           <a href="https://amzn.to/4phHAcE" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
@@ -102,6 +105,7 @@
         </div>
         <div class="product-card__info">
           <h3>Multi Tire Inflator Kit</h3>
+          <p class="product-card__price">~$35</p>
           <p class="product-card__review">4-way manifold for inflating all tires at once. Pairs with the tankless compressor or any shop-style inflator.</p>
           <a href="https://amzn.to/49b3yrU" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
@@ -113,6 +117,7 @@
         </div>
         <div class="product-card__info">
           <h3>Inflator Adapter</h3>
+          <p class="product-card__price">~$15</p>
           <p class="product-card__review">Quick-connect adapter to bridge your compressor to the multi-tire manifold. Universal fitting.</p>
           <a href="https://amzn.to/48TKxvd" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
@@ -124,6 +129,7 @@
         </div>
         <div class="product-card__info">
           <h3>Tire Inflator</h3>
+          <p class="product-card__price">~$100</p>
           <p class="product-card__review">Compact portable inflator. Good backup option if you don't want the full tankless setup.</p>
           <a href="https://amzn.to/3NhPdCs" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
@@ -154,9 +160,10 @@
         </div>
         <div class="product-card__info">
           <h3>Recovery Boards</h3>
-          <p class="product-card__review">MAXTRAX Xtreme. Nylon-reinforced, built to handle the CT's weight. Two options below depending on budget.</p>
-          <a href="https://amzn.to/44F72l8" target="_blank" rel="noopener noreferrer" class="cta-button">Option A — Xtreme</a>
-          <a href="https://amzn.to/3LeeRaK" target="_blank" rel="noopener noreferrer" class="cta-button" style="margin-top:8px">Option B — MKII</a>
+          <p class="product-card__price">~$300 / ~$160</p>
+          <p class="product-card__review">MAXTRAX. Nylon-reinforced, built to handle the CT's weight. Xtreme is the premium pick; MKII is solid on a budget.</p>
+          <a href="https://amzn.to/44F72l8" target="_blank" rel="noopener noreferrer" class="cta-button">Xtreme — Top Pick</a>
+          <a href="https://amzn.to/3LeeRaK" target="_blank" rel="noopener noreferrer" class="cta-button cta-button--secondary">MKII — Budget Option</a>
         </div>
       </article>
 
@@ -331,8 +338,21 @@
   <section id="winch" class="section">
     <div class="section__header">
       <h2>Winch Build</h2>
-      <p class="section__intro">A full DIY winch setup powered by the CT's 120v outlets. Parts list and wiring basics below.</p>
+      <p class="section__intro">A full DIY winch setup powered by the CT's 240v 50A plug. Split to 4 power supplies.</p>
     </div>
+
+    <div class="info-callout">
+      <p class="info-callout__label">&#9432; How This Works</p>
+      <p>The CT's 240v 50A plug splits to four ATX-style power supplies that convert AC to 12v DC for the winch motor. Wire all pin 34s together with signal wire. Jump pins 33 &amp; 36 with a low-ohm resistor. DC side is up to you. <a href="guides/winch-wiring.html">Full wiring guide &rarr;</a></p>
+    </div>
+
+    <div class="build-gallery">
+      <img src="images/products/winch/build-setup/IMG_0552.jpeg" alt="Cybertruck winch build power supply setup" loading="lazy">
+      <img src="images/products/winch/build-setup/IMG_0553.jpeg" alt="Cybertruck winch build wiring detail" loading="lazy">
+      <img src="images/products/winch/G89KqXbawAAAu7o.jpg" alt="Completed winch mounted on Cybertruck" loading="lazy">
+      <img src="images/products/winch/G89KqXbawAAAu7o2.jpg" alt="Winch hitch mount installed on Cybertruck" loading="lazy">
+    </div>
+
     <div class="product-grid">
 
       <article class="product-card">
@@ -359,12 +379,12 @@
 
       <article class="product-card">
         <div class="product-card__image">
-          <img src="images/products/winch/power-supplies/61culAi5vDL._AC_SL1500_.jpg" alt="120v AC to 12v DC power supply" loading="lazy">
+          <img src="images/products/winch/power-supplies/61culAi5vDL._AC_SL1500_.jpg" alt="240v AC to 12v DC power supply" loading="lazy">
         </div>
         <div class="product-card__info">
           <h3>Power Supplies</h3>
           <p class="product-card__qty">Need: 4x</p>
-          <p class="product-card__review">120v AC → 12v DC converters. Four units wired in parallel to deliver enough current for the winch motor.</p>
+          <p class="product-card__review">240v AC → 12v DC converters. Four units wired in parallel off the CT's 240v 50A plug to deliver enough current for the winch motor.</p>
           <a href="https://amzn.to/4pYPpVS" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
       </article>
@@ -376,7 +396,7 @@
         <div class="product-card__info">
           <h3>AC Side Cable (4x)</h3>
           <p class="product-card__qty">Need: 4x</p>
-          <p class="product-card__review">Power cable to connect each PSU to the CT's 120v outlets.</p>
+          <p class="product-card__review">Power cable to connect each PSU to the 240v distribution.</p>
           <a href="https://amzn.to/492Xnrb" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
       </article>
@@ -440,10 +460,6 @@
 
     </div>
 
-    <div class="info-callout">
-      <p class="info-callout__label">&#9432; Wiring Basics</p>
-      <p>Wire all pin 34s together with signal wire. Use a low-ohm resistor to jump pins 33 &amp; 36 on each PSU. How you wire up the DC side is up to you. <a href="guides/winch-wiring.html">Full wiring guide &rarr;</a></p>
-    </div>
   </section>
 
   <!-- ============================================================
@@ -534,12 +550,12 @@
   </section>
 
   <!-- ============================================================
-       #cyberbeast
+       #essentials
        ============================================================ -->
-  <section id="cyberbeast" class="section section--alt">
+  <section id="essentials" class="section">
     <div class="section__header">
-      <h2>Cyberbeast Specific</h2>
-      <p class="section__intro">Gear that only applies to the Cyberbeast trim.</p>
+      <h2>Essentials &amp; Maintenance</h2>
+      <p class="section__intro">Safety gear, MOLLE organization, Cyberbeast-specific fixes, and maintenance items for trail days.</p>
     </div>
     <div class="product-grid">
 
@@ -548,24 +564,12 @@
           <img src="images/products/cyberbeast/backer-rod/G89ecfFaQAAaDf3.jpg" alt="Backer rod installed on Cyberbeast light bar" loading="lazy">
         </div>
         <div class="product-card__info">
-          <h3>Backer Rod (Light Bar Wind Fix)</h3>
-          <p class="product-card__review">Foam backer rod stuffed around the off-road light bar housing. Cuts down wind shear noise at highway speed. Cheap, effective.</p>
+          <h3>Backer Rod — Cyberbeast Only</h3>
+          <p class="product-card__price">~$8</p>
+          <p class="product-card__review">Foam backer rod stuffed around the off-road light bar housing. Cuts down wind shear noise at highway speed. Cheap, effective. Cyberbeast trim only.</p>
           <a href="https://amzn.to/3Lj2QRp" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
       </article>
-
-    </div>
-  </section>
-
-  <!-- ============================================================
-       #essentials
-       ============================================================ -->
-  <section id="essentials" class="section">
-    <div class="section__header">
-      <h2>Essentials &amp; Maintenance</h2>
-      <p class="section__intro">Safety gear, MOLLE organization, and maintenance items for trail days.</p>
-    </div>
-    <div class="product-grid">
 
       <article class="product-card">
         <div class="product-card__image">
@@ -641,10 +645,10 @@
        ============================================================ -->
   <footer class="site-footer">
     <div class="site-footer__inner">
+      <p class="site-footer__brand">CYBER<span class="text-cyber">OFFROADING</span></p>
       <div class="site-footer__links">
         <a href="guides/roof-glass.html">Roof Glass Guide</a>
         <a href="guides/winch-wiring.html">Winch Wiring Guide</a>
-        <a href="#offroad">Back to Top</a>
       </div>
       <p class="site-footer__disclaimer">
         CyberOffroading.com is a participant in the Amazon Services LLC Associates Program and other affiliate programs. Links on this site may earn us a commission at no extra cost to you. We only recommend products we personally use or have thoroughly researched. Always verify product compatibility with your specific Cybertruck configuration before purchasing.
@@ -652,6 +656,11 @@
       <p class="site-footer__copyright">&copy; 2026 CyberOffroading.com</p>
     </div>
   </footer>
+
+  <!-- Back to top -->
+  <button class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 14V3M3 7l5-5 5 5" stroke="currentColor" stroke-width="1.5"/></svg>
+  </button>
 
   <script src="js/main.js"></script>
 </body>
