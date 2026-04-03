@@ -243,12 +243,12 @@ img {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  top: env(safe-area-inset-top, 0px);
   z-index: 100;
   background: rgba(10, 10, 11, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--steel-edge);
+  padding-top: env(safe-area-inset-top, 0px);
   animation: navReveal 0.4s 0.3s ease-out both;
 }
 
