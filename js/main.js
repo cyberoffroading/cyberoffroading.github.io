@@ -63,8 +63,10 @@
   const navBar = document.querySelector('.category-nav');
   navPills.forEach((pill) => {
     pill.addEventListener('click', (e) => {
-      e.preventDefault();
       const href = pill.getAttribute('href');
+      // Only intercept anchor links (#section), let page links navigate normally
+      if (!href.startsWith('#')) return;
+      e.preventDefault();
       const target = document.querySelector(href);
       if (target) {
         const navHeight = navBar.offsetHeight;
