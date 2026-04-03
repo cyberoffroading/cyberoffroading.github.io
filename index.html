@@ -930,6 +930,216 @@
     </div>
   </div>
 
-  <script src="js/main.js?v=3"></script>
+  <script>
+(function () {
+  'use strict';
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cards = document.querySelectorAll('.product-card');
+  if (prefersReducedMotion) {
+    cards.forEach(function(card) { card.classList.add('revealed'); });
+  } else {
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var card = entry.target;
+          var siblings = Array.from(card.parentElement.children);
+          var index = siblings.indexOf(card);
+          card.style.transitionDelay = index * 50 + 'ms';
+          card.classList.add('revealed');
+          card.addEventListener('transitionend', function() {
+            card.style.transitionDelay = '0ms';
+          }, { once: true });
+          revealObserver.unobserve(card);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -60px 0px' });
+    cards.forEach(function(card) { revealObserver.observe(card); });
+  }
+
+  var navPills = document.querySelectorAll('.nav-pill');
+  var sections = document.querySelectorAll('.section');
+  var navEl = document.querySelector('.category-nav');
+  var navInner = navEl.querySelector('.category-nav__inner');
+  var scrollTick = false;
+  var navClickTarget = null;
+  var scrollIdleTimer = null;
+
+  function ensurePillVisible(pill) {
+    var pillRect = pill.getBoundingClientRect();
+    var navRect = navInner.getBoundingClientRect();
+    if (pillRect.left < navRect.left || pillRect.right > navRect.right) {
+      var left = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
+      navInner.scrollTo({ left: left, behavior: 'smooth' });
+    }
+  }
+
+  function updateActiveNav() {
+    if (navClickTarget) {
+      navPills.forEach(function(pill) {
+        pill.classList.toggle('active', pill.getAttribute('href') === navClickTarget);
+      });
+      clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = setTimeout(function() { navClickTarget = null; }, 150);
+      return;
+    }
+    var navHeight = navEl.offsetHeight;
+    var trigger = navHeight + 40;
+    var currentId = '';
+    sections.forEach(function(section) {
+      if (section.getBoundingClientRect().top <= trigger) {
+        currentId = section.id;
+      }
+    });
+    navPills.forEach(function(pill) {
+      var isActive = pill.getAttribute('href') === '#' + currentId;
+      pill.classList.toggle('active', isActive);
+      if (isActive) ensurePillVisible(pill);
+    });
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!scrollTick) {
+      requestAnimationFrame(function() {
+        updateActiveNav();
+        scrollTick = false;
+      });
+      scrollTick = true;
+    }
+  }, { passive: true });
+  updateActiveNav();
+
+  navPills.forEach(function(pill) {
+    pill.addEventListener('click', function(e) {
+      var href = pill.getAttribute('href');
+      var modalId = pill.dataset.modal;
+      if (modalId) {
+        e.preventDefault();
+        var modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.add('active');
+          modal.scrollTop = 0;
+          document.body.style.overflow = 'hidden';
+        }
+        return;
+      }
+      if (href.indexOf('#') !== 0) return;
+      e.preventDefault();
+      navClickTarget = href;
+      navPills.forEach(function(p) { p.classList.toggle('active', p === pill); });
+      var target = document.querySelector(href);
+      if (target) {
+        var navHeight = navEl.offsetHeight;
+        var top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+      ensurePillVisible(pill);
+    });
+  });
+
+  var guideModals = document.querySelectorAll('.guide-modal');
+  function closeGuideModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  guideModals.forEach(function(modal) {
+    modal.querySelector('.guide-modal__close').addEventListener('click', function() { closeGuideModal(modal); });
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) closeGuideModal(modal);
+    });
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      guideModals.forEach(function(modal) {
+        if (modal.classList.contains('active')) closeGuideModal(modal);
+      });
+    }
+  });
+  document.addEventListener('click', function(e) {
+    var t = e.target.closest('[data-open-modal]');
+    if (!t) return;
+    e.preventDefault();
+    var modal = document.getElementById(t.dataset.openModal);
+    if (modal) {
+      modal.classList.add('active');
+      modal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
+  });
+
+  var backBtn = document.querySelector('.back-to-top');
+  if (backBtn) {
+    var hero = document.querySelector('.hero');
+    var topObserver = new IntersectionObserver(function(entries) {
+      backBtn.classList.toggle('visible', !entries[0].isIntersecting);
+    }, { threshold: 0 });
+    topObserver.observe(hero);
+  }
+
+  var galleryItems = document.querySelectorAll('.gallery-item');
+  if (galleryItems.length && !prefersReducedMotion) {
+    var galleryObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          galleryObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    galleryItems.forEach(function(item, i) {
+      item.style.transitionDelay = (i % 4) * 80 + 'ms';
+      galleryObs.observe(item);
+    });
+  } else {
+    galleryItems.forEach(function(item) { item.classList.add('revealed'); });
+  }
+
+  var lightbox = document.getElementById('galleryLightbox');
+  if (lightbox && galleryItems.length) {
+    var lbImg = lightbox.querySelector('img');
+    var lbCounter = lightbox.querySelector('.gallery-lightbox__counter');
+    var lbClose = lightbox.querySelector('.gallery-lightbox__close');
+    var lbPrev = lightbox.querySelector('.gallery-lightbox__nav--prev');
+    var lbNext = lightbox.querySelector('.gallery-lightbox__nav--next');
+    var currentIndex = 0;
+    var images = Array.from(galleryItems).map(function(item) {
+      var img = item.querySelector('img');
+      return { src: img.src, alt: img.alt };
+    });
+    function openLightbox(index) {
+      currentIndex = index;
+      lbImg.src = images[currentIndex].src;
+      lbImg.alt = images[currentIndex].alt;
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function navigate(dir) {
+      currentIndex = (currentIndex + dir + images.length) % images.length;
+      lbImg.src = images[currentIndex].src;
+      lbImg.alt = images[currentIndex].alt;
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
+    }
+    galleryItems.forEach(function(item, i) {
+      item.addEventListener('click', function() { openLightbox(i); });
+    });
+    lbClose.addEventListener('click', function(e) { e.stopPropagation(); closeLightbox(); });
+    lbPrev.addEventListener('click', function(e) { e.stopPropagation(); navigate(-1); });
+    lbNext.addEventListener('click', function(e) { e.stopPropagation(); navigate(1); });
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+  }
+})();
+  </script>
 </body>
 </html>
