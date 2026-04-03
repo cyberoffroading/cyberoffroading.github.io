@@ -60,18 +60,21 @@
   sections.forEach((section) => sectionObserver.observe(section));
 
   // --- Smooth scroll on nav click ---
+  const navBar = document.querySelector('.category-nav');
   navPills.forEach((pill) => {
     pill.addEventListener('click', (e) => {
       e.preventDefault();
       const href = pill.getAttribute('href');
       const target = document.querySelector(href);
       if (target) {
-        const navHeight = document.querySelector('.category-nav').offsetHeight;
+        const navHeight = navBar.offsetHeight;
         const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
-      // Scroll nav pill into view on mobile
-      pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      // Scroll the pill into view within the nav (horizontal only)
+      const navInner = navBar.querySelector('.category-nav__inner');
+      const pillLeft = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
+      navInner.scrollTo({ left: pillLeft, behavior: 'smooth' });
     });
   });
 
