@@ -49,9 +49,19 @@
   // with dynamic viewport and small screens).
   const navEl = document.querySelector('.category-nav');
   let scrollTick = false;
-  let navClickLock = false; // suppress scroll updates during smooth-scroll from tap
+  let navClickTarget = null; // when set, locks highlight to this href during smooth scroll
+  let scrollIdleTimer = null;
   function updateActiveNav() {
-    if (navClickLock) return;
+    // While a tap-initiated scroll is in progress, keep the tapped pill highlighted
+    if (navClickTarget) {
+      navPills.forEach((pill) => {
+        pill.classList.toggle('active', pill.getAttribute('href') === navClickTarget);
+      });
+      // Reset lock once scrolling stops (no scroll events for 150ms)
+      clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = setTimeout(() => { navClickTarget = null; }, 150);
+      return;
+    }
     const navHeight = navEl.offsetHeight;
     const trigger = navHeight + 40; // point just below sticky nav
     let currentId = '';
@@ -97,11 +107,9 @@
       // Only intercept anchor links (#section)
       if (!href.startsWith('#')) return;
       e.preventDefault();
-      // Immediately highlight tapped pill and lock out scroll updates
-      // until smooth scroll finishes
+      // Lock highlight to this pill until smooth scroll settles
+      navClickTarget = href;
       navPills.forEach((p) => p.classList.toggle('active', p === pill));
-      navClickLock = true;
-      setTimeout(() => { navClickLock = false; }, 800);
       const target = document.querySelector(href);
       if (target) {
         const navHeight = navEl.offsetHeight;
