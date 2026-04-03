@@ -44,20 +44,34 @@
   const navPills = document.querySelectorAll('.nav-pill');
   const sections = document.querySelectorAll('.section');
 
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navPills.forEach((pill) => {
-            pill.classList.toggle('active', pill.getAttribute('href') === `#${id}`);
-          });
-        }
+  // Use scroll listener instead of IntersectionObserver for reliable
+  // mobile behaviour (IO percentage rootMargin is buggy on mobile Safari
+  // with dynamic viewport and small screens).
+  let scrollTick = false;
+  function updateActiveNav() {
+    const navHeight = document.querySelector('.category-nav').offsetHeight;
+    const trigger = navHeight + 40; // point just below sticky nav
+    let currentId = '';
+    sections.forEach((section) => {
+      if (section.getBoundingClientRect().top <= trigger) {
+        currentId = section.id;
+      }
+    });
+    navPills.forEach((pill) => {
+      pill.classList.toggle('active', pill.getAttribute('href') === `#${currentId}`);
+    });
+  }
+  window.addEventListener('scroll', () => {
+    if (!scrollTick) {
+      requestAnimationFrame(() => {
+        updateActiveNav();
+        scrollTick = false;
       });
-    },
-    { threshold: 0.15, rootMargin: '-80px 0px -50% 0px' }
-  );
-  sections.forEach((section) => sectionObserver.observe(section));
+      scrollTick = true;
+    }
+  }, { passive: true });
+  // Run once on load
+  updateActiveNav();
 
   // --- Smooth scroll on nav click + guide modals ---
   const navBar = document.querySelector('.category-nav');
@@ -81,6 +95,8 @@
       // Only intercept anchor links (#section)
       if (!href.startsWith('#')) return;
       e.preventDefault();
+      // Immediately highlight tapped pill
+      navPills.forEach((p) => p.classList.toggle('active', p === pill));
       const target = document.querySelector(href);
       if (target) {
         const navHeight = navBar.offsetHeight;
