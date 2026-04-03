@@ -776,6 +776,100 @@ img {
 .gallery-lightbox__nav--prev { left: 16px; }
 .gallery-lightbox__nav--next { right: 16px; }
 
+/* ============================================================
+   GUIDE MODALS
+   ============================================================ */
+.guide-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(10, 10, 11, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.guide-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.guide-modal__inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+}
+
+.guide-modal__close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--steel-mid);
+  border: 1px solid var(--steel-edge);
+  color: var(--stainless-dim);
+  font-size: 1.2rem;
+  cursor: pointer;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  transition: color 0.15s ease-out, border-color 0.15s ease-out;
+  z-index: 10001;
+}
+
+.guide-modal__close:hover {
+  color: var(--cyber-blue);
+  border-color: var(--cyber-blue);
+}
+
+/* Guide content inside modals reuses guide-page styles */
+.guide-modal h1 {
+  margin-bottom: 16px;
+}
+
+.guide-modal h2 {
+  margin-top: 48px;
+  margin-bottom: 16px;
+}
+
+.guide-modal h3 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.guide-modal p {
+  margin-bottom: 16px;
+  color: var(--stainless-dim);
+  font-size: 0.9rem;
+}
+
+.guide-modal strong {
+  color: var(--stainless);
+}
+
+.guide-modal ul, .guide-modal ol {
+  margin-bottom: 16px;
+  padding-left: 20px;
+  color: var(--stainless-dim);
+  font-size: 0.9rem;
+}
+
+.guide-modal li {
+  margin-bottom: 8px;
+}
+
+.guide-modal .guide-meta {
+  font-size: 0.75rem;
+  color: var(--stainless-dim);
+  margin-bottom: 32px;
+}
+
 .gallery-lightbox__counter {
   position: absolute;
   bottom: 20px;

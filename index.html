@@ -63,8 +63,8 @@
       <a href="#comms" class="nav-pill">Comms</a>
       <a href="#essentials" class="nav-pill">Essentials</a>
       <a href="#gallery" class="nav-pill">Gallery</a>
-      <a href="guides/roof-glass.html" class="nav-pill">Glass Guide</a>
-      <a href="guides/winch-wiring.html" class="nav-pill">Winch Guide</a>
+      <a href="#guide-glass" class="nav-pill" data-modal="guideGlass">Glass Guide</a>
+      <a href="#guide-winch" class="nav-pill" data-modal="guideWinch">Winch Guide</a>
     </div>
   </nav>
 
@@ -363,7 +363,7 @@
 
     <div class="info-callout">
       <p class="info-callout__label">&#9432; How This Works</p>
-      <p>The CT's 240v 50A plug splits to four ATX-style power supplies that convert AC to 12v DC for the winch motor. Wire all pin 34s together with signal wire. Jump pins 33 &amp; 36 with a low-ohm resistor. DC side is up to you. <a href="guides/winch-wiring.html">Full wiring guide &rarr;</a></p>
+      <p>The CT's 240v 50A plug splits to four ATX-style power supplies that convert AC to 12v DC for the winch motor. Wire all pin 34s together with signal wire. Jump pins 33 &amp; 36 with a low-ohm resistor. DC side is up to you. <a href="#" onclick="document.getElementById('guideWinch').classList.add('active');document.getElementById('guideWinch').scrollTop=0;document.body.style.overflow='hidden';return false;">Full wiring guide &rarr;</a></p>
     </div>
 
     <div class="build-gallery">
@@ -493,7 +493,7 @@
 
     <div class="info-callout">
       <p class="info-callout__label">&#9432; Glass Compatibility</p>
-      <p>Starlink Mini works through <strong>2nd gen silver glass only</strong>. 1st gen silver glass and black glass block the signal. <a href="guides/roof-glass.html">Full roof glass guide &rarr;</a></p>
+      <p>Starlink Mini works through <strong>2nd gen silver glass only</strong>. 1st gen silver glass and black glass block the signal. <a href="#" onclick="document.getElementById('guideGlass').classList.add('active');document.getElementById('guideGlass').scrollTop=0;document.body.style.overflow='hidden';return false;">Full roof glass guide &rarr;</a></p>
     </div>
 
     <div class="product-grid">
@@ -745,6 +745,189 @@
   <button class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 14V3M3 7l5-5 5 5" stroke="currentColor" stroke-width="1.5"/></svg>
   </button>
+
+  <!-- ============================================================
+       GUIDE MODALS
+       ============================================================ -->
+
+  <!-- Glass Guide Modal -->
+  <div class="guide-modal" id="guideGlass">
+    <button class="guide-modal__close" aria-label="Close">&times;</button>
+    <div class="guide-modal__inner">
+      <h1>Cybertruck Roof Glass &amp; <span class="text-cyber">Starlink Mini</span></h1>
+
+      <p>Not all Cybertruck roof glass is created equal. If you're planning to mount a Starlink Mini underneath the glass (interior mount), you need to know which glass type you have. This determines whether the signal can pass through.</p>
+
+      <h2>The Three Glass Types</h2>
+
+      <p>Tesla has shipped three different roof glass configurations on the Cybertruck:</p>
+
+      <ul>
+        <li><strong>1st Gen Silver Glass</strong> — The original silver-tinted glass shipped on early production Cybertrucks. Has a metallic coating that blocks RF signals.</li>
+        <li><strong>2nd Gen Silver Glass</strong> — Updated silver glass with a revised coating. Allows RF signals (including Starlink) to pass through from underneath.</li>
+        <li><strong>Black Glass</strong> — Darker tinted glass option. Blocks RF signals similar to 1st gen silver.</li>
+      </ul>
+
+      <h2>Starlink Mini Compatibility</h2>
+
+      <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr>
+            <th>Glass Type</th>
+            <th>Interior</th>
+            <th>Exterior</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1st Gen Silver</strong></td>
+            <td class="no">No</td>
+            <td class="yes">Yes</td>
+            <td>Metallic coating blocks RF. Must use exterior mount.</td>
+          </tr>
+          <tr>
+            <td><strong>2nd Gen Silver</strong></td>
+            <td class="yes">Yes</td>
+            <td class="yes">Yes</td>
+            <td>RF-transparent coating. Interior mount works perfectly.</td>
+          </tr>
+          <tr>
+            <td><strong>Black Glass</strong></td>
+            <td class="no">No</td>
+            <td class="yes">Yes</td>
+            <td>Dark tint blocks RF. Must use exterior mount.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h2>How to Identify Your Glass</h2>
+
+      <ul>
+        <li><strong>Production date</strong> — Earlier VINs are more likely to have 1st gen silver. Later production runs switched to 2nd gen.</li>
+        <li><strong>Visual inspection</strong> — 2nd gen silver has a slightly different tint compared to 1st gen. Black glass is obvious — it's visibly darker.</li>
+        <li><strong>Signal test</strong> — Place a Starlink Mini on the inside of the glass and check for signal. If it connects, you have 2nd gen silver.</li>
+      </ul>
+
+      <h2>Recommendation</h2>
+
+      <p>If you have <strong>2nd gen silver glass</strong>, go with an interior mount. Cleaner install, no wind noise, no theft risk.</p>
+      <p>If you have <strong>1st gen silver or black glass</strong>, use an exterior mount. Signal performance will actually be slightly better since there's no glass attenuation at all.</p>
+
+      <div class="info-callout" style="margin-left: 0; margin-right: 0; margin-top: 32px;">
+        <p class="info-callout__label">&#9432; Note</p>
+        <p>Tesla may change glass specs at any time without announcement. Always test with your own hardware before committing to a mounting solution.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Winch Wiring Guide Modal -->
+  <div class="guide-modal" id="guideWinch">
+    <button class="guide-modal__close" aria-label="Close">&times;</button>
+    <div class="guide-modal__inner">
+      <h1>Winch Wiring Guide — <span class="text-cyber">240v AC</span></h1>
+      <p class="guide-meta">Last verified April 2026</p>
+
+      <p>This guide covers how to power a 12,000 lb winch using the Cybertruck's 240v 50A plug and four ATX-style power supplies wired in parallel. The 240v is split to all four PSUs. The DC side wiring is up to you.</p>
+
+      <h2>Concept</h2>
+
+      <p>The Cybertruck's 240v 50A plug provides the power. That 240v is split to four ATX-style power supplies which convert it to 12v DC. The four PSUs wired in parallel provide enough current to run the winch motor. The trick is getting the PSUs to turn on without a motherboard — that's where the pin jumpers come in.</p>
+
+      <h2>Parts List</h2>
+
+      <div class="guide-table-wrap">
+      <table class="guide-table">
+        <thead>
+          <tr>
+            <th>Part</th>
+            <th>Qty</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://harborfreight.com/12000-lb-winch-with-synthetic-rope-and-wireless-remote-56385.html" target="_blank" rel="noopener noreferrer">12k Winch</a></td>
+            <td>1</td>
+            <td>The winch itself — Badland 12k with synthetic rope</td>
+          </tr>
+          <tr>
+            <td><a href="https://harborfreight.com/12000-lb-winch-hitch-mount-57607.html" target="_blank" rel="noopener noreferrer">Hitch Mount</a></td>
+            <td>1</td>
+            <td>Standard 2" receiver mount</td>
+          </tr>
+          <tr>
+            <td><a href="https://amzn.to/4pYPpVS" target="_blank" rel="noopener noreferrer">Power Supplies</a></td>
+            <td>4</td>
+            <td>240v AC &rarr; 12v DC conversion</td>
+          </tr>
+          <tr>
+            <td><a href="https://amzn.to/492Xnrb" target="_blank" rel="noopener noreferrer">AC Cable (Type A)</a></td>
+            <td>4</td>
+            <td>Connect PSUs to 240v distribution</td>
+          </tr>
+          <tr>
+            <td><a href="https://amzn.to/3Leg6qq" target="_blank" rel="noopener noreferrer">AC Cable (Type B)</a></td>
+            <td>2</td>
+            <td>Power distribution chain</td>
+          </tr>
+          <tr>
+            <td><a href="https://amzn.to/4awixPx" target="_blank" rel="noopener noreferrer">AC Cable (Type C)</a></td>
+            <td>1</td>
+            <td>Final AC distribution link</td>
+          </tr>
+          <tr>
+            <td><a href="https://amzn.to/45rh7SO" target="_blank" rel="noopener noreferrer">Signal Wire</a></td>
+            <td>1 spool</td>
+            <td>Connects pin 34 across all PSUs</td>
+          </tr>
+          <tr>
+            <td><a href="https://amzn.to/3MWUOxZ" target="_blank" rel="noopener noreferrer">Resistors</a></td>
+            <td>1 pack</td>
+            <td>Low-ohm, jumps pins 33 &amp; 36</td>
+          </tr>
+          <tr>
+            <td><a href="https://amzn.to/4pMZepK" target="_blank" rel="noopener noreferrer">Soldering Kit</a></td>
+            <td>1</td>
+            <td>For all wire connections</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h2>AC Side Wiring</h2>
+
+      <p>The AC side is straightforward: the CT's 240v 50A plug is split to all four power supplies via the appropriate cables. The three cable types handle the distribution from the 240v plug to all four PSUs.</p>
+
+      <h2>PSU Pin Configuration</h2>
+
+      <p>ATX power supplies need two modifications to run without a motherboard:</p>
+
+      <h3>1. Signal Wire — Pin 34 (PS_ON)</h3>
+      <p><strong>Wire all pin 34s together</strong> across all four power supplies using the signal wire. Pin 34 is the PS_ON signal — grounding it tells the PSU to turn on. By wiring them together, all four PSUs turn on and off simultaneously.</p>
+
+      <h3>2. Resistor Jump — Pins 33 &amp; 36</h3>
+      <p><strong>Use a low-ohm resistor to jump pins 33 and 36</strong> on each PSU. This provides a minimum load on the 3.3v rail, which some PSUs require to regulate their 12v output properly. Without this, the PSU may not start or may output unstable voltage.</p>
+
+      <div class="warning-callout" style="margin-left: 0; margin-right: 0; margin-top: 32px;">
+        <p class="warning-callout__label">&#9888; Warning</p>
+        <p>You're working with 240v AC and high-current 12v DC. If you're not comfortable with electrical work, find someone who is. Incorrect wiring can cause fire, equipment damage, or injury.</p>
+      </div>
+
+      <h2>DC Side Wiring</h2>
+
+      <p>How you wire up the DC side is up to you. The four PSUs' 12v outputs need to be combined and connected to the winch motor's power terminals. Common approaches include bus bars, heavy-gauge parallel runs, or custom harnesses.</p>
+
+      <ul>
+        <li>Use wire gauge appropriate for the current draw (the winch can pull 400+ amps at full load across all PSUs)</li>
+        <li>Keep DC runs as short as possible to minimize voltage drop</li>
+        <li>Use proper crimped terminals — no wire nuts on high-current DC</li>
+        <li>Fuse each PSU output individually for safety</li>
+      </ul>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
 </body>

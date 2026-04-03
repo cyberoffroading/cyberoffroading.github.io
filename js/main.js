@@ -59,12 +59,26 @@
   );
   sections.forEach((section) => sectionObserver.observe(section));
 
-  // --- Smooth scroll on nav click ---
+  // --- Smooth scroll on nav click + guide modals ---
   const navBar = document.querySelector('.category-nav');
   navPills.forEach((pill) => {
     pill.addEventListener('click', (e) => {
       const href = pill.getAttribute('href');
-      // Only intercept anchor links (#section), let page links navigate normally
+      const modalId = pill.dataset.modal;
+
+      // If it's a modal trigger, open the modal
+      if (modalId) {
+        e.preventDefault();
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.add('active');
+          modal.scrollTop = 0;
+          document.body.style.overflow = 'hidden';
+        }
+        return;
+      }
+
+      // Only intercept anchor links (#section)
       if (!href.startsWith('#')) return;
       e.preventDefault();
       const target = document.querySelector(href);
@@ -77,6 +91,24 @@
       const navInner = navBar.querySelector('.category-nav__inner');
       const pillLeft = pill.offsetLeft - navInner.offsetLeft - (navInner.clientWidth / 2) + (pill.offsetWidth / 2);
       navInner.scrollTo({ left: pillLeft, behavior: 'smooth' });
+    });
+  });
+
+  // --- Guide modal close handlers ---
+  document.querySelectorAll('.guide-modal').forEach((modal) => {
+    const closeBtn = modal.querySelector('.guide-modal__close');
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
     });
   });
 
