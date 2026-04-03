@@ -1057,10 +1057,16 @@ img {
   margin-bottom: 32px;
 }
 
+.guide-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 24px 0;
+}
+
 .guide-table {
   width: 100%;
+  min-width: 500px;
   border-collapse: collapse;
-  margin: 24px 0;
   font-size: 0.85rem;
 }
 
@@ -1069,6 +1075,11 @@ img {
   text-align: left;
   padding: 12px 16px;
   border-bottom: 1px solid var(--steel-edge);
+  white-space: nowrap;
+}
+
+.guide-table td:last-child {
+  white-space: normal;
 }
 
 .guide-table th {
