@@ -63,10 +63,14 @@
   navPills.forEach((pill) => {
     pill.addEventListener('click', (e) => {
       e.preventDefault();
-      const target = document.querySelector(pill.getAttribute('href'));
+      const href = pill.getAttribute('href');
+      const target = document.querySelector(href);
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+        const navHeight = document.querySelector('.category-nav').offsetHeight;
+        const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+        window.scrollTo({ top: top, behavior: 'smooth' });
       }
+      // Scroll nav pill into view on mobile
       pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     });
   });
