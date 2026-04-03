@@ -48,7 +48,9 @@
   // mobile behaviour (IO percentage rootMargin is buggy on mobile Safari
   // with dynamic viewport and small screens).
   let scrollTick = false;
+  let navClickLock = false; // suppress scroll updates during smooth-scroll from tap
   function updateActiveNav() {
+    if (navClickLock) return;
     const navHeight = document.querySelector('.category-nav').offsetHeight;
     const trigger = navHeight + 40; // point just below sticky nav
     let currentId = '';
@@ -95,8 +97,11 @@
       // Only intercept anchor links (#section)
       if (!href.startsWith('#')) return;
       e.preventDefault();
-      // Immediately highlight tapped pill
+      // Immediately highlight tapped pill and lock out scroll updates
+      // until smooth scroll finishes
       navPills.forEach((p) => p.classList.toggle('active', p === pill));
+      navClickLock = true;
+      setTimeout(() => { navClickLock = false; }, 800);
       const target = document.querySelector(href);
       if (target) {
         const navHeight = navBar.offsetHeight;
