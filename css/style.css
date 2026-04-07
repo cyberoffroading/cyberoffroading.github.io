@@ -303,24 +303,6 @@ img {
 }
 
 /* Events pill — always highlighted so it stands out */
-.nav-pill--events {
-  color: var(--cyber-blue);
-  background: transparent;
-  border: 1px solid var(--cyber-blue);
-  font-weight: 600;
-  box-shadow: 0 0 12px var(--cyber-glow);
-}
-
-.nav-pill--events:hover {
-  color: var(--steel-dark);
-  background: var(--cyber-blue);
-}
-
-.nav-pill--events.active {
-  color: var(--steel-dark);
-  background: var(--cyber-blue);
-}
-
 /* ============================================================
    SECTIONS
    ============================================================ */
