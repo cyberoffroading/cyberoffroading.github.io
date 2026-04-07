@@ -648,10 +648,6 @@ img {
   margin-bottom: 12px;
 }
 
-.events-cta__label span {
-  color: var(--stainless);
-}
-
 .events-cta__text {
   font-size: 0.95rem;
   color: var(--stainless);
