@@ -302,6 +302,25 @@ img {
   font-weight: 600;
 }
 
+/* Events pill — always highlighted so it stands out */
+.nav-pill--events {
+  color: var(--cyber-blue);
+  background: transparent;
+  border: 1px solid var(--cyber-blue);
+  font-weight: 600;
+  box-shadow: 0 0 12px var(--cyber-glow);
+}
+
+.nav-pill--events:hover {
+  color: var(--steel-dark);
+  background: var(--cyber-blue);
+}
+
+.nav-pill--events.active {
+  color: var(--steel-dark);
+  background: var(--cyber-blue);
+}
+
 /* ============================================================
    SECTIONS
    ============================================================ */
@@ -594,6 +613,68 @@ img {
 
 .info-callout p, .info-callout a {
   font-size: 0.85rem;
+}
+
+/* ============================================================
+   EVENTS CTA — Prominent off-road events callout
+   ============================================================ */
+.events-cta {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.events-cta__body {
+  position: relative;
+  background: linear-gradient(135deg, var(--steel-light) 0%, var(--steel-mid) 100%);
+  border: 1px solid var(--cyber-blue);
+  box-shadow: 0 0 30px var(--cyber-glow), inset 0 0 30px rgba(0, 212, 255, 0.05);
+  padding: 36px 28px;
+  clip-path: polygon(
+    16px 0, 100% 0,
+    100% calc(100% - 16px), calc(100% - 16px) 100%,
+    0 100%, 0 16px
+  );
+  text-align: center;
+}
+
+.events-cta__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyber-blue);
+  margin-bottom: 12px;
+}
+
+.events-cta__label span {
+  color: var(--stainless);
+}
+
+.events-cta__text {
+  font-size: 0.95rem;
+  color: var(--stainless);
+  max-width: 620px;
+  margin: 0 auto 24px;
+}
+
+.events-cta__button {
+  display: inline-block;
+  font-size: 0.85rem;
+  padding: 14px 32px;
+}
+
+@media (min-width: 768px) {
+  .events-cta__body {
+    padding: 48px 40px;
+  }
+  .events-cta__label {
+    font-size: 1rem;
+  }
+  .events-cta__text {
+    font-size: 1rem;
+  }
 }
 
 /* ============================================================
