@@ -264,17 +264,20 @@
 
     var btn = document.createElement('button');
     btn.className = 'vote-btn' + (votedProducts[id] ? ' voted' : '');
-    btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 2l2.1 4.2 4.7.7-3.4 3.3.8 4.6L8 12.5l-4.2 2.3.8-4.6L1.2 6.9l4.7-.7L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"' + (votedProducts[id] ? ' fill="currentColor"' : '') + '/></svg><span class="vote-btn__count">\u2014</span>';
+    btn.innerHTML = '<i data-lucide="star" width="14" height="14"></i><span class="vote-btn__count">\u2014</span>';
     btn.dataset.productId = id;
 
     var badge = document.createElement('span');
     badge.className = 'click-counter';
-    badge.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="12" height="12"><path d="M3 1v10l2.7-2.7h1.8L10 12l1.5-1.5L9 7h2.5L3 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> <span class="click-counter__count">\u2014</span>';
+    badge.innerHTML = '<i data-lucide="mouse-pointer-click" width="14" height="14"></i> <span class="click-counter__count">\u2014</span>';
 
     row.appendChild(btn);
     row.appendChild(badge);
     info.appendChild(row);
   });
+
+  // Render Lucide icons
+  if (window.lucide) lucide.createIcons();
 
   // Fetch and render vote + click counts
   fetch(VOTE_API + '/votes').then(function(r) { return r.json(); }).then(function(data) {
@@ -296,22 +299,17 @@
 
     var id = btn.dataset.productId;
     var countEl = btn.querySelector('.vote-btn__count');
-    var svg = btn.querySelector('svg path');
     var current = parseInt(countEl.textContent) || 0;
     var isVoted = btn.classList.contains('voted');
 
     if (isVoted) {
-      // Unvote
       btn.classList.remove('voted');
-      if (svg) svg.removeAttribute('fill');
       countEl.textContent = Math.max(current - 1, 0);
       delete votedProducts[id];
       localStorage.setItem('voted', JSON.stringify(votedProducts));
       fetch(VOTE_API + '/unvote/' + id, { method: 'POST' }).catch(function() {});
     } else {
-      // Vote
       btn.classList.add('voted');
-      if (svg) svg.setAttribute('fill', 'currentColor');
       countEl.textContent = current + 1;
       votedProducts[id] = true;
       localStorage.setItem('voted', JSON.stringify(votedProducts));
