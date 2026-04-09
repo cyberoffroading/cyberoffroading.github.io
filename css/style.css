@@ -354,10 +354,21 @@ img {
 .click-counter {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-family: var(--font-body);
   font-size: 0.7rem;
+  letter-spacing: 0.08em;
   color: var(--stainless-dim);
+  background: transparent;
+  border: 1px solid var(--steel-edge);
+  padding: 6px 12px;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+
+.click-counter svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .click-counter__count {
