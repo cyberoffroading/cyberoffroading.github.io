@@ -271,7 +271,7 @@
     var info = card.querySelector('.product-card__info');
     var badge = document.createElement('span');
     badge.className = 'click-counter';
-    badge.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="12" height="12"><path d="M6 2C3.8 2 2 3.8 2 6c0 4 6 8 6 8s6-4 6-8c0-2.2-1.8-4-4-4-1.2 0-2.3.5-3 1.4L8 4.8 6.6 3.4C5.8 2.5 5 2 4 2" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> <span class="click-counter__count">\u2014</span>';
+    badge.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="12" height="12"><path d="M3 1v10l2.7-2.7h1.8L10 12l1.5-1.5L9 7h2.5L3 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> <span class="click-counter__count">\u2014</span>';
     badge.dataset.productId = id;
     info.appendChild(badge);
   });
