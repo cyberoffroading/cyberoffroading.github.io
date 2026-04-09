@@ -250,7 +250,7 @@
   }
 
   // --- Product voting ---
-  var VOTE_API = 'https://cyberoffroading-votes.kevinchau.workers.dev';
+  var VOTE_API = 'https://cyberoffroading-votes.chaukevin.workers.dev';
   var votedProducts = JSON.parse(localStorage.getItem('voted') || '{}');
 
   // Inject vote buttons into product cards
