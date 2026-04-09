@@ -275,27 +275,34 @@
     });
   }).catch(function() {});
 
-  // Handle vote clicks
+  // Handle vote toggle clicks
   document.addEventListener('click', function(e) {
     var btn = e.target.closest('.vote-btn');
-    if (!btn || btn.classList.contains('voted')) return;
+    if (!btn) return;
 
     var id = btn.dataset.productId;
-    btn.classList.add('voted');
-    var svg = btn.querySelector('svg path');
-    if (svg) svg.setAttribute('fill', 'currentColor');
-
-    // Optimistic update
     var countEl = btn.querySelector('.vote-btn__count');
+    var svg = btn.querySelector('svg path');
     var current = parseInt(countEl.textContent) || 0;
-    countEl.textContent = current + 1;
+    var isVoted = btn.classList.contains('voted');
 
-    // Persist locally
-    votedProducts[id] = true;
-    localStorage.setItem('voted', JSON.stringify(votedProducts));
-
-    // Send to worker
-    fetch(VOTE_API + '/vote/' + id, { method: 'POST' }).catch(function() {});
+    if (isVoted) {
+      // Unvote
+      btn.classList.remove('voted');
+      if (svg) svg.removeAttribute('fill');
+      countEl.textContent = Math.max(current - 1, 0);
+      delete votedProducts[id];
+      localStorage.setItem('voted', JSON.stringify(votedProducts));
+      fetch(VOTE_API + '/unvote/' + id, { method: 'POST' }).catch(function() {});
+    } else {
+      // Vote
+      btn.classList.add('voted');
+      if (svg) svg.setAttribute('fill', 'currentColor');
+      countEl.textContent = current + 1;
+      votedProducts[id] = true;
+      localStorage.setItem('voted', JSON.stringify(votedProducts));
+      fetch(VOTE_API + '/vote/' + id, { method: 'POST' }).catch(function() {});
+    }
   });
 
   // Track affiliate link clicks

@@ -69,6 +69,30 @@ export default {
       return Response.json({ count: counts[productId] }, { headers: corsHeaders(request) });
     }
 
+    // POST /unvote/:id — decrement vote for a product
+    if (request.method === 'POST' && path.startsWith('/unvote/')) {
+      const productId = path.slice(8);
+      if (!productId) {
+        return Response.json({ error: 'Missing product ID' }, { status: 400, headers: corsHeaders(request) });
+      }
+
+      const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+      const ipKey = `voted:${ip}:${productId}`;
+
+      // Only allow unvote if this IP actually voted
+      const hadVoted = await env.VOTES.get(ipKey);
+      if (!hadVoted) {
+        return Response.json({ error: 'No vote to remove' }, { status: 400, headers: corsHeaders(request) });
+      }
+
+      const counts = await env.VOTES.get('counts', 'json') || {};
+      counts[productId] = Math.max((counts[productId] || 0) - 1, 0);
+      await env.VOTES.put('counts', JSON.stringify(counts));
+      await env.VOTES.delete(ipKey);
+
+      return Response.json({ count: counts[productId] }, { headers: corsHeaders(request) });
+    }
+
     return Response.json({ error: 'Not found' }, { status: 404, headers: corsHeaders(request) });
   }
 };
