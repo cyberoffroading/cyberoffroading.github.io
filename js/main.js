@@ -253,27 +253,27 @@
   var VOTE_API = 'https://cyberoffroading-votes.chaukevin.workers.dev';
   var votedProducts = JSON.parse(localStorage.getItem('voted') || '{}');
 
-  // Inject vote buttons into product cards
+  // Inject vote + click stats row into product cards
   var productCards = document.querySelectorAll('.product-card[data-product-id]');
   productCards.forEach(function(card) {
     var id = card.dataset.productId;
     var info = card.querySelector('.product-card__info');
+
+    var row = document.createElement('div');
+    row.className = 'product-card__stats';
+
     var btn = document.createElement('button');
     btn.className = 'vote-btn' + (votedProducts[id] ? ' voted' : '');
     btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 2l2.1 4.2 4.7.7-3.4 3.3.8 4.6L8 12.5l-4.2 2.3.8-4.6L1.2 6.9l4.7-.7L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"' + (votedProducts[id] ? ' fill="currentColor"' : '') + '/></svg><span class="vote-btn__count">\u2014</span>';
     btn.dataset.productId = id;
-    info.appendChild(btn);
-  });
 
-  // Inject click counter into product cards
-  productCards.forEach(function(card) {
-    var id = card.dataset.productId;
-    var info = card.querySelector('.product-card__info');
     var badge = document.createElement('span');
     badge.className = 'click-counter';
     badge.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="12" height="12"><path d="M3 1v10l2.7-2.7h1.8L10 12l1.5-1.5L9 7h2.5L3 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> <span class="click-counter__count">\u2014</span>';
-    badge.dataset.productId = id;
-    info.appendChild(badge);
+
+    row.appendChild(btn);
+    row.appendChild(badge);
+    info.appendChild(row);
   });
 
   // Fetch and render vote + click counts

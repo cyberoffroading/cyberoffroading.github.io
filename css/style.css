@@ -303,6 +303,13 @@ img {
 }
 
 /* --- Vote button on product cards --- */
+.product-card__stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
 .vote-btn {
   display: inline-flex;
   align-items: center;
@@ -314,7 +321,6 @@ img {
   background: transparent;
   border: 1px solid var(--steel-edge);
   padding: 6px 12px;
-  margin-top: 10px;
   cursor: pointer;
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
   transition: color 0.15s ease-out, border-color 0.15s ease-out, background 0.15s ease-out;
@@ -348,8 +354,6 @@ img {
   font-family: var(--font-body);
   font-size: 0.7rem;
   color: var(--stainless-dim);
-  margin-top: 10px;
-  margin-left: 12px;
 }
 
 .click-counter__count {
