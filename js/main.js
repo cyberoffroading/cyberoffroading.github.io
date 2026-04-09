@@ -248,4 +248,52 @@
       if (e.key === 'ArrowRight') navigate(1);
     });
   }
+
+  // --- Product voting ---
+  var VOTE_API = 'https://cyberoffroading-votes.kevinchau.workers.dev';
+  var votedProducts = JSON.parse(localStorage.getItem('voted') || '{}');
+
+  // Inject vote buttons into product cards
+  var productCards = document.querySelectorAll('.product-card[data-product-id]');
+  productCards.forEach(function(card) {
+    var id = card.dataset.productId;
+    var info = card.querySelector('.product-card__info');
+    var btn = document.createElement('button');
+    btn.className = 'vote-btn' + (votedProducts[id] ? ' voted' : '');
+    btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 2l2.1 4.2 4.7.7-3.4 3.3.8 4.6L8 12.5l-4.2 2.3.8-4.6L1.2 6.9l4.7-.7L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"' + (votedProducts[id] ? ' fill="currentColor"' : '') + '/></svg><span class="vote-btn__count">\u2014</span>';
+    btn.dataset.productId = id;
+    info.appendChild(btn);
+  });
+
+  // Fetch and render vote counts
+  fetch(VOTE_API + '/votes').then(function(r) { return r.json(); }).then(function(counts) {
+    productCards.forEach(function(card) {
+      var id = card.dataset.productId;
+      var countEl = card.querySelector('.vote-btn__count');
+      if (countEl) countEl.textContent = counts[id] || 0;
+    });
+  }).catch(function() {});
+
+  // Handle vote clicks
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.vote-btn');
+    if (!btn || btn.classList.contains('voted')) return;
+
+    var id = btn.dataset.productId;
+    btn.classList.add('voted');
+    var svg = btn.querySelector('svg path');
+    if (svg) svg.setAttribute('fill', 'currentColor');
+
+    // Optimistic update
+    var countEl = btn.querySelector('.vote-btn__count');
+    var current = parseInt(countEl.textContent) || 0;
+    countEl.textContent = current + 1;
+
+    // Persist locally
+    votedProducts[id] = true;
+    localStorage.setItem('voted', JSON.stringify(votedProducts));
+
+    // Send to worker
+    fetch(VOTE_API + '/vote/' + id, { method: 'POST' }).catch(function() {});
+  });
 })();
