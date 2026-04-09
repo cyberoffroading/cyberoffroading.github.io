@@ -27,7 +27,20 @@ export default {
     // GET /votes — return all vote counts
     if (request.method === 'GET' && path === '/votes') {
       const counts = await env.VOTES.get('counts', 'json') || {};
-      return Response.json(counts, { headers: corsHeaders(request) });
+      const clicks = await env.VOTES.get('clicks', 'json') || {};
+      return Response.json({ votes: counts, clicks }, { headers: corsHeaders(request) });
+    }
+
+    // POST /click/:id — track affiliate link click
+    if (request.method === 'POST' && path.startsWith('/click/')) {
+      const productId = path.slice(7);
+      if (!productId) {
+        return Response.json({ error: 'Missing product ID' }, { status: 400, headers: corsHeaders(request) });
+      }
+      const clicks = await env.VOTES.get('clicks', 'json') || {};
+      clicks[productId] = (clicks[productId] || 0) + 1;
+      await env.VOTES.put('clicks', JSON.stringify(clicks));
+      return Response.json({ count: clicks[productId] }, { headers: corsHeaders(request) });
     }
 
     // POST /vote/:id — increment vote for a product

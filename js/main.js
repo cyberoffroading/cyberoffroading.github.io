@@ -266,11 +266,12 @@
   });
 
   // Fetch and render vote counts
-  fetch(VOTE_API + '/votes').then(function(r) { return r.json(); }).then(function(counts) {
+  fetch(VOTE_API + '/votes').then(function(r) { return r.json(); }).then(function(data) {
+    var votes = data.votes || {};
     productCards.forEach(function(card) {
       var id = card.dataset.productId;
       var countEl = card.querySelector('.vote-btn__count');
-      if (countEl) countEl.textContent = counts[id] || 0;
+      if (countEl) countEl.textContent = votes[id] || 0;
     });
   }).catch(function() {});
 
@@ -295,5 +296,14 @@
 
     // Send to worker
     fetch(VOTE_API + '/vote/' + id, { method: 'POST' }).catch(function() {});
+  });
+
+  // Track affiliate link clicks
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a.cta-button');
+    if (!link) return;
+    var card = link.closest('.product-card[data-product-id]');
+    if (!card) return;
+    fetch(VOTE_API + '/click/' + card.dataset.productId, { method: 'POST' }).catch(function() {});
   });
 })();
