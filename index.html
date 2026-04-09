@@ -54,17 +54,7 @@
 
   <nav class="category-nav" aria-label="Product categories">
     <div class="category-nav__inner">
-      <div class="nav-dropdown">
-        <button class="nav-pill nav-dropdown__trigger" aria-expanded="false" aria-haspopup="true">
-          Articles
-          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" class="nav-dropdown__chevron"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
-        </button>
-        <div class="nav-dropdown__menu">
-          <a href="#guide-vault" data-modal="guideVault">Vault Seal Guide</a>
-          <a href="#guide-glass" data-modal="guideGlass">Glass Guide</a>
-          <a href="#guide-winch" data-modal="guideWinch">Winch Guide</a>
-        </div>
-      </div>
+      <a href="#articles" class="nav-pill">Articles</a>
       <a href="#offroad" class="nav-pill active">Offroad</a>
       <a href="#recovery" class="nav-pill">Recovery</a>
       <a href="#flat-tire" class="nav-pill">Flat Tire</a>
@@ -77,6 +67,52 @@
       <a href="#gallery" class="nav-pill">Gallery</a>
     </div>
   </nav>
+
+  <!-- ============================================================
+       #articles
+       ============================================================ -->
+  <section id="articles" class="section">
+    <div class="section__header">
+      <h2>Articles</h2>
+      <p class="section__intro">In-depth guides and walkthroughs for the Cybertruck.</p>
+    </div>
+    <div class="product-grid">
+
+      <article class="product-card article-card" data-open-modal="guideVault">
+        <div class="product-card__image">
+          <img src="images/guides/vault-seal/tailgate-seal.jpg" alt="Cybertruck vault sealing guide" loading="lazy">
+        </div>
+        <div class="product-card__info">
+          <h3>Sealing the Cybertruck Vault</h3>
+          <p class="product-card__review">3-level approach to dust-proofing the bed: tailgate seal, smuggler's bay door seal, and bed mat technique. Keep dust out on every trail run.</p>
+          <span class="cta-button">Read Article</span>
+        </div>
+      </article>
+
+      <article class="product-card article-card" data-open-modal="guideGlass">
+        <div class="product-card__image">
+          <img src="images/hero/IMG_2984.jpeg" alt="Cybertruck roof glass guide" loading="lazy">
+        </div>
+        <div class="product-card__info">
+          <h3>Roof Glass &amp; Starlink Mini</h3>
+          <p class="product-card__review">Not all Cybertruck roof glass is the same. Which glass type allows Starlink Mini to work from underneath? Compatibility chart and identification tips.</p>
+          <span class="cta-button">Read Article</span>
+        </div>
+      </article>
+
+      <article class="product-card article-card" data-open-modal="guideWinch">
+        <div class="product-card__image">
+          <img src="images/products/winch/build-setup/IMG_0552.jpeg" alt="Cybertruck winch wiring guide" loading="lazy">
+        </div>
+        <div class="product-card__info">
+          <h3>Winch Wiring Guide — 240v AC</h3>
+          <p class="product-card__review">Power a 12,000 lb winch from the Cybertruck's 240v 50A plug using four ATX power supplies wired in parallel. Full parts list and wiring breakdown.</p>
+          <span class="cta-button">Read Article</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
 
   <!-- ============================================================
        #offroad

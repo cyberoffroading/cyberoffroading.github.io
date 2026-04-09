@@ -107,36 +107,14 @@
     });
   });
 
-  // --- Articles dropdown ---
-  var dropdown = document.querySelector('.nav-dropdown');
-  var dropdownTrigger = dropdown ? dropdown.querySelector('.nav-dropdown__trigger') : null;
-
-  function closeDropdown() {
-    if (dropdown) {
-      dropdown.classList.remove('open');
-      dropdownTrigger.setAttribute('aria-expanded', 'false');
-    }
-  }
-
-  if (dropdownTrigger) {
-    dropdownTrigger.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      var isOpen = dropdown.classList.toggle('open');
-      dropdownTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
-  }
-
-  document.addEventListener('click', function(e) {
-    if (dropdown && !dropdown.contains(e.target)) closeDropdown();
-  });
-
   // --- Guide modal open/close with hash ---
   var guideModals = document.querySelectorAll('.guide-modal');
-  var guideHashMap = {};
-  document.querySelectorAll('[data-modal]').forEach(function(link) {
-    guideHashMap[link.getAttribute('href')] = link.dataset.modal;
-  });
+  // Hash → modal id map for deep linking
+  var guideHashMap = {
+    '#guide-vault': 'guideVault',
+    '#guide-glass': 'guideGlass',
+    '#guide-winch': 'guideWinch'
+  };
 
   function openGuideModal(modalId, updateHash) {
     var modal = document.getElementById(modalId);
@@ -156,17 +134,6 @@
     history.replaceState(null, '', window.location.pathname);
   }
 
-  // Dropdown menu item clicks
-  var dropdownLinks = dropdown ? dropdown.querySelectorAll('.nav-dropdown__menu a') : [];
-  dropdownLinks.forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      closeDropdown();
-      var modalId = link.dataset.modal;
-      if (modalId) openGuideModal(modalId, true);
-    });
-  });
-
   // Close button + backdrop + escape
   guideModals.forEach(function(modal) {
     modal.querySelector('.guide-modal__close').addEventListener('click', function() { closeGuideModal(modal); });
@@ -180,7 +147,6 @@
       guideModals.forEach(function(modal) {
         if (modal.classList.contains('active')) closeGuideModal(modal);
       });
-      closeDropdown();
     }
   });
 
