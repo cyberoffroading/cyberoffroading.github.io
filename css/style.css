@@ -341,6 +341,21 @@ img {
   font-variant-numeric: tabular-nums;
 }
 
+.click-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--stainless-dim);
+  margin-top: 10px;
+  margin-left: 12px;
+}
+
+.click-counter__count {
+  font-variant-numeric: tabular-nums;
+}
+
 /* --- Article cards (clickable, opens modal) --- */
 .article-card {
   cursor: pointer;

@@ -265,13 +265,27 @@
     info.appendChild(btn);
   });
 
-  // Fetch and render vote counts
+  // Inject click counter into product cards
+  productCards.forEach(function(card) {
+    var id = card.dataset.productId;
+    var info = card.querySelector('.product-card__info');
+    var badge = document.createElement('span');
+    badge.className = 'click-counter';
+    badge.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="12" height="12"><path d="M6 2C3.8 2 2 3.8 2 6c0 4 6 8 6 8s6-4 6-8c0-2.2-1.8-4-4-4-1.2 0-2.3.5-3 1.4L8 4.8 6.6 3.4C5.8 2.5 5 2 4 2" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg> <span class="click-counter__count">\u2014</span>';
+    badge.dataset.productId = id;
+    info.appendChild(badge);
+  });
+
+  // Fetch and render vote + click counts
   fetch(VOTE_API + '/votes').then(function(r) { return r.json(); }).then(function(data) {
     var votes = data.votes || {};
+    var clicks = data.clicks || {};
     productCards.forEach(function(card) {
       var id = card.dataset.productId;
-      var countEl = card.querySelector('.vote-btn__count');
-      if (countEl) countEl.textContent = votes[id] || 0;
+      var voteCountEl = card.querySelector('.vote-btn__count');
+      if (voteCountEl) voteCountEl.textContent = votes[id] || 0;
+      var clickCountEl = card.querySelector('.click-counter__count');
+      if (clickCountEl) clickCountEl.textContent = clicks[id] || 0;
     });
   }).catch(function() {});
 
@@ -305,12 +319,14 @@
     }
   });
 
-  // Track affiliate link clicks
+  // Track affiliate link clicks (public counter)
   document.addEventListener('click', function(e) {
     var link = e.target.closest('a.cta-button');
     if (!link) return;
     var card = link.closest('.product-card[data-product-id]');
     if (!card) return;
+    var countEl = card.querySelector('.click-counter__count');
+    if (countEl) countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
     fetch(VOTE_API + '/click/' + card.dataset.productId, { method: 'POST' }).catch(function() {});
   });
 })();
