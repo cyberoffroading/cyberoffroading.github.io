@@ -54,6 +54,17 @@
 
   <nav class="category-nav" aria-label="Product categories">
     <div class="category-nav__inner">
+      <div class="nav-dropdown">
+        <button class="nav-pill nav-dropdown__trigger" aria-expanded="false" aria-haspopup="true">
+          Articles
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" class="nav-dropdown__chevron"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        <div class="nav-dropdown__menu">
+          <a href="#guide-vault" data-modal="guideVault">Vault Seal Guide</a>
+          <a href="#guide-glass" data-modal="guideGlass">Glass Guide</a>
+          <a href="#guide-winch" data-modal="guideWinch">Winch Guide</a>
+        </div>
+      </div>
       <a href="#offroad" class="nav-pill active">Offroad</a>
       <a href="#recovery" class="nav-pill">Recovery</a>
       <a href="#flat-tire" class="nav-pill">Flat Tire</a>
@@ -64,9 +75,6 @@
       <a href="#essentials" class="nav-pill">Essentials</a>
       <a href="#events" class="nav-pill">Events</a>
       <a href="#gallery" class="nav-pill">Gallery</a>
-      <a href="#guide-glass" class="nav-pill" data-modal="guideGlass">Glass Guide</a>
-      <a href="#guide-winch" class="nav-pill" data-modal="guideWinch">Winch Guide</a>
-      <a href="#guide-vault" class="nav-pill" data-modal="guideVault">Vault Seal Guide</a>
     </div>
   </nav>
 

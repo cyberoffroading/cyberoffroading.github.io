@@ -89,24 +89,11 @@
   }, { passive: true });
   updateActiveNav();
 
-  // --- Smooth scroll on nav click + guide modals ---
+  // --- Smooth scroll on nav click ---
   navPills.forEach(function(pill) {
     pill.addEventListener('click', function(e) {
       var href = pill.getAttribute('href');
-      var modalId = pill.dataset.modal;
-
-      if (modalId) {
-        e.preventDefault();
-        var modal = document.getElementById(modalId);
-        if (modal) {
-          modal.classList.add('active');
-          modal.scrollTop = 0;
-          document.body.style.overflow = 'hidden';
-        }
-        return;
-      }
-
-      if (href.indexOf('#') !== 0) return;
+      if (!href || href.indexOf('#') !== 0) return;
       e.preventDefault();
       navClickTarget = href;
       navPills.forEach(function(p) { p.classList.toggle('active', p === pill); });
@@ -120,14 +107,67 @@
     });
   });
 
-  // --- Guide modal close handlers ---
+  // --- Articles dropdown ---
+  var dropdown = document.querySelector('.nav-dropdown');
+  var dropdownTrigger = dropdown ? dropdown.querySelector('.nav-dropdown__trigger') : null;
+
+  function closeDropdown() {
+    if (dropdown) {
+      dropdown.classList.remove('open');
+      dropdownTrigger.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  if (dropdownTrigger) {
+    dropdownTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var isOpen = dropdown.classList.toggle('open');
+      dropdownTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    if (dropdown && !dropdown.contains(e.target)) closeDropdown();
+  });
+
+  // --- Guide modal open/close with hash ---
   var guideModals = document.querySelectorAll('.guide-modal');
+  var guideHashMap = {};
+  document.querySelectorAll('[data-modal]').forEach(function(link) {
+    guideHashMap[link.getAttribute('href')] = link.dataset.modal;
+  });
+
+  function openGuideModal(modalId, updateHash) {
+    var modal = document.getElementById(modalId);
+    if (!modal) return;
+    modal.classList.add('active');
+    modal.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    if (updateHash) {
+      var hash = Object.keys(guideHashMap).find(function(k) { return guideHashMap[k] === modalId; });
+      if (hash) history.replaceState(null, '', hash);
+    }
+  }
 
   function closeGuideModal(modal) {
     modal.classList.remove('active');
     document.body.style.overflow = '';
+    history.replaceState(null, '', window.location.pathname);
   }
 
+  // Dropdown menu item clicks
+  var dropdownLinks = dropdown ? dropdown.querySelectorAll('.nav-dropdown__menu a') : [];
+  dropdownLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      closeDropdown();
+      var modalId = link.dataset.modal;
+      if (modalId) openGuideModal(modalId, true);
+    });
+  });
+
+  // Close button + backdrop + escape
   guideModals.forEach(function(modal) {
     modal.querySelector('.guide-modal__close').addEventListener('click', function() { closeGuideModal(modal); });
     modal.addEventListener('click', function(e) {
@@ -140,6 +180,7 @@
       guideModals.forEach(function(modal) {
         if (modal.classList.contains('active')) closeGuideModal(modal);
       });
+      closeDropdown();
     }
   });
 
@@ -148,13 +189,16 @@
     var t = e.target.closest('[data-open-modal]');
     if (!t) return;
     e.preventDefault();
-    var modal = document.getElementById(t.dataset.openModal);
-    if (modal) {
-      modal.classList.add('active');
-      modal.scrollTop = 0;
-      document.body.style.overflow = 'hidden';
-    }
+    openGuideModal(t.dataset.openModal, true);
   });
+
+  // Deep link — open modal from URL hash on page load
+  (function() {
+    var hash = window.location.hash;
+    if (hash && guideHashMap[hash]) {
+      openGuideModal(guideHashMap[hash], false);
+    }
+  })();
 
   // --- Back to top button ---
   var backBtn = document.querySelector('.back-to-top');

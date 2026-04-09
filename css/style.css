@@ -302,6 +302,67 @@ img {
   font-weight: 600;
 }
 
+/* --- Nav dropdown (Articles menu) --- */
+.nav-dropdown {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.nav-dropdown__trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-dropdown__chevron {
+  transition: transform 0.15s ease-out;
+}
+
+.nav-dropdown.open .nav-dropdown__chevron {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 180px;
+  background: var(--steel-mid);
+  border: 1px solid var(--steel-edge);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 8px 100%);
+  padding: 6px 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+  z-index: 200;
+}
+
+.nav-dropdown.open .nav-dropdown__menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.nav-dropdown__menu a {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stainless-dim);
+  padding: 10px 22px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease-out, background 0.15s ease-out;
+}
+
+.nav-dropdown__menu a:hover {
+  color: var(--stainless);
+  background: var(--steel-light);
+}
+
 /* Events pill — always highlighted so it stands out */
 /* ============================================================
    SECTIONS
