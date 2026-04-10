@@ -125,14 +125,14 @@
     document.body.style.overflow = 'hidden';
     if (updateHash) {
       var hash = Object.keys(guideHashMap).find(function(k) { return guideHashMap[k] === modalId; });
-      if (hash) history.replaceState(null, '', hash);
+      if (hash) history.pushState(null, '', hash);
     }
   }
 
   function closeGuideModal(modal) {
     modal.classList.remove('active');
     document.body.style.overflow = '';
-    history.replaceState(null, '', window.location.pathname);
+    history.pushState(null, '', window.location.pathname);
   }
 
   // Close button + backdrop + escape
@@ -166,6 +166,20 @@
       openGuideModal(guideHashMap[hash], false);
     }
   })();
+
+  // Handle browser back/forward with modals
+  window.addEventListener('popstate', function() {
+    var hash = window.location.hash;
+    // Close all modals first
+    guideModals.forEach(function(modal) {
+      modal.classList.remove('active');
+    });
+    document.body.style.overflow = '';
+    // If hash points to a modal, open it
+    if (hash && guideHashMap[hash]) {
+      openGuideModal(guideHashMap[hash], false);
+    }
+  });
 
   // --- Back to top button ---
   var backBtn = document.querySelector('.back-to-top');
