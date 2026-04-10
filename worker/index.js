@@ -32,7 +32,7 @@ export default {
     }
 
     // POST /click/:id — track affiliate link click
-    if (request.method === 'POST' && path.startsWith('/click/')) {
+    if ((request.method === 'POST' || request.method === 'GET') && path.startsWith('/click/')) {
       const productId = path.slice(7);
       if (!productId) {
         return Response.json({ error: 'Missing product ID' }, { status: 400, headers: corsHeaders(request) });

@@ -325,6 +325,6 @@
     if (!card) return;
     var countEl = card.querySelector('.click-counter__count');
     if (countEl) countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
-    fetch(VOTE_API + '/click/' + card.dataset.productId, { method: 'POST' }).catch(function() {});
+    navigator.sendBeacon(VOTE_API + '/click/' + card.dataset.productId);
   });
 })();
