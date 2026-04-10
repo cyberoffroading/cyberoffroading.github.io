@@ -112,6 +112,7 @@
   // Hash → modal id map for deep linking
   var guideHashMap = {
     '#guide-vault': 'guideVault',
+    '#guide-air-filter': 'guideAirFilter',
     '#guide-glass': 'guideGlass',
     '#guide-winch': 'guideWinch'
   };
