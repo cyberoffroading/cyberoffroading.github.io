@@ -18,6 +18,22 @@
   if (prefersReducedMotion) {
     cards.forEach(function(card) { card.classList.add('revealed'); });
   } else {
+    var viewportH = window.innerHeight;
+    var aboveFold = [];
+    var belowFold = [];
+    cards.forEach(function(card) {
+      var rect = card.getBoundingClientRect();
+      if (rect.top < viewportH && rect.bottom > 0) {
+        aboveFold.push(card);
+      } else {
+        belowFold.push(card);
+      }
+    });
+
+    // Reveal above-fold cards immediately so they never sit invisible
+    // while waiting on the async IntersectionObserver callback.
+    aboveFold.forEach(function(card) { card.classList.add('revealed'); });
+
     var revealObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
@@ -33,7 +49,7 @@
         }
       });
     }, { threshold: 0.05, rootMargin: '0px 0px -60px 0px' });
-    cards.forEach(function(card) { revealObserver.observe(card); });
+    belowFold.forEach(function(card) { revealObserver.observe(card); });
   }
 
   // --- Active nav pill tracking ---
