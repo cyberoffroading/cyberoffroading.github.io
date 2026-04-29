@@ -410,6 +410,21 @@ img {
   cursor: pointer;
 }
 
+/* Skip the fade-in entry animation for article cards — they sit near the
+   top of the page and flashing invisible on reload is jarring. */
+.article-card.product-card {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Keep hover transitions but kill opacity/transform transitions so nothing
+   can ever fade article cards in or out. */
+.article-card.product-card,
+.article-card.product-card.revealed {
+  transition: box-shadow 0.15s ease-out, border-color 0.15s ease-out;
+}
+
 .article-card__link {
   display: block;
   color: inherit;

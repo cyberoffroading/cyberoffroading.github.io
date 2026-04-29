@@ -13,7 +13,9 @@
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // --- Scroll-triggered card reveals ---
-  var cards = document.querySelectorAll('.product-card');
+  // Article cards opt out — they sit near the top of the page where
+  // any fade-in flicker is most visible. CSS keeps them always visible.
+  var cards = document.querySelectorAll('.product-card:not(.article-card)');
 
   if (prefersReducedMotion) {
     cards.forEach(function(card) { card.classList.add('revealed'); });
