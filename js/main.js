@@ -123,79 +123,129 @@
     });
   });
 
-  // --- Guide modal open/close with hash ---
-  var guideModals = document.querySelectorAll('.guide-modal');
-  // Hash → modal id map for deep linking
-  var guideHashMap = {
-    '#guide-vault': 'guideVault',
-    '#guide-air-filter': 'guideAirFilter',
-    '#guide-glass': 'guideGlass',
-    '#guide-winch': 'guideWinch'
+  // --- Guide modal: fetch standalone page → inject content ---
+  // Standalone pages in /guides/*.html are the source of truth (real URLs
+  // for SEO and shareability). Clicking an article card fetches the page,
+  // extracts its .guide-content, and injects it into the modal shell.
+  // URL bar updates to the real path via pushState.
+  var guideModal = document.getElementById('guideModal');
+  var guideModalContent = document.getElementById('guideModalContent');
+  var guidePageDefaultTitle = document.title;
+  var guideCache = Object.create(null);
+
+  // Backwards compat: old hash-based deep links → new URL paths
+  var legacyHashMap = {
+    '#guide-vault': '/guides/vault-seal.html',
+    '#guide-air-filter': '/guides/cabin-air-filter.html',
+    '#guide-glass': '/guides/roof-glass.html',
+    '#guide-winch': '/guides/winch-wiring.html',
+    '#guide-trail-lift': '/guides/trail-lift.html'
   };
 
-  function openGuideModal(modalId, updateHash) {
-    var modal = document.getElementById(modalId);
-    if (!modal) return;
-    modal.classList.add('active');
-    modal.scrollTop = 0;
-    document.body.style.overflow = 'hidden';
-    if (updateHash) {
-      var hash = Object.keys(guideHashMap).find(function(k) { return guideHashMap[k] === modalId; });
-      if (hash) history.pushState(null, '', hash);
+  function isGuideUrl(path) {
+    return /\/guides\/[^/]+\.html$/.test(path);
+  }
+
+  function resolveGuidePath(href) {
+    return new URL(href, window.location.href).pathname;
+  }
+
+  function fetchGuide(path) {
+    var cached = guideCache[path];
+    if (cached) return cached.html != null ? Promise.resolve(cached) : cached.promise;
+    var promise = fetch(path).then(function(r) { return r.text(); }).then(function(html) {
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var contentEl = doc.querySelector('.guide-content');
+      var titleEl = doc.querySelector('title');
+      var data = {
+        html: contentEl ? contentEl.innerHTML : '',
+        title: titleEl ? titleEl.textContent : guidePageDefaultTitle
+      };
+      guideCache[path] = data;
+      return data;
+    });
+    guideCache[path] = { promise: promise, html: null };
+    return promise;
+  }
+
+  function openGuide(path, push) {
+    if (!guideModal) return;
+    fetchGuide(path).then(function(data) {
+      guideModalContent.innerHTML = data.html;
+      guideModal.classList.add('active');
+      guideModal.setAttribute('aria-hidden', 'false');
+      guideModal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+      document.title = data.title;
+      if (push) history.pushState({ guide: path }, '', path);
+      if (window.twttr && window.twttr.widgets) {
+        window.twttr.widgets.load(guideModalContent);
+      }
+      if (window.lucide) lucide.createIcons();
+    });
+  }
+
+  function closeGuide() {
+    if (!guideModal) return;
+    guideModal.classList.remove('active');
+    guideModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    document.title = guidePageDefaultTitle;
+    if (isGuideUrl(window.location.pathname)) {
+      history.pushState({}, '', '/');
     }
   }
 
-  function closeGuideModal(modal) {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-    history.pushState(null, '', window.location.pathname);
-  }
-
-  // Close button + backdrop + escape
-  guideModals.forEach(function(modal) {
-    modal.querySelector('.guide-modal__close').addEventListener('click', function() { closeGuideModal(modal); });
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) closeGuideModal(modal);
+  if (guideModal) {
+    guideModal.querySelector('.guide-modal__close').addEventListener('click', closeGuide);
+    guideModal.addEventListener('click', function(e) {
+      if (e.target === guideModal) closeGuide();
     });
-  });
+  }
 
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      guideModals.forEach(function(modal) {
-        if (modal.classList.contains('active')) closeGuideModal(modal);
-      });
+    if (e.key === 'Escape' && guideModal && guideModal.classList.contains('active')) closeGuide();
+  });
+
+  // Card / inline-link clicks: intercept to open modal, but allow native
+  // behavior on modifier-clicks so right-click & cmd-click still work.
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[data-guide-modal]');
+    if (!link) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    openGuide(resolveGuidePath(link.getAttribute('href')), true);
+  });
+
+  // Hover prefetch — pulls guide HTML into cache before the click lands.
+  document.addEventListener('mouseover', function(e) {
+    var link = e.target.closest('a[data-guide-modal]');
+    if (!link) return;
+    var path = resolveGuidePath(link.getAttribute('href'));
+    if (!guideCache[path]) fetchGuide(path);
+  });
+
+  window.addEventListener('popstate', function() {
+    var path = window.location.pathname;
+    if (isGuideUrl(path)) {
+      openGuide(path, false);
+    } else if (guideModal && guideModal.classList.contains('active')) {
+      guideModal.classList.remove('active');
+      guideModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      document.title = guidePageDefaultTitle;
     }
   });
 
-  // Handle inline [data-open-modal] links (e.g. in callouts)
-  document.addEventListener('click', function(e) {
-    var t = e.target.closest('[data-open-modal]');
-    if (!t) return;
-    e.preventDefault();
-    openGuideModal(t.dataset.openModal, true);
-  });
-
-  // Deep link — open modal from URL hash on page load
+  // Page load: redirect legacy hash deep-links to their new URLs.
   (function() {
     var hash = window.location.hash;
-    if (hash && guideHashMap[hash]) {
-      openGuideModal(guideHashMap[hash], false);
+    if (hash && legacyHashMap[hash]) {
+      var path = legacyHashMap[hash];
+      history.replaceState({ guide: path }, '', path);
+      openGuide(path, false);
     }
   })();
-
-  // Handle browser back/forward with modals
-  window.addEventListener('popstate', function() {
-    var hash = window.location.hash;
-    // Close all modals first
-    guideModals.forEach(function(modal) {
-      modal.classList.remove('active');
-    });
-    document.body.style.overflow = '';
-    // If hash points to a modal, open it
-    if (hash && guideHashMap[hash]) {
-      openGuideModal(guideHashMap[hash], false);
-    }
-  });
 
   // --- Back to top button ---
   var backBtn = document.querySelector('.back-to-top');
