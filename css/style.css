@@ -977,6 +977,16 @@ img {
   padding: 80px 24px 60px;
 }
 
+.tweet-embed {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.tweet-embed .twitter-tweet {
+  max-width: 100% !important;
+}
+
 .guide-modal__close {
   position: fixed;
   top: 20px;
