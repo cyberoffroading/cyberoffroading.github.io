@@ -30,11 +30,11 @@
     <h1>Winch Wiring Guide — <span class="text-cyber">240v AC</span></h1>
     <p class="guide-meta">Last verified April 2026</p>
 
-    <p>This guide covers how to power a 12,000 lb winch using the Cybertruck's 240v 50A plug and four ATX-style power supplies wired in parallel. The 240v is split to all four PSUs. The DC side wiring is up to you.</p>
+    <p>This guide covers how to power a 12,000 lb winch using the Cybertruck's 240v 50A plug and four HP Common Slot power supplies wired in parallel. The 240v is split to all four PSUs. The DC side wiring is up to you.</p>
 
     <h2>Concept</h2>
 
-    <p>The Cybertruck's 240v 50A plug provides the power. That 240v is split to four ATX-style power supplies which convert it to 12v DC. The four PSUs wired in parallel provide enough current to run the winch motor. The trick is getting the PSUs to turn on without a motherboard — that's where the pin jumpers come in.</p>
+    <p>The Cybertruck's 240v 50A plug provides the power. That 240v is split to four HP Common Slot power supplies which convert it to 12v DC. The four PSUs wired in parallel provide enough current to run the winch motor. The trick is getting the PSUs to turn on without a motherboard — that's where the pin jumpers come in.</p>
 
     <h2>Parts List</h2>
 
@@ -103,7 +103,7 @@
 
     <h2>PSU Pin Configuration</h2>
 
-    <p>ATX power supplies need two modifications to run without a motherboard:</p>
+    <p>HP Common Slot power supplies need two modifications to run without a motherboard:</p>
 
     <h3>1. Signal Wire — Pin 34 (PS_ON)</h3>
     <p><strong>Wire all pin 34s together</strong> across all four power supplies using the signal wire. Pin 34 is the PS_ON signal — grounding it tells the PSU to turn on. By wiring them together, all four PSUs turn on and off simultaneously.</p>
