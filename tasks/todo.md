@@ -128,19 +128,20 @@ Still many more to go (remaining gallery images, vault-seal guides, etc.), but t
 
 ## Phase 2 — Documentation & Maintainability
 
-- [ ] Create `ARCHITECTURE.md` (or major rewrite of `PLAN.md`) capturing 2026 reality:
-  - Voting/click system (`data-product-id`, optimistic UI, localStorage, Worker contract)
-  - Guide modal system (fetch + `.guide-content` extraction, pushState, hover prefetch, legacy hash map)
-  - Gallery + lightbox behavior
-  - Worker privacy model + KV details
-  - CSS/JS cache-busting convention (`?v=N`)
-  - "How to add a product" updated checklist (image optimization step, `data-product-id`, testing votes)
-- [ ] Update root `CLAUDE.md`:
-  - Add "Current Feature Set (2026)" section
-  - Update "Adding Products" with new requirements
-  - Reference `ARCHITECTURE.md` and `worker/README.md`
-- [ ] Seed `tasks/lessons.md` with patterns from this analysis (image bloat, missing focus styles, doc velocity lag).
-- [ ] (Optional) Add minimal `CONTRIBUTING.md` or section pointing new contributors to image workflow + worker docs.
+**Status**: In progress (started right after Phase 1 image work).
+
+### Completed
+- [x] Created `ARCHITECTURE.md` — the new primary reference documenting the 2026 reality:
+  - Guide modal system (fetch + `.guide-content`, pushState deep linking, prefetch, legacy hash handling)
+  - Voting + click tracking (full Worker + KV architecture, privacy model, endpoints)
+  - Image optimization workflow (`scripts/optimize-images.sh` + srcset pattern)
+  - Current nav structure, key systems, development workflow, and known gaps
+- [x] Updated root `CLAUDE.md` with accurate current architecture, adding products process, images guidance, and references to new docs.
+
+### Remaining
+- [ ] Consider creating a lightweight `CONTRIBUTING.md` (or expand the "Adding Products" section).
+- [ ] Decide fate of old `PLAN.md` (archive as historical vision document?).
+- [ ] Continue seeding `tasks/lessons.md` as new patterns emerge.
 
 ---
 
