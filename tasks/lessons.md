@@ -39,6 +39,20 @@ We correctly avoided Vite/Webpack/etc. for the core site. However, that does not
 
 ---
 
+## 2026-05-28 — Post-review merge of Phase 0 improvements
+
+**Explicit local review + documented merge produces much higher quality than direct-to-main work.**  
+We did the full analysis in plan mode, implemented on a dedicated branch, reviewed via local server + keyboard testing, then merged with a descriptive --no-ff commit and updated the persistent task tracker before pushing. This caught the "master vs main" naming slip and ensured docs stayed in sync.
+
+**Rule**: For any non-trivial improvement set, always:
+1. Work on a feature branch
+2. Review locally (run server, keyboard test, `git diff`)
+3. Update `tasks/todo.md` with a merge review section before pushing
+4. Use `--no-ff` merge commits with context in the message
+5. Only push after the above
+
+---
+
 ## Future Entries
 
 (Added after real corrections or user feedback during implementation)
