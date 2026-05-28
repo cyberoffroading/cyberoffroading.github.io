@@ -12,6 +12,44 @@
   // --- Reduced motion check ---
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Simple focus trap helper (used by modals + lightbox)
+  function trapFocus(container, onEscape) {
+    var focusable = container.querySelectorAll('a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return null;
+
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    var previousFocus = document.activeElement;
+
+    function handleKey(e) {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            last.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === last) {
+            first.focus();
+            e.preventDefault();
+          }
+        }
+      }
+      if (e.key === 'Escape' && onEscape) {
+        onEscape();
+      }
+    }
+
+    container.addEventListener('keydown', handleKey);
+    // Focus first focusable element
+    setTimeout(function() { first.focus(); }, 10);
+
+    return function release() {
+      container.removeEventListener('keydown', handleKey);
+      if (previousFocus && previousFocus.focus) previousFocus.focus();
+    };
+  }
+
   // --- Scroll-triggered card reveals ---
   // Article cards opt out — they sit near the top of the page where
   // any fade-in flicker is most visible. CSS keeps them always visible.
@@ -134,6 +172,7 @@
   var guideModalContent = document.getElementById('guideModalContent');
   var guidePageDefaultTitle = document.title;
   var guideCache = Object.create(null);
+  var releaseGuideFocus = null;
 
   // Backwards compat: old hash-based deep links → new URL paths
   var legacyHashMap = {
@@ -183,6 +222,9 @@
       if (window.twttr && window.twttr.widgets) {
         window.twttr.widgets.load(guideModalContent);
       }
+      // Trap focus inside modal
+      if (releaseGuideFocus) releaseGuideFocus();
+      releaseGuideFocus = trapFocus(guideModal, closeGuide);
     });
   }
 
@@ -194,6 +236,10 @@
     document.title = guidePageDefaultTitle;
     if (isGuideUrl(window.location.pathname)) {
       history.pushState({}, '', '/');
+    }
+    if (releaseGuideFocus) {
+      releaseGuideFocus();
+      releaseGuideFocus = null;
     }
   }
 
@@ -279,6 +325,7 @@
 
   // --- Gallery lightbox ---
   var lightbox = document.getElementById('galleryLightbox');
+  var releaseLightboxFocus = null;
   if (lightbox && galleryItems.length) {
     var lbImg = lightbox.querySelector('img');
     var lbCounter = lightbox.querySelector('.gallery-lightbox__counter');
@@ -298,11 +345,17 @@
       lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
+      if (releaseLightboxFocus) releaseLightboxFocus();
+      releaseLightboxFocus = trapFocus(lightbox, closeLightbox);
     }
 
     function closeLightbox() {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
+      if (releaseLightboxFocus) {
+        releaseLightboxFocus();
+        releaseLightboxFocus = null;
+      }
     }
 
     function navigate(dir) {
@@ -352,12 +405,12 @@
 
     var btn = document.createElement('button');
     btn.className = 'vote-btn' + (votedProducts[id] ? ' voted' : '');
-    btn.innerHTML = ICONS.star + '<span class="vote-btn__count">\u2014</span>';
+    btn.innerHTML = ICONS.star + '<span class="vote-btn__count" aria-live="polite" aria-atomic="true">\u2014</span>';
     btn.dataset.productId = id;
 
     var badge = document.createElement('span');
     badge.className = 'click-counter';
-    badge.innerHTML = ICONS.click + ' <span class="click-counter__count">\u2014</span>';
+    badge.innerHTML = ICONS.click + ' <span class="click-counter__count" aria-live="polite" aria-atomic="true">\u2014</span>';
 
     row.appendChild(btn);
     row.appendChild(badge);
@@ -412,4 +465,33 @@
     if (countEl) countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
     navigator.sendBeacon(VOTE_API + '/click/' + card.dataset.productId);
   });
+
+  // --- Basic JSON-LD for SEO (Phase 4) ---
+  (function addStructuredData() {
+    var products = [];
+    document.querySelectorAll('.product-card[data-product-id]').forEach(function(card) {
+      var id = card.dataset.productId;
+      var nameEl = card.querySelector('h3');
+      var reviewEl = card.querySelector('.product-card__review');
+      if (!nameEl) return;
+
+      products.push({
+        "@type": "Product",
+        "name": nameEl.textContent.trim(),
+        "description": reviewEl ? reviewEl.textContent.trim() : "",
+        "url": window.location.href.split('#')[0] + '#' + (card.closest('section') ? card.closest('section').id : ''),
+        "brand": { "@type": "Brand", "name": "Various" }
+      });
+    });
+
+    if (products.length > 0) {
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": products
+      });
+      document.head.appendChild(script);
+    }
+  })();
 })();

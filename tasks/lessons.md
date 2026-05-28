@@ -32,6 +32,20 @@ The site evolved from a pure static brochure (original PLAN) into a hybrid inter
 
 ---
 
+**2026-05-28 — "Do ALL of it" push**
+
+We completed the full remaining improvement plan (Phases 2–5) in one focused session after the user said "do ALL of it":
+- Finished documentation debt (ARCHITECTURE.md + updated CLAUDE.md + CONTRIBUTING.md + archived old plan)
+- Added real a11y improvements (aria-live on counters + focus trapping on both modals/lightbox + better 404)
+- Added baseline JSON-LD Product schema
+- Made pragmatic long-term choices without forcing build tooling
+
+This was only possible because earlier phases (focus styles, image optimizer, worker docs) had already built strong momentum and tooling.
+
+**Rule**: When the user (or future self) says "finish everything", break it into clear internal todos, execute in logical order (docs → a11y code → SEO → polish), and over-document the journey in tasks/ and lessons/. The site is now dramatically better across performance, accessibility, and maintainability.
+
+---
+
 **"No build step" is a constraint to design around, not a blanket excuse to skip automation.**  
 We correctly avoided Vite/Webpack/etc. for the core site. However, that does not mean we cannot have optional, non-blocking tooling (image optimization script that outputs to the same directories, GitHub Action that only runs on image PRs, Lighthouse CI on deploy previews). The original vision of "anyone can edit" is preserved as long as the default edit path remains `git add index.html css/style.css js/main.js && git push`.
 

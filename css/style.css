@@ -1496,3 +1496,41 @@ img {
 
 .text-cyber { color: var(--cyber-blue); }
 .text-dim { color: var(--stainless-dim); }
+
+/* ============================================================
+   ERROR PAGE (404)
+   ============================================================ */
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 40px;
+  background: var(--steel-dark);
+}
+
+.error-page__content {
+  max-width: 420px;
+}
+
+.error-page__label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyber-blue);
+  margin-bottom: 12px;
+}
+
+.error-page h1 {
+  font-size: clamp(3rem, 10vw, 6rem);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.error-page__text {
+  color: var(--stainless-dim);
+  margin: 20px 0 32px;
+  max-width: 400px;
+}
