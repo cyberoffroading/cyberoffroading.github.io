@@ -45,6 +45,26 @@ Open `index.html` in a browser (or `python -m http.server`) and:
 
 ---
 
+## Merge Review (2026-05-28)
+
+**Merged**: `improvements/2026-analysis` → `main` (commit `fa0e6c3`)
+
+**What was delivered**:
+- All Phase 0 items (focus styles, Lucide removal, worker docs, sitemap lastmod, gitignore hygiene, task tracking files)
+- Reviewed locally via `python -m http.server` + keyboard navigation
+- Clean `--no-ff` merge commit with full context in message
+
+**Post-merge actions**:
+- Updated this file with merge record
+- (Next) Push to origin/main
+
+**Verification**:
+- `git log --oneline -1` shows proper merge commit
+- No conflicts
+- Working tree clean after merge (noise files ignored)
+
+---
+
 ## Phase 1 — Performance (Highest business + UX impact)
 
 ---
