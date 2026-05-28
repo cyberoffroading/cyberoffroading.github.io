@@ -92,8 +92,17 @@ Open `index.html` in a browser (or `python -m http.server`) and:
   - JPEG fallbacks: ~2.2 MB total
 - Updated the `.build-gallery` + two product card references with proper `srcset`.
 
-**Cumulative savings this session**:
-- Hero + Winch build: roughly **~25–27 MB** removed from the critical path (with modern formats ready for browsers that support them).
+**Cumulative savings this session (continued)**:
+- Hero + Winch build (previous round): ~25–27 MB saved
+- **Gallery + Flat-tire + Rocky Talkies** (this round):
+  - 9 images processed (5 gallery, 2 flat-tire lifestyle, 1 comms)
+  - Combined original: ~38 MB+
+  - Optimized WebPs + JPEGs: roughly 14-15 MB total for the set
+  - Typical savings: 55-85% per file
+
+**Total visible progress so far**: 35-40+ MB of heavy images now have modern optimized variants with srcset in production HTML.
+
+Still many more to go (remaining gallery images, vault-seal guides, etc.), but the critical path (hero, winch builds, gallery, flat-tire) is now substantially lighter.
 
 **Current total images/** size: still ~112 MB (we've only touched the hero so far). Real progress will compound quickly once we hit the winch + gallery clusters.
 
