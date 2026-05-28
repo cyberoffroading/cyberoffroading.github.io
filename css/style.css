@@ -1468,5 +1468,31 @@ img {
   .hero__scroll svg { animation: none; }
 }
 
+/* ============================================================
+   FOCUS STYLES (keyboard accessibility)
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--cyber-blue);
+  outline-offset: 2px;
+}
+
+/* Clipped elements need a box-shadow ring instead of outline (prevents clipping) */
+.cta-button:focus-visible,
+.vote-btn:focus-visible,
+.nav-pill:focus-visible,
+.guide-modal__close:focus-visible,
+.gallery-lightbox__close:focus-visible,
+.gallery-lightbox__nav:focus-visible,
+.article-card__link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--cyber-blue);
+}
+
+/* Gallery items get a clean ring on the figure */
+.gallery-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--cyber-blue);
+}
+
 .text-cyber { color: var(--cyber-blue); }
 .text-dim { color: var(--stainless-dim); }

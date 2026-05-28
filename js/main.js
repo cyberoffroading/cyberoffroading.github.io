@@ -183,7 +183,6 @@
       if (window.twttr && window.twttr.widgets) {
         window.twttr.widgets.load(guideModalContent);
       }
-      if (window.lucide) lucide.createIcons();
     });
   }
 
@@ -336,6 +335,12 @@
   var VOTE_API = 'https://cyberoffroading-votes.chaukevin.workers.dev';
   var votedProducts = JSON.parse(localStorage.getItem('voted') || '{}');
 
+  // Inline SVGs (replaces external lucide@latest dependency)
+  var ICONS = {
+    star: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>',
+    click: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg>'
+  };
+
   // Inject vote + click stats row into product cards
   var productCards = document.querySelectorAll('.product-card[data-product-id]');
   productCards.forEach(function(card) {
@@ -347,20 +352,17 @@
 
     var btn = document.createElement('button');
     btn.className = 'vote-btn' + (votedProducts[id] ? ' voted' : '');
-    btn.innerHTML = '<i data-lucide="star" width="14" height="14"></i><span class="vote-btn__count">\u2014</span>';
+    btn.innerHTML = ICONS.star + '<span class="vote-btn__count">\u2014</span>';
     btn.dataset.productId = id;
 
     var badge = document.createElement('span');
     badge.className = 'click-counter';
-    badge.innerHTML = '<i data-lucide="mouse-pointer-click" width="14" height="14"></i> <span class="click-counter__count">\u2014</span>';
+    badge.innerHTML = ICONS.click + ' <span class="click-counter__count">\u2014</span>';
 
     row.appendChild(btn);
     row.appendChild(badge);
     info.appendChild(row);
   });
-
-  // Render Lucide icons
-  if (window.lucide) lucide.createIcons();
 
   // Fetch and render vote + click counts
   fetch(VOTE_API + '/votes').then(function(r) { return r.json(); }).then(function(data) {

@@ -4,3 +4,11 @@
 *~
 .idea/
 .vscode/
+
+# Claude / AI tooling artifacts
+**/*CLAUDE.md
+.claude/
+
+# Wrangler local caches
+.wrangler/
+worker/.wrangler/
