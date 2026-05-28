@@ -5,8 +5,9 @@
 .idea/
 .vscode/
 
-# Claude / AI tooling artifacts
-**/*CLAUDE.md
+# Claude / AI tooling artifacts (root CLAUDE.md is intentionally tracked)
+**/CLAUDE.md
+!/CLAUDE.md
 .claude/
 
 # Wrangler local caches

@@ -410,7 +410,7 @@
 
     var badge = document.createElement('span');
     badge.className = 'click-counter';
-    badge.innerHTML = ICONS.click + ' <span class="click-counter__count" aria-live="polite" aria-atomic="true">\u2014</span>';
+    badge.innerHTML = ICONS.click + ' <span class="click-counter__count">\u2014</span>';
 
     row.appendChild(btn);
     row.appendChild(badge);
@@ -465,33 +465,4 @@
     if (countEl) countEl.textContent = (parseInt(countEl.textContent) || 0) + 1;
     navigator.sendBeacon(VOTE_API + '/click/' + card.dataset.productId);
   });
-
-  // --- Basic JSON-LD for SEO (Phase 4) ---
-  (function addStructuredData() {
-    var products = [];
-    document.querySelectorAll('.product-card[data-product-id]').forEach(function(card) {
-      var id = card.dataset.productId;
-      var nameEl = card.querySelector('h3');
-      var reviewEl = card.querySelector('.product-card__review');
-      if (!nameEl) return;
-
-      products.push({
-        "@type": "Product",
-        "name": nameEl.textContent.trim(),
-        "description": reviewEl ? reviewEl.textContent.trim() : "",
-        "url": window.location.href.split('#')[0] + '#' + (card.closest('section') ? card.closest('section').id : ''),
-        "brand": { "@type": "Brand", "name": "Various" }
-      });
-    });
-
-    if (products.length > 0) {
-      var script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.textContent = JSON.stringify({
-        "@context": "https://schema.org",
-        "@graph": products
-      });
-      document.head.appendChild(script);
-    }
-  })();
 })();
