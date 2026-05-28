@@ -39,6 +39,20 @@ We correctly avoided Vite/Webpack/etc. for the core site. However, that does not
 
 ---
 
+**2026-05-28 — First real image optimization pass (Phase 1)**
+
+**Even "good enough" WebP + reasonable JPEG fallbacks at 1600px deliver 60-90% size reductions** with almost no visible quality loss on this site (high-contrast, industrial aesthetic is very forgiving). Using the tools already on the machine (`magick` + `cwebp`) + a small helper script, we knocked ~25-27 MB off just the hero + winch build cluster in one focused session.
+
+**Rule**: When doing image work:
+- Always keep the original full-res file
+- Produce `-1600.webp` + `-1600.jpg` (or other widths) using the shared `scripts/optimize-images.sh`
+- Update HTML with `srcset` + `sizes` + explicit dimensions in the same change
+- Measure and record before/after in `tasks/todo.md` immediately
+
+This turns a terrifying 112 MB directory into something manageable one cluster at a time.
+
+---
+
 ## 2026-05-28 — Post-review merge of Phase 0 improvements
 
 **Explicit local review + documented merge produces much higher quality than direct-to-main work.**  

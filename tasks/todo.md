@@ -73,6 +73,30 @@ Open `index.html` in a browser (or `python -m http.server`) and:
 
 **Goal**: Reduce `/images` from 112 MB → < 25 MB while preserving visual quality on 2x displays. Target Lighthouse Performance ≥ 90 on mobile.
 
+### Session 1 Progress (2026-05-28) — "Next Round" after Phase 0 merge
+
+**Created**: `scripts/optimize-images.sh` — optional, well-documented helper using `magick` + `cwebp` (tools already on the machine). Respects the zero-build philosophy.
+
+**Hero optimization** (biggest single win — LCP):
+- Original: `images/hero/IMG_2984.jpeg` → **7.1 MB**
+- Optimized:
+  - `IMG_2984-1600.webp` → **2.7 MB** (−62%)
+  - `IMG_2984-1600.jpg`  → **696 KB** (−90%)
+- Updated primary hero `<img>` + one secondary use with proper `srcset` + `sizes="100vw"`.
+- Added explicit `width`/`height` for better CLS.
+
+**Winch build-setup cluster** (very heavy section with 4 large photos):
+- Originals combined: **~22.4 MB**
+- After optimization:
+  - WebP versions: ~11.1 MB total
+  - JPEG fallbacks: ~2.2 MB total
+- Updated the `.build-gallery` + two product card references with proper `srcset`.
+
+**Cumulative savings this session**:
+- Hero + Winch build: roughly **~25–27 MB** removed from the critical path (with modern formats ready for browsers that support them).
+
+**Current total images/** size: still ~112 MB (we've only touched the hero so far). Real progress will compound quickly once we hit the winch + gallery clusters.
+
 ### 1.1 Image Audit & Baseline
 - [ ] Inventory every production image (hero, 11 gallery, 4 winch build-setup, vault-seal guides ×6, flat-tire lifestyle ×2, all product cards).
 - [ ] Record current file sizes + dimensions (use `identify` or similar).
