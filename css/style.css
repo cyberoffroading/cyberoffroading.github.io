@@ -145,6 +145,34 @@ img {
   color: var(--cyber-blue);
 }
 
+/* FTC: affiliate disclosure surfaced near the top, not just the footer */
+.owner-bar__disclosure {
+  color: var(--stainless-dim);
+  opacity: 0.85;
+}
+
+/* Skip link — visually hidden until keyboard-focused */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 2000;
+  padding: 12px 20px;
+  background: var(--cyber-blue);
+  color: var(--steel-dark);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
 /* ============================================================
    HERO
    ============================================================ */
@@ -350,10 +378,16 @@ img {
   color: var(--stainless-dim);
   background: transparent;
   border: 1px solid var(--steel-edge);
-  padding: 6px 12px;
+  padding: 8px 14px;
+  min-height: 44px; /* iOS minimum touch target */
   cursor: pointer;
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
   transition: color 0.15s ease-out, border-color 0.15s ease-out, background 0.15s ease-out;
+}
+
+.vote-btn:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
 
 .vote-btn:hover {
@@ -391,7 +425,8 @@ img {
   color: var(--stainless-dim);
   background: transparent;
   border: 1px solid var(--steel-edge);
-  padding: 6px 12px;
+  padding: 8px 14px;
+  min-height: 44px; /* visual parity with .vote-btn */
   clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
 
@@ -620,12 +655,21 @@ img {
   background: transparent;
 }
 
-/* External link indicator */
+/* External link indicator. The alt-text `content` syntax gives screen
+   readers "(opens in new tab)" instead of "north east arrow"; browsers
+   without it fall back to the plain declaration. */
 .cta-button::after {
   content: ' \2197';
+  content: ' \2197' / ' (opens in new tab)';
   font-size: 0.65em;
   margin-left: 4px;
   opacity: 0.7;
+}
+
+/* Internal-navigation CTAs (article cards, in-page guide links, 404) must
+   not advertise an external link */
+.cta-button--internal::after {
+  content: none;
 }
 
 /* Secondary CTA variant (ghost style) */
@@ -1204,7 +1248,7 @@ img {
 
 .site-footer__copyright {
   font-size: 0.7rem;
-  color: var(--steel-edge);
+  color: var(--stainless-dim); /* --steel-edge was 1.7:1 contrast — illegible */
   margin-top: 16px;
 }
 
@@ -1241,7 +1285,7 @@ img {
   }
 
   .nav-pill {
-    padding: 12px 16px;
+    padding: 14px 16px; /* ≥44px touch target on mobile */
     font-size: 0.75rem;
   }
 
@@ -1466,6 +1510,22 @@ img {
   .hero__content { animation: none; }
   .category-nav { animation: none; }
   .hero__scroll svg { animation: none; }
+
+  /* Reveal animations: show content immediately, no slide/fade */
+  .product-card,
+  .gallery-item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* Hover zooms */
+  .product-card__image img,
+  .gallery-item img {
+    transition: none;
+    transform: none !important;
+  }
 }
 
 /* ============================================================

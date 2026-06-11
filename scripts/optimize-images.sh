@@ -3,51 +3,61 @@
 # CyberOffroading.com — Optional Image Optimization Helper
 #
 # Purpose:
-#   Reduce the 112MB images/ directory without forcing a build step.
+#   Reduce multi-MB phone exports to web-appropriate sizes without a build step.
 #   Run this manually when adding or replacing photos.
 #
 # Tools used (all available on this machine):
-#   - ImageMagick (magick) for resizing + high-quality JPEG/WebP
-#   - cwebp for excellent WebP encoding
+#   - ImageMagick (magick) for resizing + high-quality JPEG fallback
+#   - cwebp for WebP encoding
 #
-# Philosophy:
-#   - Keep the zero-build happy path intact (you can still just `git add image.jpg`)
-#   - Produce modern formats (WebP primary) + reasonable JPEG fallback
-#   - Target sensible responsive widths instead of shipping 5-7MB phone exports
+# IMPORTANT — lesson from the 2026-05-28 revert:
+#   Do NOT use `-near_lossless` on photos. It is a near-lossless preprocessing
+#   mode meant for screenshots/flat graphics; on noisy 24 MP camera photos it
+#   preserves sensor noise and produced WebPs 3-4x LARGER than the JPEG
+#   fallback. Plain lossy `-q 80` compresses the hero from 7.4 MB to ~0.6 MB
+#   at 1600w. See tasks/lessons.md.
 #
-# Usage examples:
-#   ./scripts/optimize-images.sh images/hero/IMG_2984.jpeg
-#   ./scripts/optimize-images.sh images/products/winch/build-setup/*.jpeg
+# Usage:
+#   ./scripts/optimize-images.sh [-w WIDTH] <image1.jpg> [image2.jpg ...]
 #
-# Output:
-#   For each input.jpg you get:
-#     input-1600.webp   (primary, high quality)
-#     input-1600.jpg    (fallback, good quality)
-#     (optionally smaller widths if you extend the script)
+#   -w WIDTH   Target width in px (default 1200). Recommended tiers:
+#                hero / full-bleed feature ... 2000
+#                gallery / build photos ...... 1200
+#                product card photos ......... 800
 #
-# After running, update the corresponding <img> tags to use srcset + sizes.
+# Output (for -w 1200 on input.jpeg):
+#   input-1200.webp   (primary, lossy q80)
+#   input-1200.jpg    (fallback, q82 progressive)
 #
-# Recommended widths for this site (tweak per use case):
-#   - Hero / large feature: 1600w or 2000w
-#   - Product cards & gallery: 800w or 1200w
-#   - Thumbnails: 400w-600w
+# After running, wire the variants into HTML with <picture>:
+#   <picture>
+#     <source type="image/webp" srcset="path/input-1200.webp">
+#     <img src="path/input-1200.jpg" width="1200" height="900" alt="..." loading="lazy" decoding="async">
+#   </picture>
+#
+# Keep the original full-res file around as the re-encode source of truth.
 #
 set -euo pipefail
 
+WIDTH=1200
+JPEG_QUALITY=82          # Very good visual quality, big size saving
+WEBP_QUALITY=80          # Plain lossy WebP — correct mode for photos
+
+while getopts "w:" opt; do
+  case "$opt" in
+    w) WIDTH="$OPTARG" ;;
+    *) echo "Usage: $0 [-w WIDTH] <image1.jpg> [image2.jpg ...]"; exit 1 ;;
+  esac
+done
+shift $((OPTIND - 1))
+
 if [ $# -eq 0 ]; then
-  echo "Usage: $0 <image1.jpg> [image2.jpg ...]"
-  echo "Example: $0 images/hero/IMG_2984.jpeg images/products/winch/build-setup/*.jpeg"
+  echo "Usage: $0 [-w WIDTH] <image1.jpg> [image2.jpg ...]"
+  echo "Example: $0 -w 2000 images/hero/IMG_2984.jpeg"
   exit 1
 fi
 
-# Quality settings tuned for this brutalist, high-contrast site
-JPEG_QUALITY=82          # Very good visual quality, big size saving
-WEBP_QUALITY=80          # WebP is more efficient → slightly lower number is fine
-
-# Max width for "large" images (hero, winch builds, full gallery)
-LARGE_WIDTH=1600
-
-echo "=== CyberOffroading Image Optimizer ==="
+echo "=== CyberOffroading Image Optimizer (width=${WIDTH}) ==="
 echo "Using: $(magick --version | head -1)"
 echo "cwebp: $(cwebp -version 2>/dev/null | head -1)"
 echo
@@ -61,40 +71,37 @@ for input in "$@"; do
   dir=$(dirname "$input")
   base=$(basename "$input")
   name="${base%.*}"
-  ext="${base##*.}"
 
   echo "→ Processing: $input ($(du -h "$input" | cut -f1))"
 
-  # Large version (hero / feature images)
-  large_jpeg="$dir/${name}-${LARGE_WIDTH}.jpg"
-  large_webp="$dir/${name}-${LARGE_WIDTH}.webp"
+  out_jpeg="$dir/${name}-${WIDTH}.jpg"
+  out_webp="$dir/${name}-${WIDTH}.webp"
 
-  # Create optimized JPEG fallback
+  # JPEG fallback — progressive, chroma-subsampled, stripped metadata.
+  # `-auto-orient` bakes in EXIF rotation BEFORE -strip removes the tag,
+  # otherwise portrait phone photos come out sideways.
   magick "$input" \
-    -resize "${LARGE_WIDTH}x>" \
+    -auto-orient \
+    -resize "${WIDTH}x>" \
     -strip \
     -interlace Plane \
     -sampling-factor 4:2:0 \
     -quality "$JPEG_QUALITY" \
-    "$large_jpeg"
+    "$out_jpeg"
 
-  # Create excellent WebP (primary format)
-  # -near_lossless 60 gives great detail retention on text/edges while still compressing well
-  cwebp -q "$WEBP_QUALITY" -near_lossless 60 -mt -af "$input" -resize "$LARGE_WIDTH" 0 -o "$large_webp" 2>/dev/null || {
-    # Fallback if cwebp resize fails for some reason
-    magick "$input" -resize "${LARGE_WIDTH}x>" -quality "$WEBP_QUALITY" "$large_webp"
-  }
+  # WebP primary — plain lossy (NO -near_lossless, see header).
+  # Encode from a lossless auto-oriented intermediate: encoding from the
+  # compressed JPEG inflates the WebP (it spends bits preserving JPEG
+  # artifacts), and cwebp ignores EXIF orientation on raw originals.
+  tmp_png=$(mktemp /tmp/optimg-XXXXXX).png
+  magick "$input" -auto-orient -resize "${WIDTH}x>" -strip "$tmp_png"
+  cwebp -q "$WEBP_QUALITY" -mt -af "$tmp_png" -o "$out_webp" 2>/dev/null
+  rm -f "$tmp_png"
 
   echo "   Created:"
-  echo "     $(du -h "$large_webp" | cut -f1)  $large_webp"
-  echo "     $(du -h "$large_jpeg" | cut -f1)  $large_jpeg"
+  echo "     $(du -h "$out_webp" | cut -f1)  $out_webp"
+  echo "     $(du -h "$out_jpeg" | cut -f1)  $out_jpeg"
   echo
 done
 
-echo "Done. Now update the <img> tags in index.html to use srcset."
-echo "Example pattern:"
-echo '<img src="images/hero/IMG_2984-1600.jpg"'
-echo '     srcset="images/hero/IMG_2984-1600.webp 1600w, images/hero/IMG_2984-1600.jpg 1600w"'
-echo '     sizes="100vw" alt="..." loading="eager">'
-echo
-echo "Tip: Keep the original full-res file around in case you need to re-encode later."
+echo "Done. Wire the variants into HTML with <picture> (see header comment)."

@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>CyberOffroading — Cybertruck Off-Road Accessories &amp; Gear</title>
-  <meta name="description" content="Curated Cybertruck off-road accessories: recovery gear, tire tools, winch builds, Starlink mounts, and more. Spec-focused reviews from someone who actually uses this stuff.">
+  <meta name="description" content="Curated Cybertruck off-road gear: recovery, tire tools, winch builds, Starlink mounts. Spec-focused reviews from an owner who actually runs this stuff.">
   <link rel="canonical" href="https://cyberoffroading.com/">
 
   <!-- Open Graph -->
   <meta property="og:title" content="CyberOffroading — Cybertruck Off-Road Accessories">
   <meta property="og:description" content="Curated off-road accessories for the Cybertruck. Recovery gear, tire tools, winch builds, Starlink mounts.">
-  <meta property="og:image" content="https://cyberoffroading.com/images/hero/IMG_2984.jpeg">
+  <meta property="og:image" content="https://cyberoffroading.com/images/social/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cybertruck on an off-road trail">
   <meta property="og:url" content="https://cyberoffroading.com/">
   <meta property="og:type" content="website">
 
@@ -18,23 +21,31 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CyberOffroading — Cybertruck Off-Road Accessories">
   <meta name="twitter:description" content="Curated off-road accessories for the Cybertruck. Recovery gear, tire tools, winch builds, Starlink mounts.">
-  <meta name="twitter:image" content="https://cyberoffroading.com/images/hero/IMG_2984.jpeg">
+  <meta name="twitter:image" content="https://cyberoffroading.com/images/social/og-home.jpg">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=7">
+  <!-- LCP: start fetching the hero during HTML parse -->
+  <link rel="preload" as="image" type="image/webp" href="images/hero/IMG_2984-2000.webp" imagesrcset="images/hero/IMG_2984-1200.webp 1200w, images/hero/IMG_2984-2000.webp 2000w" imagesizes="100vw" fetchpriority="high">
+
+  <link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
+
+  <a class="skip-link" href="#articles">Skip to content</a>
 
   <!-- ============================================================
        HERO
        ============================================================ -->
-  <header class="hero">
+  <header class="hero" id="top">
     <div class="hero__bg">
-      <img src="images/hero/IMG_2984.jpeg" alt="Cybertruck on an off-road trail" loading="eager">
+      <picture>
+        <source type="image/webp" srcset="images/hero/IMG_2984-1200.webp 1200w, images/hero/IMG_2984-2000.webp 2000w" sizes="100vw">
+        <img src="images/hero/IMG_2984-2000.jpg" srcset="images/hero/IMG_2984-1200.jpg 1200w, images/hero/IMG_2984-2000.jpg 2000w" sizes="100vw" width="2000" height="1500" alt="Cybertruck on an off-road trail" loading="eager" fetchpriority="high">
+      </picture>
     </div>
     <div class="hero__content">
       <p class="hero__tag">// Curated Gear for the Trail</p>
@@ -52,7 +63,7 @@
        ============================================================ -->
   <div class="top-bar">Driving another Tesla? Check out <a href="https://tesla-essentials.com" target="_blank" rel="noopener noreferrer"><span>Tesla-Essentials.com</span></a> for accessories covering the rest of the lineup.</div>
 
-  <div class="owner-bar">Built by <a href="https://x.com/kchau" target="_blank" rel="noopener noreferrer"><span>Kevin</span></a> — Cyberbeast owner. Every product on this site is gear I run on my truck.</div>
+  <div class="owner-bar">Built by <a href="https://x.com/kchau" target="_blank" rel="noopener noreferrer"><span>Kevin</span></a> — Cyberbeast owner. Every product on this site is gear I run on my truck. <span class="owner-bar__disclosure">Affiliate links — purchases may earn a commission at no cost to you.</span></div>
 
   <nav class="category-nav" aria-label="Product categories">
     <div class="category-nav__inner">
@@ -83,12 +94,12 @@
       <article class="product-card article-card">
         <a class="article-card__link" href="guides/vault-seal.html" data-guide-modal>
           <div class="product-card__image">
-            <img src="images/guides/vault-seal/tailgate-seal.jpg" alt="Cybertruck vault sealing guide" loading="lazy">
+            <picture><source type="image/webp" srcset="images/guides/vault-seal/tailgate-seal-800.webp"><img src="images/guides/vault-seal/tailgate-seal-800.jpg" alt="Cybertruck vault sealing guide" width="800" height="1067" loading="lazy" decoding="async"></picture>
           </div>
           <div class="product-card__info">
             <h3>Sealing the Cybertruck Vault</h3>
             <p class="product-card__review">3-level approach to dust-proofing the bed: tailgate seal, smuggler's bay door seal, and bed mat technique. Keep dust out on every trail run.</p>
-            <span class="cta-button">Read Article</span>
+            <span class="cta-button cta-button--internal">Read Article</span>
           </div>
         </a>
       </article>
@@ -96,12 +107,12 @@
       <article class="product-card article-card">
         <a class="article-card__link" href="guides/cabin-air-filter.html" data-guide-modal>
           <div class="product-card__image">
-            <img src="images/products/misc/IMG_3397.jpeg" alt="Cybertruck cabin air filter comparison" loading="lazy">
+            <picture><source type="image/webp" srcset="images/products/misc/IMG_3397-800.webp"><img src="images/products/misc/IMG_3397-800.jpg" alt="Cybertruck cabin air filter comparison" width="800" height="800" loading="lazy" decoding="async"></picture>
           </div>
           <div class="product-card__info">
             <h3>Cabin Air Filters — OEM vs Aftermarket</h3>
             <p class="product-card__review">I tested three aftermarket HEPA filters against the Tesla OEM. None of them held up. Here's why the activated carbon layer matters and what happens after a few months.</p>
-            <span class="cta-button">Read Article</span>
+            <span class="cta-button cta-button--internal">Read Article</span>
           </div>
         </a>
       </article>
@@ -109,12 +120,12 @@
       <article class="product-card article-card">
         <a class="article-card__link" href="guides/roof-glass.html" data-guide-modal>
           <div class="product-card__image">
-            <img src="images/hero/IMG_2984.jpeg" alt="Cybertruck roof glass guide" loading="lazy">
+            <picture><source type="image/webp" srcset="images/hero/IMG_2984-800.webp"><img src="images/hero/IMG_2984-800.jpg" alt="Cybertruck roof glass guide" width="800" height="600" loading="lazy" decoding="async"></picture>
           </div>
           <div class="product-card__info">
             <h3>Roof Glass &amp; Starlink Mini</h3>
             <p class="product-card__review">Not all Cybertruck roof glass is the same. Which glass type allows Starlink Mini to work from underneath? Compatibility chart and identification tips.</p>
-            <span class="cta-button">Read Article</span>
+            <span class="cta-button cta-button--internal">Read Article</span>
           </div>
         </a>
       </article>
@@ -122,12 +133,12 @@
       <article class="product-card article-card">
         <a class="article-card__link" href="guides/winch-wiring.html" data-guide-modal>
           <div class="product-card__image">
-            <img src="images/products/winch/build-setup/IMG_0552.jpeg" alt="Cybertruck winch wiring guide" loading="lazy">
+            <picture><source type="image/webp" srcset="images/products/winch/build-setup/IMG_0552-800.webp"><img src="images/products/winch/build-setup/IMG_0552-800.jpg" alt="Cybertruck winch wiring guide" width="800" height="1067" loading="lazy" decoding="async"></picture>
           </div>
           <div class="product-card__info">
             <h3>Winch Wiring Guide — 240v AC</h3>
             <p class="product-card__review">Power a 12,000 lb winch from the Cybertruck's 240v 50A plug using four HP Common Slot power supplies wired in parallel. Full parts list and wiring breakdown.</p>
-            <span class="cta-button">Read Article</span>
+            <span class="cta-button cta-button--internal">Read Article</span>
           </div>
         </a>
       </article>
@@ -135,12 +146,12 @@
       <article class="product-card article-card">
         <a class="article-card__link" href="guides/trail-lift.html" data-guide-modal>
           <div class="product-card__image">
-            <img src="images/guides/trail-lift/cover.jpg" alt="Lifting a Cybertruck on the trail without a jack" loading="lazy">
+            <picture><source type="image/webp" srcset="images/guides/trail-lift/cover-800.webp"><img src="images/guides/trail-lift/cover-800.jpg" alt="Lifting a Cybertruck on the trail without a jack" width="800" height="1110" loading="lazy" decoding="async"></picture>
           </div>
           <div class="product-card__info">
             <h3>Lifting on the Trail Without a Jack</h3>
             <p class="product-card__review">Flat tire, no jack? Use the CT's air suspension and a chunk of 6x6 lumber to lift the wheel off the ground in 20 minutes. Field-tested technique from the community.</p>
-            <span class="cta-button">Read Article</span>
+            <span class="cta-button cta-button--internal">Read Article</span>
           </div>
         </a>
       </article>
@@ -160,7 +171,7 @@
 
       <article class="product-card" data-product-id="tire-deflators">
         <div class="product-card__image">
-          <img src="images/products/offroad/tire-deflators/tire-deflators.jpg" alt="Dornata tire deflators for Cybertruck" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/offroad/tire-deflators/tire-deflators-800.webp"><img src="images/products/offroad/tire-deflators/tire-deflators-800.jpg" alt="Dornata tire deflators for Cybertruck" width="800" height="1067" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Tire Deflators</h3>
@@ -173,7 +184,7 @@
 
       <article class="product-card" data-product-id="tankless-inflator-setup">
         <div class="product-card__image">
-          <img src="images/products/offroad/tankless-inflator/tankless-compressor.jpg" alt="Tankless inflator setup for Cybertruck" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/offroad/tankless-inflator/tankless-compressor-800.webp"><img src="images/products/offroad/tankless-inflator/tankless-compressor-800.jpg" alt="Tankless inflator setup for Cybertruck" width="800" height="600" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Tankless Inflator Setup</h3>
@@ -185,7 +196,7 @@
 
       <article class="product-card" data-product-id="multi-tire-inflator-kit">
         <div class="product-card__image">
-          <img src="images/products/offroad/multi-tire-inflator-kit/81NdDvoqB2L._AC_SL1500_.jpg" alt="Multi tire inflator kit" loading="lazy">
+          <img src="images/products/offroad/multi-tire-inflator-kit/81NdDvoqB2L._AC_SL1500_.jpg" width="1500" height="1497" alt="Multi tire inflator kit" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Multi Tire Inflator Kit</h3>
@@ -197,7 +208,7 @@
 
       <article class="product-card" data-product-id="inflator-adapter">
         <div class="product-card__image">
-          <img src="images/products/offroad/inflator-adapter/61zcSI-2RLL._AC_SL1200_.jpg" alt="Tire inflator adapter" loading="lazy">
+          <img src="images/products/offroad/inflator-adapter/61zcSI-2RLL._AC_SL1200_.jpg" width="1108" height="1084" alt="Tire inflator adapter" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Inflator Adapter</h3>
@@ -209,7 +220,7 @@
 
       <article class="product-card" data-product-id="tire-inflator">
         <div class="product-card__image">
-          <img src="images/products/offroad/tire-inflator/715sdxEoacL._AC_SL1500_.jpg" alt="Portable tire inflator" loading="lazy">
+          <img src="images/products/offroad/tire-inflator/715sdxEoacL._AC_SL1500_.jpg" width="1419" height="1267" alt="Portable tire inflator" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Tire Inflator</h3>
@@ -240,7 +251,7 @@
 
       <article class="product-card" data-product-id="recovery-boards">
         <div class="product-card__image">
-          <img src="images/products/recovery/recovery-boards/bed-view-recovery-boards.jpg" alt="Recovery boards mounted in Cybertruck bed" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/recovery/recovery-boards/bed-view-recovery-boards-800.webp"><img src="images/products/recovery/recovery-boards/bed-view-recovery-boards-800.jpg" alt="Recovery boards mounted in Cybertruck bed" width="800" height="1067" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Recovery Boards</h3>
@@ -253,7 +264,7 @@
 
       <article class="product-card" data-product-id="recovery-board-molle-mounts">
         <div class="product-card__image">
-          <img src="images/products/recovery/molle-mounts/61iOaQnZiYL._AC_SL1500_.jpg" alt="MAXTRAX flat mount for MOLLE panel" loading="lazy">
+          <img src="images/products/recovery/molle-mounts/61iOaQnZiYL._AC_SL1500_.jpg" width="1500" height="789" alt="MAXTRAX flat mount for MOLLE panel" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Recovery Board MOLLE Mounts</h3>
@@ -264,7 +275,7 @@
 
       <article class="product-card" data-product-id="soft-shackles">
         <div class="product-card__image">
-          <img src="images/products/recovery/soft-shackles/81YxsCbBXGL._AC_SL1500_.jpg" alt="Soft shackles for vehicle recovery" loading="lazy">
+          <img src="images/products/recovery/soft-shackles/81YxsCbBXGL._AC_SL1500_.jpg" width="1500" height="1477" alt="Soft shackles for vehicle recovery" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Soft Shackles</h3>
@@ -275,7 +286,7 @@
 
       <article class="product-card" data-product-id="shackle-block">
         <div class="product-card__image">
-          <img src="images/products/recovery/shackle-block/61eH+qvQ6NL._AC_SL1500_.jpg" alt="Shackle hitch receiver block" loading="lazy">
+          <img src="images/products/recovery/shackle-block/61eH+qvQ6NL._AC_SL1500_.jpg" width="1500" height="1094" alt="Shackle hitch receiver block" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Shackle Block</h3>
@@ -286,7 +297,7 @@
 
       <article class="product-card" data-product-id="tow-strap">
         <div class="product-card__image">
-          <img src="images/products/recovery/tow-strap/81CAEuwHnsL._AC_SL1500_.jpg" alt="Recovery tow strap" loading="lazy">
+          <img src="images/products/recovery/tow-strap/81CAEuwHnsL._AC_SL1500_.jpg" width="1461" height="1500" alt="Recovery tow strap" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Tow Strap</h3>
@@ -297,7 +308,7 @@
 
       <article class="product-card" data-product-id="dynamic-recovery-rope">
         <div class="product-card__image">
-          <img src="images/products/recovery/dynamic-rope/71GE2sVmIpL._AC_SL1500_.jpg" alt="Dynamic kinetic recovery rope" loading="lazy">
+          <img src="images/products/recovery/dynamic-rope/71GE2sVmIpL._AC_SL1500_.jpg" width="1500" height="1156" alt="Dynamic kinetic recovery rope" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Dynamic Recovery Rope</h3>
@@ -308,7 +319,7 @@
 
       <article class="product-card" data-product-id="tree-saver">
         <div class="product-card__image">
-          <img src="images/products/recovery/tree-saver/81xS7J0+QkL._AC_SL1500_.jpg" alt="Tree saver strap for winching" loading="lazy">
+          <img src="images/products/recovery/tree-saver/81xS7J0+QkL._AC_SL1500_.jpg" width="1500" height="1145" alt="Tree saver strap for winching" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Tree Saver</h3>
@@ -330,15 +341,15 @@
     </div>
 
     <div class="build-gallery">
-      <img src="images/products/flat-tire/IMG_8569.jpeg" alt="Sidewall damage on Cybertruck tire from off-road trail" loading="lazy">
-      <img src="images/products/flat-tire/IMG_8570.jpeg" alt="Sidewall patch repair on Cybertruck tire" loading="lazy">
+      <picture><source type="image/webp" srcset="images/products/flat-tire/IMG_8569-1200.webp"><img src="images/products/flat-tire/IMG_8569-1200.jpg" alt="Sidewall damage on Cybertruck tire from off-road trail" width="1200" height="1600" loading="lazy" decoding="async"></picture>
+      <picture><source type="image/webp" srcset="images/products/flat-tire/IMG_8570-1200.webp"><img src="images/products/flat-tire/IMG_8570-1200.jpg" alt="Sidewall patch repair on Cybertruck tire" width="1200" height="1600" loading="lazy" decoding="async"></picture>
     </div>
 
     <div class="product-grid">
 
       <article class="product-card" data-product-id="sidewall-patch-kit">
         <div class="product-card__image">
-          <img src="images/products/flat-tire/sidewall-patch-kit/product.jpg" alt="Tire sidewall patch kit" loading="lazy">
+          <img src="images/products/flat-tire/sidewall-patch-kit/product.jpg" width="1489" height="1500" alt="Tire sidewall patch kit" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Sidewall Patch Kit</h3>
@@ -349,7 +360,7 @@
 
       <article class="product-card" data-product-id="plug-kit">
         <div class="product-card__image">
-          <img src="images/products/flat-tire/plug-kit/71Zh8bC1WtL._AC_SL1500_.jpg" alt="ARB Speedy Seal tire plug kit" loading="lazy">
+          <img src="images/products/flat-tire/plug-kit/71Zh8bC1WtL._AC_SL1500_.jpg" width="1462" height="1500" alt="ARB Speedy Seal tire plug kit" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Plug Kit</h3>
@@ -360,7 +371,7 @@
 
       <article class="product-card" data-product-id="3-ton-offroad-jack">
         <div class="product-card__image">
-          <img src="images/products/flat-tire/off-road-jack/product.jpg" alt="3-ton off-road jack from Harbor Freight" loading="lazy">
+          <img src="images/products/flat-tire/off-road-jack/product.jpg" width="1200" height="1200" alt="3-ton off-road jack from Harbor Freight" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>3-Ton Off-Road Jack</h3>
@@ -388,7 +399,7 @@
 
       <article class="product-card" data-product-id="winter-tires">
         <div class="product-card__image">
-          <img src="images/products/winter/winter-tires/81soLDcVVwL._AC_SL1500_.jpg" alt="Winter tires for Cybertruck" loading="lazy">
+          <img src="images/products/winter/winter-tires/81soLDcVVwL._AC_SL1500_.jpg" width="990" height="1500" alt="Winter tires for Cybertruck" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Winter Tires</h3>
@@ -399,7 +410,7 @@
 
       <article class="product-card" data-product-id="autosocks">
         <div class="product-card__image">
-          <img src="images/products/winter/autosocks/91oOiMR8R6L._AC_SL1500_.jpg" alt="AutoSock tire traction devices for Cybertruck" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/winter/autosocks/91oOiMR8R6L._AC_SL1500_-800.webp"><img src="images/products/winter/autosocks/91oOiMR8R6L._AC_SL1500_-800.jpg" alt="AutoSock tire traction devices for Cybertruck" width="800" height="808" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>AutoSocks ("Not Chains")</h3>
@@ -410,7 +421,7 @@
 
       <article class="product-card" data-product-id="snow-chains">
         <div class="product-card__image">
-          <img src="images/products/winter/snow-chains/1969063-00-A_-2-01.avif" alt="Tesla Cybertruck snow chains" loading="lazy">
+          <img src="images/products/winter/snow-chains/1969063-00-A_-2-01.avif" width="2000" height="2000" alt="Tesla Cybertruck snow chains" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Snow Chains (Tesla Official)</h3>
@@ -421,7 +432,7 @@
 
       <article class="product-card" data-product-id="ice-breaking-shovel">
         <div class="product-card__image">
-          <img src="images/products/winter/ice-shovel/51AbKnq8+3L._AC_SL1500_.jpg" alt="Heavy duty ice breaking shovel" loading="lazy">
+          <img src="images/products/winter/ice-shovel/51AbKnq8+3L._AC_SL1500_.jpg" width="295" height="1462" alt="Heavy duty ice breaking shovel" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Ice-Breaking Shovel</h3>
@@ -448,17 +459,17 @@
     </div>
 
     <div class="build-gallery">
-      <img src="images/products/winch/build-setup/IMG_0552.jpeg" alt="Cybertruck winch build power supply setup" loading="lazy">
-      <img src="images/products/winch/build-setup/IMG_0553.jpeg" alt="Cybertruck winch build wiring detail" loading="lazy">
-      <img src="images/products/winch/G89KqXbawAAAu7o.jpg" alt="Completed winch mounted on Cybertruck" loading="lazy">
-      <img src="images/products/winch/G89KqXbawAAAu7o2.jpg" alt="Winch hitch mount installed on Cybertruck" loading="lazy">
+      <picture><source type="image/webp" srcset="images/products/winch/build-setup/IMG_0552-1200.webp"><img src="images/products/winch/build-setup/IMG_0552-1200.jpg" alt="Cybertruck winch build power supply setup" width="1200" height="1600" loading="lazy" decoding="async"></picture>
+      <picture><source type="image/webp" srcset="images/products/winch/build-setup/IMG_0553-1200.webp"><img src="images/products/winch/build-setup/IMG_0553-1200.jpg" alt="Cybertruck winch build wiring detail" width="1200" height="1600" loading="lazy" decoding="async"></picture>
+      <picture><source type="image/webp" srcset="images/products/winch/G89KqXbawAAAu7o-1200.webp"><img src="images/products/winch/G89KqXbawAAAu7o-1200.jpg" alt="Completed winch mounted on Cybertruck" width="1200" height="1600" loading="lazy" decoding="async"></picture>
+      <picture><source type="image/webp" srcset="images/products/winch/G89KqXbawAAAu7o2-1200.webp"><img src="images/products/winch/G89KqXbawAAAu7o2-1200.jpg" alt="Winch hitch mount installed on Cybertruck" width="1200" height="1600" loading="lazy" decoding="async"></picture>
     </div>
 
     <div class="product-grid">
 
       <article class="product-card" data-product-id="12k-winch">
         <div class="product-card__image">
-          <img src="images/products/winch/12k-winch/product.jpg" alt="12000 lb winch with synthetic rope" loading="lazy">
+          <img src="images/products/winch/12k-winch/product.jpg" width="1200" height="1200" alt="12000 lb winch with synthetic rope" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>12,000 lb Winch</h3>
@@ -469,7 +480,7 @@
 
       <article class="product-card" data-product-id="hitch-mount">
         <div class="product-card__image">
-          <img src="images/products/winch/hitch-mount/product.jpg" alt="Winch hitch mount receiver" loading="lazy">
+          <img src="images/products/winch/hitch-mount/product.jpg" width="1200" height="1200" alt="Winch hitch mount receiver" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Hitch Mount</h3>
@@ -480,7 +491,7 @@
 
       <article class="product-card" data-product-id="power-supplies">
         <div class="product-card__image">
-          <img src="images/products/winch/power-supplies/61culAi5vDL._AC_SL1500_.jpg" alt="240v AC to 12v DC power supply" loading="lazy">
+          <img src="images/products/winch/power-supplies/61culAi5vDL._AC_SL1500_.jpg" width="1500" height="1041" alt="240v AC to 12v DC power supply" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Power Supplies</h3>
@@ -492,7 +503,7 @@
 
       <article class="product-card" data-product-id="ac-cable-4x">
         <div class="product-card__image">
-          <img src="images/products/winch/ac-cable-4x/61LJkTLBkQL._AC_SL1500_.jpg" alt="AC power cable for winch build" loading="lazy">
+          <img src="images/products/winch/ac-cable-4x/61LJkTLBkQL._AC_SL1500_.jpg" width="1500" height="1428" alt="AC power cable for winch build" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>AC Side Cable (4x)</h3>
@@ -504,7 +515,7 @@
 
       <article class="product-card" data-product-id="ac-cable-2x">
         <div class="product-card__image">
-          <img src="images/products/winch/ac-cable-2x/613T6dpQ7BL._AC_SL1500_.jpg" alt="AC power cable for winch build" loading="lazy">
+          <img src="images/products/winch/ac-cable-2x/613T6dpQ7BL._AC_SL1500_.jpg" width="1383" height="1500" alt="AC power cable for winch build" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>AC Side Cable (2x)</h3>
@@ -516,7 +527,7 @@
 
       <article class="product-card" data-product-id="ac-cable-1x">
         <div class="product-card__image">
-          <img src="images/products/winch/ac-cable-1x/51CsSpn0eFL._AC_SL1500_.jpg" alt="AC power cable for winch build" loading="lazy">
+          <img src="images/products/winch/ac-cable-1x/51CsSpn0eFL._AC_SL1500_.jpg" width="1500" height="573" alt="AC power cable for winch build" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>AC Side Cable (1x)</h3>
@@ -528,7 +539,7 @@
 
       <article class="product-card" data-product-id="soldering-kit">
         <div class="product-card__image">
-          <img src="images/products/winch/soldering-kit/71HjH1vv6GL._AC_SL1500_.jpg" alt="Soldering tool kit" loading="lazy">
+          <img src="images/products/winch/soldering-kit/71HjH1vv6GL._AC_SL1500_.jpg" width="1500" height="1192" alt="Soldering tool kit" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Soldering Kit</h3>
@@ -539,7 +550,7 @@
 
       <article class="product-card" data-product-id="signal-wire">
         <div class="product-card__image">
-          <img src="images/products/winch/signal-wire/61qmozO24ZL._SL1500_.jpg" alt="Signal wire for winch wiring" loading="lazy">
+          <img src="images/products/winch/signal-wire/61qmozO24ZL._SL1500_.jpg" width="1500" height="1088" alt="Signal wire for winch wiring" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Signal Wire</h3>
@@ -550,7 +561,7 @@
 
       <article class="product-card" data-product-id="resistors">
         <div class="product-card__image">
-          <img src="images/products/winch/resistors/71+ZLtlZftL._SL1500_.jpg" alt="Low ohm resistors for PSU wiring" loading="lazy">
+          <img src="images/products/winch/resistors/71+ZLtlZftL._SL1500_.jpg" width="1500" height="1500" alt="Low ohm resistors for PSU wiring" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Resistors</h3>
@@ -586,7 +597,7 @@
 
       <article class="product-card" data-product-id="starlink-interior-a">
         <div class="product-card__image">
-          <img src="images/products/starlink/interior-mount/G89FeJsb0AE8yS0.jpg" alt="Starlink Mini interior mount under Cybertruck glass" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/starlink/interior-mount/G89FeJsb0AE8yS0-800.webp"><img src="images/products/starlink/interior-mount/G89FeJsb0AE8yS0-800.jpg" alt="Starlink Mini interior mount under Cybertruck glass" width="800" height="1067" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Interior Mount (Option A)</h3>
@@ -597,7 +608,7 @@
 
       <article class="product-card" data-product-id="starlink-interior-b">
         <div class="product-card__image">
-          <img src="images/products/starlink/interior-mount/61JjkMCyPPL._AC_SL1200_.jpg" alt="Starlink Mini interior mount alternative" loading="lazy">
+          <img src="images/products/starlink/interior-mount/61JjkMCyPPL._AC_SL1200_.jpg" width="1200" height="1200" alt="Starlink Mini interior mount alternative" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Interior Mount (Option B)</h3>
@@ -608,7 +619,7 @@
 
       <article class="product-card" data-product-id="starlink-exterior">
         <div class="product-card__image">
-          <img src="images/products/starlink/exterior-mount/61V4uyC0KVL._AC_SL1500_.jpg" alt="Starlink Mini exterior roof mount for Cybertruck" loading="lazy">
+          <img src="images/products/starlink/exterior-mount/61V4uyC0KVL._AC_SL1500_.jpg" width="1500" height="1500" alt="Starlink Mini exterior roof mount for Cybertruck" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Exterior Mount</h3>
@@ -619,7 +630,7 @@
 
       <article class="product-card" data-product-id="starlink-dash">
         <div class="product-card__image">
-          <img src="images/products/starlink/dash-mount/719qKOG+M0L._AC_SL1500_.jpg" alt="Starlink Mini dash mount with suction cup for Cybertruck windshield" loading="lazy">
+          <img src="images/products/starlink/dash-mount/719qKOG+M0L._AC_SL1500_.jpg" width="1500" height="1500" alt="Starlink Mini dash mount with suction cup for Cybertruck windshield" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Dash Mount (Windshield)</h3>
@@ -630,7 +641,7 @@
 
       <article class="product-card" data-product-id="starlink-power-adapter">
         <div class="product-card__image">
-          <img src="images/products/starlink/power-adapter/cable.jpg" alt="10ft USB-C to DC barrel power cable for Starlink Mini" loading="lazy">
+          <img src="images/products/starlink/power-adapter/cable.jpg" width="1200" height="1142" alt="10ft USB-C to DC barrel power cable for Starlink Mini" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>USB-C Power Cable (60W PD)</h3>
@@ -655,7 +666,7 @@
 
       <article class="product-card" data-product-id="rocky-talkies-5w">
         <div class="product-card__image">
-          <img src="images/products/comms/rocky-talkies/IMG_2974.jpeg" alt="Rocky Talkies GMRS radio" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/comms/rocky-talkies/IMG_2974-800.webp"><img src="images/products/comms/rocky-talkies/IMG_2974-800.jpg" alt="Rocky Talkies GMRS radio" width="800" height="1067" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Rocky Talkies — 5W</h3>
@@ -666,7 +677,7 @@
 
       <article class="product-card" data-product-id="rocky-talkies-2w">
         <div class="product-card__image">
-          <img src="images/products/comms/rocky-talkies/71fLurHsxFL._AC_SL1500_.jpg" alt="Rocky Talkies 2W compact GMRS radio" loading="lazy">
+          <img src="images/products/comms/rocky-talkies/71fLurHsxFL._AC_SL1500_.jpg" width="1228" height="1500" alt="Rocky Talkies 2W compact GMRS radio" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Rocky Talkies — 2W</h3>
@@ -690,20 +701,20 @@
 
       <article class="product-card" data-product-id="cabin-air-filter">
         <div class="product-card__image">
-          <img src="images/products/misc/IMG_3397.jpeg" alt="Tesla Cybertruck HEPA cabin air filter" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/misc/IMG_3397-800.webp"><img src="images/products/misc/IMG_3397-800.jpg" alt="Tesla Cybertruck HEPA cabin air filter" width="800" height="800" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Cabin Air Filter (HEPA)</h3>
           <p class="product-card__price">~$100</p>
           <p class="product-card__review">Get the Tesla OEM filter — not third party. I've tried multiple aftermarket HEPA filters and they all stop filtering out gas and diesel fumes after a few months. The Tesla unit is the only one that actually holds up. All-in-one HEPA + carbon combo. Replace every 2 years.</p>
           <a href="https://shop.tesla.com/product/cybertruck-hepa-filter?sku=1874737-00-B" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price at Tesla Shop</a>
-          <a href="guides/cabin-air-filter.html" data-guide-modal class="cta-button">Why not aftermarket? &rarr;</a>
+          <a href="guides/cabin-air-filter.html" data-guide-modal class="cta-button cta-button--internal">Why not aftermarket? &rarr;</a>
         </div>
       </article>
 
       <article class="product-card" data-product-id="screen-protector">
         <div class="product-card__image">
-          <img src="images/products/misc/screen-protector/product.jpg" alt="Urander screen protector for Cybertruck center display" loading="lazy">
+          <img src="images/products/misc/screen-protector/product.jpg" width="1500" height="1483" alt="Urander screen protector for Cybertruck center display" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Screen Protector</h3>
@@ -714,7 +725,7 @@
 
       <article class="product-card" data-product-id="backer-rod">
         <div class="product-card__image">
-          <img src="images/products/cyberbeast/backer-rod/G89ecfFaQAAaDf3.jpg" alt="Backer rod installed on Cyberbeast light bar" loading="lazy">
+          <img src="images/products/cyberbeast/backer-rod/G89ecfFaQAAaDf3.jpg" width="900" height="1200" alt="Backer rod installed on Cyberbeast light bar" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Backer Rod — Cyberbeast Only</h3>
@@ -726,7 +737,7 @@
 
       <article class="product-card" data-product-id="fire-extinguisher">
         <div class="product-card__image">
-          <img src="images/products/misc/fire-extinguisher/41moY9VRSeL._AC_SL1080_.jpg" alt="Fire extinguisher for Cybertruck" loading="lazy">
+          <img src="images/products/misc/fire-extinguisher/41moY9VRSeL._AC_SL1080_.jpg" width="127" height="956" alt="Fire extinguisher for Cybertruck" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Fire Extinguisher</h3>
@@ -737,7 +748,7 @@
 
       <article class="product-card" data-product-id="molle-mount">
         <div class="product-card__image">
-          <img src="images/products/misc/molle-mount/61sGaw71zWL._AC_SL1500_.jpg" alt="MOLLE panel mount for Cybertruck bed" loading="lazy">
+          <img src="images/products/misc/molle-mount/61sGaw71zWL._AC_SL1500_.jpg" width="1370" height="1007" alt="MOLLE panel mount for Cybertruck bed" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>MOLLE Mount</h3>
@@ -748,7 +759,7 @@
 
       <article class="product-card" data-product-id="molle-panel-nuts">
         <div class="product-card__image">
-          <img src="images/products/misc/molle-panel-nuts/product.png" alt="BuiltRight MOLLE panel nuts" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/misc/molle-panel-nuts/product-800.webp"><img src="images/products/misc/molle-panel-nuts/product-800.jpg" alt="BuiltRight MOLLE panel nuts" width="800" height="800" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>MOLLE Panel Nuts</h3>
@@ -759,7 +770,7 @@
 
       <article class="product-card" data-product-id="fairing-delete">
         <div class="product-card__image">
-          <img src="images/products/misc/fairing-delete/81uJWrvpDpL._AC_SL1500_.jpg" alt="Cybertruck fairing delete kit" loading="lazy">
+          <img src="images/products/misc/fairing-delete/81uJWrvpDpL._AC_SL1500_.jpg" width="1500" height="1417" alt="Cybertruck fairing delete kit" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Fairing Delete</h3>
@@ -770,7 +781,7 @@
 
       <article class="product-card" data-product-id="tonneau-track-lube">
         <div class="product-card__image">
-          <img src="images/products/misc/tonneau-track-lube/G89FeJrbwAAu48G.jpg" alt="Tonneau cover track lubricant" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/misc/tonneau-track-lube/G89FeJrbwAAu48G-800.webp"><img src="images/products/misc/tonneau-track-lube/G89FeJrbwAAu48G-800.jpg" alt="Tonneau cover track lubricant" width="800" height="1067" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Tonneau Track Lube</h3>
@@ -781,7 +792,7 @@
 
       <article class="product-card" data-product-id="mud-wash">
         <div class="product-card__image">
-          <img src="images/products/cleaning/mud-wash/61DFNI7VfXL._AC_SL1000_.jpg" alt="Off-road mud wash cleaner" loading="lazy">
+          <img src="images/products/cleaning/mud-wash/61DFNI7VfXL._AC_SL1000_.jpg" width="272" height="902" alt="Off-road mud wash cleaner" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Mud Wash</h3>
@@ -792,7 +803,7 @@
 
       <article class="product-card" data-product-id="ratchet-straps-ltrack">
         <div class="product-card__image">
-          <img src="images/products/misc/ratchet-straps/UltimateRetractableRatchetStrapsforL-Track_AirlineTrack.webp" alt="Juggernaut retractable ratchet straps for Cybertruck L-track" loading="lazy">
+          <img src="images/products/misc/ratchet-straps/UltimateRetractableRatchetStrapsforL-Track_AirlineTrack.webp" width="2000" height="1333" alt="Juggernaut retractable ratchet straps for Cybertruck L-track" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Retractable Ratchet Straps (L-Track)</h3>
@@ -804,7 +815,7 @@
 
       <article class="product-card" data-product-id="bed-mat">
         <div class="product-card__image">
-          <img src="images/products/misc/bed-mat/81Eiyn-9R3L._AC_SL1500_.jpg" alt="Cybertruck bed mat" loading="lazy">
+          <img src="images/products/misc/bed-mat/81Eiyn-9R3L._AC_SL1500_.jpg" width="1405" height="1500" alt="Cybertruck bed mat" loading="lazy" decoding="async">
         </div>
         <div class="product-card__info">
           <h3>Bed Mat</h3>
@@ -816,7 +827,7 @@
 
       <article class="product-card" data-product-id="stepladder">
         <div class="product-card__image">
-          <img src="images/products/misc/stepladder/IMG_3604.jpeg" alt="Little Giant Jumbo Step 3-step stepladder at the CyberTent tailgate" loading="lazy">
+          <picture><source type="image/webp" srcset="images/products/misc/stepladder/IMG_3604-800.webp"><img src="images/products/misc/stepladder/IMG_3604-800.jpg" alt="Little Giant Jumbo Step 3-step stepladder at the CyberTent tailgate" width="800" height="1063" loading="lazy" decoding="async"></picture>
         </div>
         <div class="product-card__info">
           <h3>Little Giant Jumbo Step (3)</h3>
@@ -856,21 +867,21 @@
       <p class="section__intro">The Cybertruck in its natural habitat.</p>
     </div>
     <div class="gallery-grid">
-      <figure class="gallery-item"><img src="images/gallery/IMG_9261.jpeg" alt="Cybertruck off-road trail run through forest" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_2847.jpeg" alt="Cybertruck on rugged mountain terrain" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_9378.jpeg" alt="Cybertruck trail adventure through trees" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_0867.jpeg" alt="Cybertruck in the wild off-road" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_9375.jpeg" alt="Cybertruck off-road action shot" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_2049.jpeg" alt="Cybertruck trail scenery overlook" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_9367.jpeg" alt="Cybertruck off-road exploration" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_0841.JPG" alt="Cybertruck on mountain trail" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_9290.jpeg" alt="Cybertruck dirt trail run" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_2869.JPG" alt="Cybertruck outdoor adventure" loading="lazy"></figure>
-      <figure class="gallery-item"><img src="images/gallery/IMG_9142.jpeg" alt="Cybertruck off-road trail" loading="lazy"></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9261-1200.webp"><img src="images/gallery/IMG_9261-1200.jpg" alt="Cybertruck off-road trail run through forest" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_2847-1200.webp"><img src="images/gallery/IMG_2847-1200.jpg" alt="Cybertruck on rugged mountain terrain" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9378-1200.webp"><img src="images/gallery/IMG_9378-1200.jpg" alt="Cybertruck trail adventure through trees" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_0867-1200.webp"><img src="images/gallery/IMG_0867-1200.jpg" alt="Cybertruck in the wild off-road" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9375-1200.webp"><img src="images/gallery/IMG_9375-1200.jpg" alt="Cybertruck off-road action shot" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_2049-1200.webp"><img src="images/gallery/IMG_2049-1200.jpg" alt="Cybertruck trail scenery overlook" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9367-1200.webp"><img src="images/gallery/IMG_9367-1200.jpg" alt="Cybertruck off-road exploration" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_0841-1200.webp"><img src="images/gallery/IMG_0841-1200.jpg" alt="Cybertruck on mountain trail" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9290-1200.webp"><img src="images/gallery/IMG_9290-1200.jpg" alt="Cybertruck dirt trail run" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_2869-1200.webp"><img src="images/gallery/IMG_2869-1200.jpg" alt="Cybertruck outdoor adventure" width="1200" height="675" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9142-1200.webp"><img src="images/gallery/IMG_9142-1200.jpg" alt="Cybertruck off-road trail" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
     </div>
 
     <!-- Lightbox -->
-    <div class="gallery-lightbox" id="galleryLightbox">
+    <div class="gallery-lightbox" id="galleryLightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
       <button class="gallery-lightbox__close" aria-label="Close">&times;</button>
       <button class="gallery-lightbox__nav gallery-lightbox__nav--prev" aria-label="Previous">&lsaquo;</button>
       <button class="gallery-lightbox__nav gallery-lightbox__nav--next" aria-label="Next">&rsaquo;</button>
@@ -887,7 +898,7 @@
       <p class="site-footer__brand">CYBER<span class="text-cyber">OFFROADING</span></p>
       <div class="site-footer__links">
         <a href="https://discord.gg/8QUfBsZeCC" target="_blank" rel="noopener noreferrer">EV Off-roading Discord</a>
-        <a href="#offroad">Back to Top</a>
+        <a href="#top">Back to Top</a>
       </div>
       <p class="site-footer__disclaimer">
         CyberOffroading.com is a participant in the Amazon Services LLC Associates Program and other affiliate programs. Links on this site may earn us a commission at no extra cost to you. We only recommend products we personally use or have thoroughly researched. Always verify product compatibility with your specific Cybertruck configuration before purchasing.
@@ -906,12 +917,12 @@
        Standalone pages live in /guides/. JS fetches their .guide-content
        and injects it here for in-page reading; URL updates via pushState.
        ============================================================ -->
-  <div class="guide-modal" id="guideModal" aria-hidden="true">
+  <div class="guide-modal" id="guideModal" role="dialog" aria-modal="true" aria-label="Guide" aria-hidden="true">
     <button class="guide-modal__close" aria-label="Close">&times;</button>
     <div class="guide-modal__inner" id="guideModalContent"></div>
   </div>
 
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  <script src="js/main.js?v=7"></script>
+  <script src="js/main.js?v=8"></script>
 </body>
 </html>
