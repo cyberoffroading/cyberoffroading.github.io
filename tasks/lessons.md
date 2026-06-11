@@ -81,6 +81,26 @@ We did the full analysis in plan mode, implemented on a dedicated branch, review
 
 ---
 
+## 2026-05-28 — Same-day revert of the image pass (recorded late, 2026-06-10)
+
+**`cwebp -near_lossless` is for screenshots/flat graphics, never photos — and we shipped it without checking output sizes against the fallback.**  
+The Phase 1 image pass used `-near_lossless 60`, a near-lossless preprocessing mode that preserves pixel-level detail. On noisy 24 MP phone exports it spent bits preserving sensor noise, producing WebPs **3–4× larger than the JPEG fallbacks** they were supposed to beat. All 28 variants were reverted the same day (commit `a007b6c`) — and the revert itself was never recorded here, so a month later the docs claimed an optimized state that didn't exist.
+
+**Rules**:
+1. After any batch encode, compare each output against both the original AND the fallback format; a "modern format" variant that is larger than its fallback is an automatic failure.
+2. Encode WebP from a lossless intermediate (or the original), never from the already-compressed JPEG fallback — it inflates output preserving JPEG artifacts.
+3. When work is reverted, record the revert and the root cause in this file and `tasks/todo.md` **in the same commit as the revert**. A revert without a lesson guarantees a repeat.
+
+---
+
+## 2026-06-10 — Full-site polish pass (images redone right + worker hardening)
+
+**Plain lossy `cwebp -q 80` with per-use width tiers (hero 2000 / gallery 1200 / cards 800) cut the homepage image payload from ~90 MB to ~12 MB** with no visible quality loss — confirming the only thing wrong with the original approach was the flag. Also fixed in the same pass: worker input validation + hashed IP keys + per-product KV counters, localStorage crash in Safari Private Mode, guide-modal fetch race + history.back() on close, dialog semantics, skip link, FTC disclosure placement, Article JSON-LD + Twitter cards on guides.
+
+**Rule**: An audit that mixes four lenses (perf / code correctness / a11y / SEO+docs) catches reverts-in-disguise: half the "completed" May work was silently undone and only the docs-consistency lens caught it. Re-verify "done" claims against the working tree, not the changelog.
+
+---
+
 ## Future Entries
 
 (Added after real corrections or user feedback during implementation)

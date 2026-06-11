@@ -23,7 +23,7 @@ See `ARCHITECTURE.md` for the full current system description.
 - `css/style.css` — Complete design system (brutalist angular aesthetic with clip-paths).
 - `js/main.js` — Nav highlighting, card reveals, guide modals, gallery lightbox, voting, click tracking (single IIFE).
 - `ARCHITECTURE.md` — **Primary reference** for current 2026 architecture.
-- `PLAN.md` — Original 2024 vision document (historical).
+- `ORIGINAL-PLAN-2024.md` — Original 2024 vision document (historical).
 - `tasks/todo.md` — Living prioritized improvement backlog with review notes.
 - `tasks/lessons.md` — Project process rules and lessons learned.
 - `worker/README.md` — Voting/click tracking worker contract and deployment.
@@ -41,7 +41,7 @@ See `ARCHITECTURE.md` for the full current system description.
 1. Add `<article class="product-card" data-product-id="your-id">` inside the correct `<section>`.
 2. Include review text, price (if relevant), and one or more affiliate CTAs.
 3. Add the photo to `images/products/CATEGORY/PRODUCT-NAME/`.
-4. **Strongly recommended**: Run `./scripts/optimize-images.sh` on the photo and update the `<img>` with `srcset`.
+4. **Strongly recommended**: Run `./scripts/optimize-images.sh -w 800` on the photo (800 for cards, 1200 for build/gallery shots) and wire it up with `<picture>` + explicit `width`/`height` — copy an existing card's markup.
 5. Test voting and click tracking locally.
 
 See `ARCHITECTURE.md` → "Development & Contribution" for the full current process.
@@ -57,7 +57,7 @@ All use `target="_blank" rel="noopener noreferrer"`. Amazon = amzn.to shortlinks
 ## Images & Optimization
 
 - Organized by category under `images/products/`.
-- A growing number of images now have `-1600.webp` + `-1600.jpg` variants with `srcset`.
-- Use the optional `./scripts/optimize-images.sh` helper when adding/replacing photos.
-- Keep original full-resolution files as source of truth.
+- Heavy photos ship as `-800`/`-1200`/`-2000` `.webp` + `.jpg` variants inside `<picture>` elements; originals are kept as the re-encode source of truth.
+- Use `./scripts/optimize-images.sh -w WIDTH` when adding/replacing photos (800 = product cards, 1200 = gallery/build, 2000 = hero). **Never use cwebp `-near_lossless` on photos** — it backfired badly once (see `tasks/lessons.md`).
+- Every `<img>` must carry explicit `width`/`height` (CLS) and `decoding="async"`.
 - See `ARCHITECTURE.md` for the current image workflow.

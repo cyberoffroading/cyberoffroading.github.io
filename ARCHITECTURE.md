@@ -25,7 +25,7 @@ CyberOffroading.com is a single-page, static affiliate content site focused on C
 │   ├── roof-glass.html
 │   ├── winch-wiring.html
 │   └── trail-lift.html
-├── images/                    # ~112 MB raw (being actively optimized)
+├── images/                    # Originals + optimized -800/-1200/-2000 variants (originals kept as source of truth)
 ├── scripts/optimize-images.sh # Optional image optimization helper
 ├── worker/                    # Cloudflare Worker (separate deployment)
 ├── CNAME
@@ -54,7 +54,8 @@ Current nav order (as of 2026):
 - Hover prefetch for perceived speed.
 - Back/forward navigation works via `popstate`.
 - Legacy hash deep links (`#guide-vault` etc.) are redirected.
-- Twitter widgets and Lucide icons (when present) are re-initialized inside the modal.
+- Twitter widgets are re-initialized inside the modal (Lucide was removed in Phase 0; the two icons are inline SVGs in `js/main.js`).
+- Race-safe: each open carries a token so a slow fetch can't repopulate a modal the user already closed; closing a modal-pushed guide uses `history.back()` so the back button never re-opens a dismissed guide.
 
 This system is elegant and has proven very effective.
 
@@ -66,37 +67,37 @@ Every product card with `data-product-id` gets two interactive elements injected
 - Public click counter (affiliate link clicks)
 
 **Client behavior**:
-- Optimistic UI updates + localStorage for "I have voted" state.
-- On click: `fetch` to the worker (POST for votes, `sendBeacon` for clicks).
-- Counts are fetched once on page load from `/votes`.
+- Optimistic UI updates + localStorage for "I have voted" state (guarded with try/catch — Safari Private Mode degrades to session-only state instead of crashing the script).
+- On click: `fetch` to the worker (POST for votes, `sendBeacon` for clicks), then the count is reconciled with the server's authoritative response (the per-IP limit can reject the optimistic +1).
+- Counts are fetched once per page load from `/votes`, deferred via `requestIdleCallback`; vote buttons stay disabled until real counts arrive.
 
 **Backend** (`worker/index.js`):
 - Deployed separately as a Cloudflare Worker (`cyberoffroading-votes.chaukevin.workers.dev`).
-- Uses Workers KV (`VOTES` binding).
+- Uses Workers KV (`VOTES` binding) with **per-product keys** (`count:${id}`, `clicks:${id}`) so concurrent writes to different products never collide. Same-product increments can still race (KV has no compare-and-swap); exact counters would need Durable Objects — accepted limitation at this traffic level.
 - Endpoints:
-  - `GET /votes` → `{ votes, clicks }`
-  - `POST /vote/:id` and `/unvote/:id` (IP-based rate limiting, 1 vote per IP per product, 365 day TTL)
-  - `POST /click/:id` (fire-and-forget)
-- CORS restricted to the main domain + localhost.
+  - `GET /votes` → `{ votes, clicks }` (60s in-isolate cache + `Cache-Control: max-age=60`)
+  - `POST /vote/:id` and `/unvote/:id` (1 vote per IP per product, 365 day TTL)
+  - `POST /click/:id` (fire-and-forget; GET is rejected so crawlers can't inflate the counter)
+- Product IDs validated against `^[a-z0-9-]{1,64}$` — junk IDs get a 400.
+- CORS exact-matches the production origins (+ localhost/127.0.0.1 on any port for dev).
 - Full documentation lives in `worker/README.md`.
 
-**Privacy note**: Only composite keys (`voted:${ip}:${productId}`) are stored. No raw IPs or other PII.
+**Privacy note**: Voter identity is stored as `voted:${sha256(ip + ':' + productId)}` — no plaintext IPs anywhere in KV.
 
 ### 3. Image Optimization Workflow
 
 **Problem**: Original phone exports and Amazon downloads were 5–7 MB each. Total `images/` was ~112 MB.
 
-**Solution** (Phase 1):
-- `scripts/optimize-images.sh` — a simple, well-documented Bash helper using ImageMagick (`magick`) + `cwebp`.
-- For any input image it produces:
-  - `name-1600.webp` (primary, high quality)
-  - `name-1600.jpg` (fallback)
+**Solution** (redone correctly 2026-06-10; the first attempt was reverted — see `tasks/lessons.md`):
+- `scripts/optimize-images.sh -w WIDTH input.jpg` — Bash helper using ImageMagick (`magick`) + `cwebp` with **plain lossy WebP** (`-q 80`). The original attempt used `-near_lossless 60`, which is for screenshots/graphics and produced WebPs 3–4× larger than the JPEG fallback on photos.
+- Width tiers: hero/full-bleed **2000**, gallery/build photos **1200**, product cards **800**.
+- For each input it produces `name-WIDTH.webp` (primary) + `name-WIDTH.jpg` (fallback).
+- HTML uses `<picture><source type="image/webp" srcset="...webp"><img src="...jpg" width=... height=... loading="lazy" decoding="async"></picture>`.
 - Script is **optional**. You can still commit raw images if needed.
-- HTML is updated with `srcset` + `sizes` + explicit `width`/`height`.
 
-**Current status**: Hero, winch build cluster, major gallery images, flat-tire lifestyle, and several product shots have been optimized. The script + pattern is established for future work.
+**Current status**: Every heavy photo referenced by `index.html` and the guides is optimized. Homepage full-scroll image payload dropped from ~90 MB to ~12 MB; the LCP hero is a 1.06 MB WebP, preloaded with `fetchpriority="high"`. Every `<img>` site-wide has explicit `width`/`height` (zero CLS). Dedicated 1200×630 social images live in `images/social/`.
 
-**Recommendation**: Always keep originals. Run the optimizer on new/replacement photos.
+**Recommendation**: Always keep originals. Run the optimizer (with the right `-w` tier) on new/replacement photos.
 
 ### 4. Design System (css/style.css)
 
@@ -117,7 +118,9 @@ No border-radius anywhere.
 - **Back-to-top button**: Appears after scrolling past hero (IntersectionObserver).
 - **Two promo bars**: Tesla-Essentials cross-promo + "Built by Kevin" attribution.
 - **Events section**: Currently just an outbound link to cybertrexevents.com.
-- **404.html**: Functional but uses inline styles (minor inconsistency).
+- **404.html**: Uses the shared design system (`error-page` classes in `style.css`).
+- **Accessibility**: skip link, `role="dialog"`/`aria-modal` on modal + lightbox, labelled vote buttons/click counters, shared polite live region for vote feedback, full `prefers-reduced-motion` coverage, ≥44px touch targets on interactive chips and mobile nav pills.
+- **SEO**: Article JSON-LD + Twitter cards + og:image on all 5 guides; dedicated social-share images; per-page `lastmod` in sitemap.xml.
 
 ## Development & Contribution
 
@@ -143,22 +146,21 @@ No border-radius anywhere.
 - **Worker**: Separate Cloudflare Workers deployment (see `worker/wrangler.toml` and `worker/README.md`).
 - DNS / SSL / caching rules managed in Cloudflare dashboard.
 
-## Known Gaps / Future Work (as of 2026)
+## Known Gaps / Future Work (as of 2026-06)
 
-From the original 2026 analysis plan:
-
-- **Phase 2** (current): Finish updating `CLAUDE.md`, consider a small `CONTRIBUTING.md`.
-- **Phase 3**: `aria-live` regions for vote/click counters, improve 404.html, deeper accessibility audit of modals/lightbox.
-- **Phase 4**: JSON-LD structured data for products + articles. Add Cloudflare Web Analytics.
-- **Phase 5**: Consider self-hosting the 3 Lucide icons or locking the Twitter widget version.
-- Continue image optimization until `images/` is under ~30–40 MB total.
+- **Deploy the hardened worker**: `worker/index.js` (validation, hashed IPs, per-product keys, exact CORS) is tested locally but needs `npx wrangler login` + `npx wrangler deploy` from the worker directory.
+- **Cloudflare Web Analytics**: one privacy-friendly `<script>` in `<head>` — still not added.
+- **Exact counters**: KV increments can still race per product; migrate to Durable Objects/D1 only if vote volume ever makes it matter.
+- **AVIF tier**: `<picture>` makes adding an AVIF `<source>` trivial if further savings are wanted.
+- **Self-host fonts**: Google Fonts CSS is still a render-blocking third-party request.
+- **Lock/lazy-load the Twitter widget** (only needed inside guide modals).
 
 ## Related Documents
 
 - `tasks/todo.md` — Living prioritized backlog with review notes.
 - `tasks/lessons.md` — Institutional memory and process rules.
 - `worker/README.md` — Worker API contract, privacy model, deployment.
-- `PLAN.md` — Original 2024 vision (historical reference only).
+- `ORIGINAL-PLAN-2024.md` — Original 2024 vision (historical reference only).
 - `css/style.css` and `js/main.js` — Heavily commented.
 
 ---

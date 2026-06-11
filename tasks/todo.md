@@ -244,3 +244,82 @@ Next phase decision:
 - All changes followed the project's own rules (minimal diffs, lessons captured, tasks updated, verification via local preview).
 
 **Next work** is now optional refinement rather than urgent remediation.
+
+---
+
+## Revert Record (2026-05-28, commit a007b6c) — late entry
+
+The same-day revert was never logged here. For the record:
+- **Rolled back all Phase 1 image work** (28 `-1600.{jpg,webp}` files + srcset). Root cause: `cwebp -near_lossless 60` in `scripts/optimize-images.sh` is a near-lossless preprocessing mode meant for graphics/screenshots — on 24 MP photos it preserves sensor noise and produced WebPs **3–4× larger than the JPEG fallbacks**.
+- Dropped the Product JSON-LD block (affiliate cards without offers/brand are borderline spam).
+- Dropped `aria-live` from click counters (kept on vote counts).
+- Consequence: the site is back to serving ~90 MB of images on the homepage, including a 7.4 MB eager-loaded hero that is also the `og:image`. Several docs (ARCHITECTURE.md, CLAUDE.md, this file, lessons.md) still claim the optimized state.
+
+---
+
+## Full Review Backlog (2026-06-10) — four-agent audit (perf / code / UX-a11y / SEO-docs)
+
+### R1 — Performance: redo image optimization correctly (biggest win by far)
+Homepage references 67 images totaling ~90 MB; ~16 phone exports (3000–5712px) account for ~70 MB, displayed in ≤700px cards.
+- [x] Fix `scripts/optimize-images.sh:82-83`: **remove `-near_lossless 60`**, use plain lossy `cwebp -q 80 -mt -af`. Verified on the hero: 7.44 MB → **0.64 MB @1600w / 0.94 MB @2000w** (vs 1.76 MB with the buggy flag).
+- [x] Per-tier widths: hero 2000w, gallery/winch 1200w, product cards 800w. Re-run on the ~16 heavy phone exports, re-wire `srcset`. Expected: homepage payload 90 MB → ~8–10 MB.
+- [x] Add `width`/`height` to all 71 `<img>` tags (CLS); `fetchpriority="high"` + `<link rel="preload" as="image">` for the hero (LCP).
+- [x] Dedicated ~1200×630 social image (<300 KB) for `og:image`/`twitter:image` — current 7.4 MB og:image exceeds Twitter's 5 MB limit (card silently fails).
+- [x] (Optional) Self-host the two Google Fonts woff2 to remove render-blocking third-party CSS.
+
+### R2 — Worker correctness & abuse hardening (`worker/index.js`)
+- [x] **No product-ID validation** — any `POST /vote/<junk>` pollutes the single monolithic `counts`/`clicks` KV blob (25 MB value limit = DoS vector). Validate `^[a-z0-9-]{1,64}$` minimum; ideally an allowlist.
+- [x] **Lost-update race**: counters are read-modify-write on one KV key with no CAS; concurrent votes/clicks silently drop. Per-product keys as stopgap; Durable Objects/D1 for correct counts.
+- [x] `/click` accepts **GET** — crawlers/prefetchers inflate the click counter. Drop GET (client uses sendBeacon POST).
+- [x] CORS check uses `origin.startsWith(...)` — `https://cyberoffroading.com.evil.io` passes. Use exact match.
+- [x] README claims "IPs never stored in plaintext" but KV keys are `voted:${ip}:${productId}`. Hash the IP or fix the doc.
+
+### R3 — Client JS bugs (`js/main.js`)
+- [x] `JSON.parse(localStorage.getItem('voted'))` at line ~389 is unguarded — **throws in Safari Private Mode and kills voting + click tracking init**. Wrap in try/catch; guard all storage writes.
+- [x] Guide modal fetch race: rapid open/close/back-forward shows stale content or re-opens a closed modal. Add a request generation token; invalidate on close.
+- [x] `closeGuide` does `pushState('/')` — Back then re-opens the guide just dismissed and history grows unboundedly. Use `history.back()` when the modal pushed the entry.
+- [x] Optimistic vote UI ignores the worker response (429 on per-IP duplicate) — counts desync. Reconcile from the returned count.
+- [x] Vote click before counts load: `parseInt('—')||0` → shows "1". Disable vote buttons until counts arrive.
+
+### R4 — Accessibility (top items from full audit)
+- [x] Skip link (`.sr-only` util exists at style.css:1452 but is unused).
+- [x] Vote button has no accessible name; click counter is an unlabelled number. Add `aria-label`s.
+- [x] `role="dialog" aria-modal="true"` + `aria-labelledby` missing on both `#guideModal` and `#galleryLightbox`.
+- [x] FTC affiliate disclosure only in footer — surface a one-liner near the top (owner-bar) per "clear and conspicuous" guidance.
+- [x] `↗` external-link arrow (`css:624`) shows on *internal* CTAs (404 "Back to Base Camp", in-page guide links). Suppress for internal links; add "opens in new tab" hint for AT on real external ones.
+- [x] Footer copyright `--steel-edge` on dark = 1.7:1 contrast. Use `--stainless-dim`.
+- [x] Vote/click chips ~30px tall (44px iOS minimum); nav pills ~40px. Bump padding.
+- [x] `prefers-reduced-motion` misses `cardFallback`, gallery reveal, hover scales.
+
+### R5 — SEO quick wins
+- [x] Twitter card tags missing on all 5 guides; og:image missing on roof-glass + winch-wiring.
+- [x] sitemap.xml lastmod hardcoded 2026-05-20 for all pages — set per-page from git (`/` → 2026-05-28, winch-wiring → 2026-05-08, others → 2026-04-29).
+- [x] Article JSON-LD on the 5 guides (genuine editorial content, unlike the reverted Product schema) with dates matching the visible "Last verified" lines.
+- [x] Trim index.html meta description to ≤160 chars.
+
+### R6 — Docs/repo hygiene (post-revert sweep)
+- [x] ARCHITECTURE.md: §3 image claims, Lucide references (lines ~57, 153), 404 "inline styles" claim, `PLAN.md` rename — all stale.
+- [x] Root CLAUDE.md line ~60 ("growing number of `-1600.webp` variants") — false, zero exist. Line 26 `PLAN.md` rename.
+- [x] tasks/lessons.md: capture the `-near_lossless` lesson (its own rules require it); fix lines 39-40, 56-66.
+- [x] `git rm --cached worker/CLAUDE.md` (matches `**/CLAUDE.md` ignore but is still tracked → perpetual dirty status).
+- [x] CONTRIBUTING.md line 20 srcset guidance — re-state with corrected settings.
+
+---
+
+## Execution Review (2026-06-10) — "fix it all" pass
+
+All R1–R6 items above executed and verified. Earlier unchecked items in Phases 1–4 are superseded by this pass.
+
+**R1 Performance** — `optimize-images.sh` rewritten (lossy `-q 80`, tiered `-w`, WebP from lossless intermediate, auto-orient). 40 photos re-encoded into 800/1200/2000 variants. Homepage full-scroll image payload: **~90 MB → 11.6 MB** (verified by script summing actual browser-fetched variants). Hero LCP: 7.4 MB → **1.06 MB WebP**, preloaded with `fetchpriority="high"`. 33 `<picture>` conversions; every `<img>` on every page has `width`/`height` + `decoding="async"`. Dedicated `images/social/og-home.jpg` + `og-winch.jpg` (1200×630, <300 KB).
+
+**R2 Worker** — validation (`^[a-z0-9-]{1,64}$`), exact-origin CORS, POST-only `/click`, SHA-256-hashed IP keys, per-product counters with lazy migration from legacy blobs, 60s caching. 13/13 local `wrangler dev` tests pass (incl. evil-origin CORS, traversal, dup-vote 429, legacy migration). **NOT yet deployed — needs `npx wrangler login` + `npx wrangler deploy`** (API contract unchanged; old worker keeps working meanwhile).
+
+**R3 Client JS** — localStorage guarded (Safari Private Mode no longer kills voting/click-tracking), guide-modal fetch race fixed with request tokens, `closeGuide` uses `history.back()` for modal-pushed entries, vote counts reconcile with server response (429 reverts the optimistic +1), vote buttons disabled until counts load, focus trap re-queries visible elements. `node --check` clean.
+
+**R4 Accessibility** — skip link, `role="dialog"`/`aria-modal`/labels on modal + lightbox (incl. aria-hidden toggling on lightbox), vote buttons get dynamic aria-labels + shared polite live region, click counters get sr-only context, FTC disclosure added to owner-bar, internal CTAs no longer show the external arrow (and the arrow now reads "(opens in new tab)" to SRs via content alt-text), footer copyright contrast fixed, 44px touch targets on chips + mobile nav pills, full reduced-motion coverage.
+
+**R5 SEO** — Twitter cards + og:image on all 5 guides, valid Article JSON-LD on all 5 (validated), og:image no longer the 7.4 MB hero, meta description ≤160 chars, sitemap lastmod = 2026-06-10 (all pages touched today).
+
+**R6 Hygiene** — ARCHITECTURE.md / CLAUDE.md / CONTRIBUTING.md rewritten to post-revert + post-fix reality, revert lesson + new-pass lesson recorded in lessons.md, `worker/CLAUDE.md` untracked (`git rm --cached`).
+
+**Verification** — 143 image refs across all pages resolve on disk; HTML structure parse clean; sitemap XML valid; JS syntax-checked; worker tested via local wrangler. Remaining manual step besides worker deploy: a real-device Lighthouse run after push.

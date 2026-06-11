@@ -17,7 +17,7 @@ Just open a PR. Mention it in the commit message.
 ### 2. Adding or updating a product
 See the "Adding Products (2026)" section in [CLAUDE.md](CLAUDE.md).
 
-**Strong recommendation**: Run `./scripts/optimize-images.sh` on any new photo and wire up `srcset`.
+**Strong recommendation**: Run `./scripts/optimize-images.sh -w 800` on any new photo (800 for product cards, 1200 for gallery/build shots) and wire it up with the `<picture>` pattern used by existing cards, including explicit `width`/`height`.
 
 ### 3. Documentation / Architecture
 - Update `ARCHITECTURE.md` when changing major systems (modal behavior, worker, image workflow, etc.).
