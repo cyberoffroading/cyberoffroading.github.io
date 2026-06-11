@@ -9,33 +9,59 @@ It is **completely optional** for the core site experience. If the worker is dow
 - **Platform**: Cloudflare Workers + Workers KV
 - **Binding**: `VOTES` (KV namespace)
 - **Production URL**: `https://cyberoffroading-votes.chaukevin.workers.dev`
-- **CORS**: Restricted to `cyberoffroading.com` + localhost for development
+- **CORS**: Exact-match allowlist — `https://cyberoffroading.com` and `https://www.cyberoffroading.com`. For local dev, `http://localhost` / `http://127.0.0.1` on **any port** is allowed (the Origin header is parsed as a URL; no prefix matching, so lookalike domains like `cyberoffroading.com.evil.io` are rejected). All responses include `Vary: Origin`.
 
 ## Endpoints
 
 | Method | Path                  | Purpose                              | Notes |
 |--------|-----------------------|--------------------------------------|-------|
-| GET    | `/votes`              | Returns `{ votes: {...}, clicks: {...} }` | All public counters |
+| GET    | `/votes`              | Returns `{ votes: {...}, clicks: {...} }` | Cached 60s (in-worker + `Cache-Control: public, max-age=60`) |
 | POST   | `/vote/:productId`    | Increment vote count for a product   | Rate-limited (1 per IP per product, 365 days) |
-| POST   | `/unvote/:productId`  | Decrement vote (only if this IP previously voted) | Requires prior vote from same IP |
-| POST/GET | `/click/:productId` | Record an affiliate link click       | Fire-and-forget (uses `sendBeacon` from client) |
+| POST   | `/unvote/:productId`  | Decrement vote (only if this IP previously voted) | Clamped at 0; requires prior vote from same IP |
+| POST   | `/click/:productId`   | Record an affiliate link click       | **POST only** (client uses `sendBeacon`, which POSTs). GET returns 404. |
 
 All responses include appropriate CORS headers.
+
+### Product ID Validation
+
+Every `:productId` must match `/^[a-z0-9-]{1,64}$/` (lowercase kebab-case, e.g. `12k-winch`, `tire-deflators`). Anything else returns **400**. This blocks path traversal, uppercase/underscore IDs, and KV key abuse.
 
 ## KV Schema
 
 Keys stored in the `VOTES` namespace:
 
-- `counts` — JSON object: `{ "product-id": number }` (vote totals)
-- `clicks` — JSON object: `{ "product-id": number }` (affiliate click totals)
-- `voted:${ip}:${productId}` — String value `"1"`, TTL 365 days (anti-brigading / one-vote-per-IP-per-product)
+- `count:${productId}` — plain integer as a string (vote total for one product)
+- `clicks:${productId}` — plain integer as a string (click total for one product)
+- `voted:${sha256hex(ip + ':' + productId)}` — string value `"1"`, TTL 365 days (one-vote-per-IP-per-product rate limit)
+- `counts` / `clicks` — **legacy** monolithic JSON blobs `{ "product-id": number }`, kept read-only for migration (see below)
 
-IP is taken from `CF-Connecting-IP` header (Cloudflare edge).
+IP is taken from `CF-Connecting-IP` (Cloudflare edge). The IP is **only ever stored as a SHA-256 hash** combined with the product ID — never in plaintext.
+
+### Migration from Legacy Blobs
+
+Counters used to live in two monolithic JSON blobs (`counts`, `clicks`), which made concurrent writes to *different* products clobber each other. They are now per-product keys, migrated lazily:
+
+- **On write** (`/vote`, `/unvote`, `/click`): if `count:${id}` / `clicks:${id}` doesn't exist yet, the value is seeded from the legacy blob, then incremented and written as a per-product key.
+- **On read** (`/votes`): per-product keys are listed (`count:` / `clicks:` prefixes) and merged **over** the legacy blobs — for any id present in both, the per-product value wins.
+- The legacy blobs are never written again; once every product has been touched they're dead weight and can be deleted manually.
+- Old plaintext `voted:${ip}:${productId}` keys from before IP hashing are orphans — they simply expire via their 365-day TTL. Worst case, a previous voter can vote once more under the new hashed key. Acceptable.
+
+### Known Limitation: Same-Product Write Races
+
+Workers KV has no compare-and-swap. Two **concurrent** increments of the *same* product can still lose one update (read-modify-write race). This is an accepted limitation for low-stakes social-proof counters; exact counters would require Durable Objects. Per-product keys do guarantee that writes to **different** products never collide.
+
+## Caching
+
+`GET /votes` is cached two ways:
+
+1. **In-worker**: a module-scope cache of the merged payload, 60s TTL per isolate (invalidated within an isolate when that isolate handles a write).
+2. **HTTP**: `Cache-Control: public, max-age=60` so browsers/CDN reuse the response.
+
+Counters may therefore lag up to ~60s. Fine for this use case.
 
 ## Privacy Note
 
-- IP addresses are **never stored in plaintext**.
-- The only IP-derived data is the composite key `voted:${ip}:${productId}` used solely for rate limiting.
+- IP addresses are **never stored in plaintext** — only SHA-256 hashes of `ip:productId`, used solely for rate limiting.
 - This data expires after 365 days.
 - No other personal data is collected by this worker.
 - The main site itself uses no third-party analytics cookies (Cloudflare Web Analytics is planned but not yet implemented).
@@ -46,12 +72,18 @@ If you are privacy-sensitive, you can safely block the worker domain; the site r
 
 ```bash
 cd worker
-wrangler dev
+npx wrangler dev --local
 ```
 
 This will start the worker on `http://localhost:8787`. Update `VOTE_API` in `js/main.js` temporarily during development if needed.
 
-You will need a KV namespace bound locally (see `wrangler.toml` for the production binding name).
+Local KV state lives under `.wrangler/`. To seed legacy-migration test data:
+
+```bash
+npx wrangler kv key put --binding=VOTES --local 'counts' '{"legacy-item":5}'
+npx wrangler kv key put --binding=VOTES --local 'clicks' '{"legacy-item":2}'
+npx wrangler kv key list --binding=VOTES --local
+```
 
 ## Deployment
 
@@ -66,7 +98,7 @@ After deploy, the new version is live immediately at the `.workers.dev` subdomai
 
 ## Adding a New Product
 
-1. Add a `data-product-id="your-new-id"` to the product card in `index.html`.
+1. Add a `data-product-id="your-new-id"` to the product card in `index.html` (must match `/^[a-z0-9-]{1,64}$/`).
 2. The worker needs **no changes** — it is generic and will create counts on first use.
 3. (Optional) Seed an initial count via the KV dashboard or a one-off curl if desired.
 
@@ -83,4 +115,4 @@ After deploy, the new version is live immediately at the `.workers.dev` subdomai
 
 ---
 
-**Last updated**: 2026-05 during 2026 analysis improvement pass.
+**Last updated**: 2026-06 hardening pass (CORS exact-match, ID validation, hashed IP keys, per-product counters, POST-only /click, /votes caching).
