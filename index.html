@@ -40,7 +40,7 @@
   <!-- LCP: start fetching the hero during HTML parse -->
   <link rel="preload" as="image" type="image/webp" href="images/hero/IMG_2984-2000.webp" imagesrcset="images/hero/IMG_2984-1200.webp 1200w, images/hero/IMG_2984-2000.webp 2000w" imagesizes="100vw" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=11">
+  <link rel="stylesheet" href="css/style.css?v=12">
 </head>
 <body>
 
@@ -55,6 +55,7 @@
         <source type="image/webp" srcset="images/hero/IMG_2984-1200.webp 1200w, images/hero/IMG_2984-2000.webp 2000w" sizes="100vw">
         <img src="images/hero/IMG_2984-2000.jpg" srcset="images/hero/IMG_2984-1200.jpg 1200w, images/hero/IMG_2984-2000.jpg 2000w" sizes="100vw" width="2000" height="1500" alt="Cybertruck on an off-road trail" loading="eager" fetchpriority="high">
       </picture>
+      <div class="hero__duotone" aria-hidden="true"></div>
     </div>
     <div class="hero__vignette" aria-hidden="true"></div>
     <div class="hero__glow hero__glow--cyan" aria-hidden="true"></div>
@@ -1067,7 +1068,7 @@
       </svg>
     </div>
     <div class="site-footer__inner">
-      <p class="wordmark site-footer__brand flick"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></p>
+      <img class="site-footer__brand" src="images/brand/hero-mark.png" width="300" height="84" alt="CyberOffroading" loading="lazy" decoding="async">
       <div class="site-footer__links">
         <a href="https://discord.gg/8QUfBsZeCC" target="_blank" rel="noopener noreferrer">EV Off-roading Discord</a>
         <a href="#top">Back to Top</a>

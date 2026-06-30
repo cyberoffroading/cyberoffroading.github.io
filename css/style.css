@@ -317,7 +317,21 @@ img {
   height: 100%;
   object-fit: cover;
   object-position: 50% 88%;
-  opacity: 0.6;
+  opacity: 0.62;
+  /* Neon-lit night: strip the photo's native color so the cyan/red light
+     (.hero__duotone + glow pools) reads as the only chroma cast on the scene. */
+  filter: grayscale(1) brightness(0.8) contrast(1.05);
+}
+
+/* Diagonal neon duotone — cyan light from the upper-left, red from the lower-
+   right, screen-blended onto the now-grayscale photo. */
+.hero__duotone {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(0, 140, 180, 0.55), rgba(8, 9, 10, 0.10) 60%, rgba(255, 42, 42, 0.18));
+  mix-blend-mode: screen;
 }
 
 /* Top-down darkening gradient (suppresses busy forest behind the wordmark) */
@@ -1562,6 +1576,13 @@ img {
 
 .site-footer__brand {
   margin-bottom: 24px;
+}
+
+/* Footer brand logo — the neon hero-mark triangle (replaces the text wordmark) */
+img.site-footer__brand {
+  display: block;
+  width: clamp(220px, 38vw, 300px);
+  height: auto;
 }
 
 .site-footer__links {
