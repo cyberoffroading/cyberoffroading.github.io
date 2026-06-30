@@ -257,9 +257,6 @@ img {
 .owner-bar a span { color: var(--cyan); }
 .owner-bar a:hover { text-shadow: 0 0 10px rgba(0, 212, 255, 0.6); }
 
-/* FTC: affiliate disclosure — muted (de-emphasized; not an alarm) */
-.owner-bar__disclosure { color: var(--text-2); }
-
 /* Skip link — visually hidden until keyboard-focused */
 .skip-link {
   position: absolute;
@@ -1603,19 +1600,6 @@ img.site-footer__brand {
   padding-top: 24px;
 }
 
-.site-footer__meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 24px;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-mute);
-}
-
 .site-footer__copyright {
   font-size: 0.72rem;
   color: var(--text-2);
@@ -1937,7 +1921,7 @@ ol.step-list > li.step > p {
 .affiliate-card__disclosure {
   font-size: 0.66rem;
   letter-spacing: 0.04em;
-  color: var(--text-2); /* AA-safe — matches .owner-bar__disclosure; FTC copy must stay legible */
+  color: var(--text-2); /* AA-safe — FTC copy must stay legible */
   margin-bottom: 30px;
 }
 
