@@ -74,7 +74,9 @@ body {
   color: var(--text);
   background: var(--void);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* clip (not hidden) prevents horizontal scroll WITHOUT making <body> a
+     scroll container — which would break position:sticky on the guide nav. */
+  overflow-x: clip;
 }
 
 ::selection { background: var(--cyan); color: var(--void); }
@@ -210,6 +212,26 @@ img {
   text-shadow: 0 0 4px #fff, 0 0 14px #ffb3b3, 0 0 30px var(--red), 0 0 62px rgba(255, 42, 42, 0.46);
 }
 
+/* --- Brand mark (live inline SVG): cyan wedge + red ridge, two neon tubes.
+   Shipped inline (not <img>) so each tube glows + flickers on its own
+   timeline. Wrap the <svg> in .neon to light it; drop .neon for the flat
+   two-colour mono fallback. overflow:visible keeps the glow halo unclipped. */
+.co-mark { display: block; height: auto; overflow: visible; }
+.neon .mk-cyan {
+  stroke: var(--cyan-core);
+  filter: drop-shadow(0 0 1.5px #eafdff) drop-shadow(0 0 5px var(--cyan))
+          drop-shadow(0 0 13px var(--cyan)) drop-shadow(0 0 26px rgba(0, 212, 255, 0.5));
+}
+.neon .mk-red {
+  stroke: var(--red-core);
+  filter: drop-shadow(0 0 1.5px #ffd9d9) drop-shadow(0 0 5px var(--red))
+          drop-shadow(0 0 12px var(--red)) drop-shadow(0 0 24px rgba(255, 42, 42, 0.45));
+}
+.neon .mk-red circle { fill: var(--red-core); }
+/* Mark tubes flicker independently, reusing the wordmark's two timelines. */
+.flick-c { animation: nflick 7s linear infinite; }
+.flick-o { animation: nflick2 6.4s linear infinite 0.5s; }
+
 /* ============================================================
    TOP BAR (Tesla cross-promo)
    ============================================================ */
@@ -301,7 +323,9 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 88%;
+  /* Bias toward the truck (right) + the horizon line (upper-mid) so the
+     Cybertruck and sunset ridge stay framed on both wide and tall crops. */
+  object-position: 72% 42%;
   opacity: 0.62;
   /* Neon-lit night: strip the photo's native color so the cyan/red light
      (.hero__duotone + glow pools) reads as the only chroma cast on the scene. */
@@ -319,7 +343,9 @@ img {
   mix-blend-mode: screen;
 }
 
-/* Top-down darkening gradient (suppresses busy forest behind the wordmark) */
+/* Top-down darkening gradient. The salt-flat foreground is bright even after
+   grayscale, so the lower half is sunk hard to keep the bottom-anchored
+   wordmark + sub + CTAs legible; the horizon band stays the lightest. */
 .hero__bg::after {
   content: '';
   position: absolute;
@@ -327,11 +353,11 @@ img {
   z-index: 1;
   background: linear-gradient(
     180deg,
-    rgba(8, 9, 10, 0.97) 0%,
-    rgba(8, 9, 10, 0.64) 22%,
-    rgba(8, 9, 10, 0.40) 48%,
-    rgba(8, 9, 10, 0.66) 74%,
-    rgba(8, 9, 10, 0.97) 95%
+    rgba(8, 9, 10, 0.92) 0%,
+    rgba(8, 9, 10, 0.58) 24%,
+    rgba(8, 9, 10, 0.42) 46%,
+    rgba(8, 9, 10, 0.74) 72%,
+    rgba(8, 9, 10, 0.98) 96%
   );
 }
 
@@ -368,6 +394,7 @@ img {
   height: 52%;
   background: radial-gradient(ellipse, rgba(0, 212, 255, 0.16), transparent 70%);
   filter: blur(22px);
+  animation: glowPulse 9s ease-in-out infinite;
 }
 
 .hero__glow--red {
@@ -377,6 +404,14 @@ img {
   height: 46%;
   background: radial-gradient(ellipse, rgba(255, 42, 42, 0.12), transparent 72%);
   filter: blur(24px);
+  animation: glowPulse 7.5s ease-in-out infinite 1.2s;
+}
+
+/* Ambient breathing of the two glow pools — out of phase, like neon tubes
+   warming the dark. Atmosphere, not UI; disabled under reduced-motion. */
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.72; }
+  50% { opacity: 1; }
 }
 
 .hero__content {
@@ -645,6 +680,14 @@ img {
    ============================================================ */
 .article-card { cursor: pointer; }
 
+/* Article cards are editorial: dark image stage + a frame-filling cover
+   photo, instead of the brushed-steel product stage + contained shot. */
+.article-card .product-card__image { background: var(--void); }
+.article-card .product-card__image img {
+  object-fit: cover;
+  padding: 0;
+}
+
 /* Skip the fade-in entry animation for article cards — they sit near the
    top of the page and flashing invisible on reload is jarring. */
 .article-card.product-card {
@@ -718,7 +761,7 @@ img {
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--cyan);
-  text-shadow: 0 0 8px rgba(0, 212, 255, 0.35);
+  text-shadow: 0 0 5px rgba(0, 212, 255, 0.95), 0 0 15px rgba(0, 212, 255, 0.6);
   margin-bottom: 14px;
 }
 
@@ -726,7 +769,7 @@ img {
   width: 26px;
   height: 26px;
   flex: none;
-  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.55));
+  filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.7));
 }
 
 .section__header h2 {
@@ -734,7 +777,9 @@ img {
   display: inline-block;
   padding-bottom: 12px;
   color: var(--text-hi);
+  text-shadow: 0 0 24px rgba(0, 212, 255, 0.28);
 }
+.section__header--trail h2 { text-shadow: 0 0 24px rgba(255, 42, 42, 0.24); }
 
 .section__header h2::after {
   content: '';
@@ -851,7 +896,7 @@ img {
 .product-card {
   background: var(--panel);
   border: 1px solid var(--border);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+  clip-path: polygon(0 14px, 14px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
   overflow: hidden;
   opacity: 0;
   transform: translateY(20px);
@@ -871,7 +916,7 @@ img {
 
 .product-card:hover {
   border-color: var(--cyan);
-  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.4), 0 10px 34px rgba(0, 212, 255, 0.13);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.5), 0 14px 40px rgba(0, 212, 255, 0.18);
 }
 
 .product-card__image {
@@ -879,7 +924,11 @@ img {
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--void);
+  /* Brushed-steel "product stage" — white-background affiliate shots blend
+     into an intentional lightbox (on-brand Cybertruck stainless) instead of
+     floating as a white box on black. Article cards override to a dark cover
+     image, so this only applies to product shots. */
+  background: radial-gradient(circle at 50% 40%, #fbfbfc 0%, #e2e4e7 52%, #cccfd3 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -895,7 +944,8 @@ img {
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--cyan), transparent 60%);
-  opacity: 0.4;
+  opacity: 0.6;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
   z-index: 1;
 }
 
@@ -990,23 +1040,24 @@ img {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--void);
-  background: var(--cyan);
+  background: linear-gradient(180deg, #8af2ff 0%, #00d4ff 50%, #00a4cc 100%);
   border: 1px solid var(--cyan);
   padding: 13px 22px;
   margin-top: 4px;
   text-align: center;
-  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 18px rgba(0, 212, 255, 0.45);
-  transition: color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition: color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
   min-height: 44px;
 }
 
 .cta-button:hover {
   color: var(--void);
-  background: var(--cyan-hot);
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.85);
+  background: linear-gradient(180deg, #b3f6ff 0%, #46e2ff 50%, #00bfe9 100%);
+  box-shadow: 0 0 38px rgba(0, 212, 255, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
 }
 
 /* External link indicator. The alt-text `content` syntax gives screen
@@ -1035,7 +1086,8 @@ img {
 .cta-button--secondary:hover {
   color: #fff0f0;
   background: rgba(255, 42, 42, 0.16);
-  box-shadow: 0 0 24px rgba(255, 42, 42, 0.4), inset 0 0 18px rgba(255, 42, 42, 0.2);
+  box-shadow: 0 0 30px rgba(255, 42, 42, 0.55), inset 0 0 18px rgba(255, 42, 42, 0.22);
+  transform: translateY(-1px);
 }
 
 /* ============================================================
@@ -1472,15 +1524,15 @@ img {
 
 .guide-photo img {
   width: 100%;
-  max-width: 600px;
+  height: auto;
   display: block;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 212, 255, 0.32);
 }
 
 .guide-photo figcaption {
   font-size: 0.75rem;
   color: var(--text-2);
-  margin-top: 8px;
+  margin-top: 10px;
   font-style: italic;
 }
 
@@ -1492,7 +1544,108 @@ img {
 }
 
 .guide-photo-grid .guide-photo { margin: 0; }
-.guide-photo-grid .guide-photo img { max-width: 100%; }
+
+/* ============================================================
+   HUD CORNER BRACKETS — cyan targeting reticle framing imagery
+   ============================================================ */
+/* Field photos read like HUD-tagged recon shots: cyan L-brackets at the
+   top-left + bottom-right of the IMAGE. Anchored to <picture> (which wraps
+   only the image, not the caption) so the reticle frames the photo exactly,
+   over a faint cyan glow. Reusable as .hud-frame on any image-only wrapper. */
+.guide-photo picture {
+  position: relative;
+  display: block;
+  max-width: 600px;
+  line-height: 0;
+  box-shadow: 0 0 24px rgba(0, 212, 255, 0.12);
+}
+.guide-photo-grid .guide-photo picture { max-width: 100%; }
+.guide-photo picture img { max-width: 100%; }
+
+.hud-frame { position: relative; display: inline-block; line-height: 0; }
+
+.guide-photo picture::before,
+.guide-photo picture::after,
+.hud-frame::before,
+.hud-frame::after {
+  content: '';
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+  z-index: 2;
+  border: 0 solid var(--cyan);
+}
+.guide-photo picture::before,
+.hud-frame::before {
+  top: -2px;
+  left: -2px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  box-shadow: -2px -2px 10px rgba(0, 212, 255, 0.5);
+}
+.guide-photo picture::after,
+.hud-frame::after {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+  box-shadow: 2px 2px 10px rgba(0, 212, 255, 0.5);
+}
+/* Optional corner label, e.g. <span class="hud-frame__label">// REC</span> */
+.hud-frame__label {
+  position: absolute;
+  top: 6px;
+  left: 14px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+  pointer-events: none;
+}
+
+/* ============================================================
+   PARTS LIST / SPEC CALLOUT — cyan-tinted panel, dashed leaders
+   ============================================================ */
+/* Use as flex label/value rows (spec sheets, roundup cards) or wrap a
+   semantic <table class="guide-table"> to frame an article parts list. */
+.parts-list {
+  border: 1px solid var(--border-cyan);
+  background: rgba(0, 212, 255, 0.04);
+  padding: 18px clamp(16px, 3vw, 22px) 20px;
+  margin: 28px 0;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+.parts-list__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
+  margin-bottom: 14px;
+}
+.parts-list__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.85rem;
+}
+.parts-list__row:last-child { border-bottom: 0; }
+.parts-list__row .pl-name { color: var(--text); }
+.parts-list__row .pl-val { color: var(--cyan); white-space: nowrap; }
+/* When framing a semantic guide table: blend it in + dashed leaders */
+.parts-list .guide-table-wrap { margin: 0; }
+.parts-list .guide-table th { background: transparent; }
+.parts-list .guide-table th,
+.parts-list .guide-table td { border-bottom: 1px dashed var(--border); }
+.parts-list .guide-table tbody tr:last-child td { border-bottom: 0; }
 
 /* ============================================================
    BACK TO TOP
@@ -1559,15 +1712,13 @@ img {
   margin: 0 auto;
 }
 
+/* Footer brand logo — the live neon mark (cyan wedge + red ridge), or the
+   raster hero-mark.png fallback. Same footprint either way. */
 .site-footer__brand {
-  margin-bottom: 24px;
-}
-
-/* Footer brand logo — the neon hero-mark triangle (replaces the text wordmark) */
-img.site-footer__brand {
   display: block;
   width: clamp(220px, 38vw, 300px);
   height: auto;
+  margin-bottom: 24px;
 }
 
 .site-footer__links {
@@ -1604,6 +1755,293 @@ img.site-footer__brand {
   font-size: 0.72rem;
   color: var(--text-2);
   margin-top: 16px;
+}
+
+/* Footer sign-off bar: a small, desaturated flickering wordmark + meta line. */
+.site-footer__meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.site-footer__metaline {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+/* Desaturated footer wordmark — flickers (.flick) but reads as a dim sign. */
+.wordmark--footer .wordmark__cyber {
+  font-size: clamp(11px, 1.9vw, 13px);
+  color: #9fb9c0;
+  text-shadow: 0 0 4px rgba(159, 185, 192, 0.45);
+}
+.wordmark--footer .wordmark__off {
+  font-size: clamp(18px, 3.4vw, 22px);
+  color: #b06a6a;
+  text-shadow: 0 0 4px rgba(176, 106, 106, 0.45);
+}
+
+/* ============================================================
+   LISTING PAGES — page header, filter chips, card tags
+   (article index + gear roundups)
+   ============================================================ */
+.page-head { padding: clamp(34px, 5vw, 60px) 0 6px; }
+.page-head__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 5px rgba(0, 212, 255, 0.95), 0 0 15px rgba(0, 212, 255, 0.6);
+  margin-bottom: 18px;
+}
+.page-head__eyebrow--red {
+  color: var(--red-text);
+  text-shadow: 0 0 5px rgba(255, 42, 42, 0.92), 0 0 15px rgba(255, 42, 42, 0.55);
+}
+.page-head h1 {
+  font-size: clamp(30px, 6vw, 52px);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text-hi);
+  line-height: 1.1;
+  text-shadow: 0 0 28px rgba(0, 212, 255, 0.3);
+}
+.page-head--red h1 { text-shadow: 0 0 28px rgba(255, 42, 42, 0.28); }
+.page-head h1::after {
+  content: '';
+  display: block;
+  width: 62px;
+  height: 3px;
+  margin-top: 18px;
+  background: var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.7);
+}
+.page-head--red h1::after {
+  background: var(--red);
+  box-shadow: 0 0 12px rgba(255, 42, 42, 0.7);
+}
+.page-head__sub {
+  margin-top: 22px;
+  max-width: 620px;
+  color: var(--text-2);
+  line-height: 1.7;
+  font-size: 0.92rem;
+}
+
+/* Filter chips — angular, cyan-fill when active (canonical 7px chip cut) */
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 30px 0 36px;
+}
+.filter-chip {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border-steel);
+  clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, text-shadow 0.16s ease;
+}
+.filter-chip:hover {
+  color: var(--cyan-core);
+  border-color: rgba(0, 212, 255, 0.4);
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+}
+.filter-chip.active {
+  color: var(--void);
+  background: var(--cyan);
+  border-color: transparent;
+  font-weight: 600;
+  text-shadow: none;
+  box-shadow: 0 0 14px rgba(0, 212, 255, 0.45);
+}
+
+/* Small cyan category tag inside an article card */
+.article-card__tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.35);
+  margin-bottom: 8px;
+}
+/* Hidden by the filter (card not matching the active chip) */
+.article-card[hidden] { display: none; }
+
+.page-empty {
+  color: var(--text-mute);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  padding: 24px 0 48px;
+}
+
+/* "View all →" link in a homepage section header */
+.section__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-decoration: none;
+  transition: text-shadow 0.16s ease, gap 0.16s ease;
+}
+.section__more:hover {
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+  gap: 10px;
+}
+
+/* ============================================================
+   GEAR ROUNDUP — rating badge, tested-meta chips, how-we-test
+   ============================================================ */
+/* Roundup cards skip the scroll-reveal entry (no main.js on this page). */
+.roundup-grid .product-card {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* ---- Card list: readable horizontal rows (image left, details right) ----
+   Shared by the articles index + gear roundups. The grid parent is
+   .product-card on roundups but the inner <a> on article cards, so both are
+   targeted. Collapses to a stacked vertical card on narrow screens. */
+.guide-page .container--wide { max-width: 1000px; }
+
+/* Force a single column (beats the .product-grid responsive 2/3-col rules)
+   and drop the grid's own inset so rows align with the page header. */
+.product-grid.card-list {
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 0;
+}
+
+.card-list .product-card:not(.article-card),
+.card-list .article-card .article-card__link {
+  display: grid;
+  grid-template-columns: minmax(210px, 300px) 1fr;
+  align-items: stretch;
+}
+.card-list .article-card { display: block; }
+.card-list .product-card__image {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 210px;
+  border-bottom: none;
+  border-right: 1px solid var(--border);
+}
+.card-list .product-card__info {
+  justify-content: center;
+  padding: clamp(18px, 2.4vw, 28px);
+}
+@media (max-width: 620px) {
+  .card-list .product-card:not(.article-card),
+  .card-list .article-card .article-card__link {
+    grid-template-columns: 1fr;
+  }
+  .card-list .product-card__image {
+    aspect-ratio: 4 / 3;
+    height: auto;
+    min-height: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+/* Rating badge — cyan-outline square with a /10 field score, top-right */
+.rating-badge {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Dark base so the score stays legible over any product photo. */
+  background: rgba(8, 9, 10, 0.82);
+  border: 1px solid var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+}
+.rating-badge__score {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--cyan-core);
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+}
+.rating-badge__max {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+  margin-top: 2px;
+}
+
+/* Tested-meta chips under a roundup header */
+.meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+.meta-chip {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  padding: 7px 13px;
+  border: 1px solid var(--border-steel);
+  clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+}
+.meta-chip strong { color: var(--cyan); font-weight: 600; }
+
+/* "How we test" note — bordered band, red eyebrow */
+.test-note {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  padding: 22px clamp(18px, 3vw, 26px);
+  margin: 40px 0;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+.test-note__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--red-text);
+  text-shadow: 0 0 8px rgba(255, 42, 42, 0.3);
+  margin-bottom: 12px;
+}
+.test-note p {
+  color: var(--text-2);
+  line-height: 1.7;
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 /* ============================================================
@@ -1696,9 +2134,9 @@ img.site-footer__brand {
 /* ============================================================
    GUIDE PAGES (standalone)
    ============================================================ */
-.guide-page { padding-top: 40px; }
+.guide-page { padding-top: 0; }
 
-.guide-page .container { max-width: 820px; }
+.guide-page .container { max-width: 820px; padding-top: clamp(28px, 4vw, 44px); }
 
 .guide-back {
   display: inline-flex;
@@ -2047,7 +2485,9 @@ ol.step-list > li.step > p {
   .hero__content { animation: none; }
   .category-nav { animation: none; }
   .category-nav__brand { transition: none; }
-  .flick .wordmark__cyber, .flick .wordmark__off { animation: none; }
+  .flick .wordmark__cyber, .flick .wordmark__off,
+  .flick-c, .flick-o { animation: none; }
+  .hero__glow--cyan, .hero__glow--red { animation: none; }
 
   /* Reveal animations: show content immediately, no slide/fade */
   .product-card,
