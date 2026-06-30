@@ -306,6 +306,9 @@
   document.addEventListener('click', function(e) {
     var link = e.target.closest('a[data-guide-modal]');
     if (!link) return;
+    // No modal shell on this page (e.g. a standalone /guides/*.html page) —
+    // let the link navigate natively instead of swallowing the click.
+    if (!guideModal) return;
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
     e.preventDefault();
     openGuide(resolveGuidePath(link.getAttribute('href')), true);
@@ -313,6 +316,7 @@
 
   // Hover prefetch — pulls guide HTML into cache before the click lands.
   document.addEventListener('mouseover', function(e) {
+    if (!guideModal) return;
     var link = e.target.closest('a[data-guide-modal]');
     if (!link) return;
     var path = resolveGuidePath(link.getAttribute('href'));
@@ -357,6 +361,19 @@
       backBtn.classList.toggle('visible', !entries[0].isIntersecting);
     }, { threshold: 0 });
     topObserver.observe(hero);
+  }
+
+  // --- Nav brand wordmark reveal ---
+  // Keep the nav's neon wordmark hidden until the big hero wordmark scrolls
+  // out of view, then fade it in (the "sign hands off" effect).
+  var navBrand = document.querySelector('.category-nav__brand');
+  var heroWordmark = document.querySelector('.hero .wordmark--hero');
+  if (navBrand && heroWordmark && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries) {
+      navBrand.classList.toggle('revealed', !entries[0].isIntersecting);
+    }, { threshold: 0 }).observe(heroWordmark);
+  } else if (navBrand) {
+    navBrand.classList.add('revealed'); // no-IO fallback: always show
   }
 
   // --- Gallery scroll reveal ---
@@ -424,6 +441,10 @@
 
     galleryItems.forEach(function(item, i) {
       item.addEventListener('click', function() { openLightbox(i); });
+      // Keyboard support: gallery items are role="button" tabindex="0"
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+      });
     });
 
     lbClose.addEventListener('click', function(e) { e.stopPropagation(); closeLightbox(); });
@@ -489,7 +510,7 @@
     var info = card.querySelector('.product-card__info');
 
     var row = document.createElement('div');
-    row.className = 'product-card__stats';
+    row.className = 'product-card__stats is-loading';
 
     var btn = document.createElement('button');
     btn.className = 'vote-btn' + (votedProducts[id] ? ' voted' : '');
@@ -524,12 +545,17 @@
           btn.disabled = false;
           updateVoteLabel(btn);
         }
+        var statsRow = card.querySelector('.product-card__stats');
+        if (statsRow) statsRow.classList.remove('is-loading');
       });
     }).catch(function() {
-      // Worker unreachable: leave buttons disabled — votes couldn't persist anyway.
+      // Worker unreachable: leave buttons disabled — votes couldn't persist
+      // anyway — but stop the loading shimmer so the dash isn't stuck pulsing.
       productCards.forEach(function(card) {
         var btn = card.querySelector('.vote-btn');
         if (btn) btn.setAttribute('aria-label', 'Voting unavailable');
+        var statsRow = card.querySelector('.product-card__stats');
+        if (statsRow) statsRow.classList.remove('is-loading');
       });
     });
   }

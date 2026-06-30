@@ -323,3 +323,39 @@ All R1–R6 items above executed and verified. Earlier unchecked items in Phases
 **R6 Hygiene** — ARCHITECTURE.md / CLAUDE.md / CONTRIBUTING.md rewritten to post-revert + post-fix reality, revert lesson + new-pass lesson recorded in lessons.md, `worker/CLAUDE.md` untracked (`git rm --cached`).
 
 **Verification** — 143 image refs across all pages resolve on disk; HTML structure parse clean; sitemap XML valid; JS syntax-checked; worker tested via local wrangler. Remaining manual step besides worker deploy: a real-device Lighthouse run after push.
+
+---
+
+## Execution Review (2026-06-29) — "Night Trail" neon relight
+
+Full visual facelift from "Cold Steel Brutalism" to the **Night Trail neon** theme per `design_handoff_neon_relight/`. Information architecture + page layouts preserved; JS selector contract untouched (only a +4-line additive gallery keydown handler).
+
+**Built** — `css/style.css` rewritten to a co-primary cyan(#00d4ff)+red(#ff2a2a) token system on a dark void (#08090a) base; neon flickering wordmark (Audiowide "CYBER" + Yellowtail "Offroading"); IBM Plex Mono for all headings/UI (Chakra Petch dropped); glow earned only on interactive/brand. `index.html`: stacked neon hero (eyebrow+glow rule, dual cyan/red CTAs, blurred glow pools, scanlines), sticky nav with brand wordmark + co-primary pills (red on Recovery/Flat Tire/Winter/Events, cyan elsewhere), `// eyebrow` + inline category icon on all 11 section headers, footer with neon wordmark + faint mark watermark + meta bar. Neon-ized product cards (bottom-right notch clip-path + cyan hover glow), CTAs (cyan primary / red-outline secondary), callouts (red warning box / cyan info spec-box), gallery + lightbox, guide pages + in-page modal, 404. Guides×5 + 404: font-link swap (IBM Plex Mono 600 + Audiowide + Yellowtail, `display=swap` kept), `?v=9` cache-bust, footer wordmark. New assets: `images/icons/` (11 category SVGs) + `images/brand/`.
+
+**Reviewed** — 5-lens adversarial review workflow (fidelity / a11y / JS-integrity / cross-page / code-spec). **Zero P0; JS contract 100% intact; contrast + tap-targets + spec compliance all PASS.** Fixed: P1 focus rings invisible under `clip-path` (→ `clip-path:none` on `:focus-visible` + parent `:focus-within` un-clip for article cards) and gallery not keyboard-operable (→ `tabindex`/`role`/`aria-label` + Enter/Space keydown); P2 reduced-motion smooth-scroll, vote-btn focus ring, guide-modal `h2` size mismatch, redundant double-arrow on Events CTA.
+
+**Verified** — headless-Chrome screenshots of every section (desktop + mobile), footer, 404, guide standalone + in-page modal, plus a forced-focus ring test. Zero horizontal overflow (DOM-probed `scrollWidth == clientWidth`). Hero re-shot post-fixes: no regression.
+
+**Open decision for owner** — sticky nav is hero-first (nav appears on scroll), preserving the original IA, vs the prototype's persistent top header. Kept hero-first per "keep layout as-is"; trivially flippable to a top header if preferred.
+
+**Not done (out of scope)** — net-new "Gear roundup / comparison" content (a prototype feature, not part of relighting existing sections); favicon / app-icon / OG generation (separate older `claude-design-brief.txt`); commit/push (awaiting owner).
+
+---
+
+## Execution Review (2026-06-29) — Neon Phase 2 (extend the design language)
+
+Pushed the Night Trail language into richer components per the approved plan (`deep-giggling-bunny.md`). Four tracks. Two locked decisions honored: **no numeric ratings** (curated single-picks); **nav stays hero-first**, brand wordmark revealed only after the hero wordmark scrolls out.
+
+**Track A — Brand identity** (done earlier this session): integrated the user-provided `neon/` favicon/app-icon kit (regenerated the broken empty `favicon.svg` with `icon-512.png` embedded as a base64 data URI); `site.webmanifest` + full `<head>` wiring across all 7 pages.
+
+**Track C — Product cards** — `.product-card__pick` badges (cyan Editor / red Value) on recovery-boards + the rocky-talkies pair; `.product-card__specs` k/v rows on 7 cards (`tire-deflators`, `tankless-inflator-setup`, `rocky-talkies-5w`, `cabin-air-filter`, `12k-winch`, `power-supplies`, `starlink-power-adapter`) — values pulled verbatim from existing copy. Spec rows live in `.product-card__info` *before* the JS-appended `.product-card__stats`; badges in `.product-card__image`. **CSS+HTML only, no JS change; vote/click injection verified intact.**
+
+**Track B — Guide components** — 4 new GLOBAL (un-prefixed) components so they render identically standalone *and* in the injected modal: `ol.step-list` (CSS-counter numbered badges), `.affiliate-card` (mark thumb + blurb + red Check-price CTA + disclosure), `.author-box` (inline wedge+ridge mark avatar + "Built by Kevin / // Cyberbeast owner"), `.related` band (3 cross-link cards). Applied: author-box + related on all 5 guides; trail-lift `<ol>`→`.step-list`; winch 1 affiliate card; vault-seal 3 affiliate cards (adhesion-promoter kept in its info-callout, Tesla links kept as plain CTAs). **+1 small JS guard** so `a[data-guide-modal]` related-cards open in-modal on the homepage and navigate natively on standalone guide pages (no modal shell there).
+
+**Track D — Homepage + polish** — nav-brand reveal (IntersectionObserver on hero wordmark; already in place); `.category-grid` of 11 `.category-tile`s after #articles (cyan/red domain map = recovery/flat-tire/winter/events red; its own `.browse-section` class, NOT `.section`, so the scroll-spy doesn't blank the active pill over it); loading-skeleton shimmer on the `—` placeholders (`.product-card__stats.is-loading`, class removed by JS on *both* success and worker-failure so it never pulses forever).
+
+**Reviewed** — re-ran the 5-lens adversarial review workflow. **0 critical, 1 major, 1 minor, 4 nits.** JS/modal-contract + cross-page lenses 100% clean. Fixed the one real bug: `.affiliate-card__disclosure` used `--text-dim` (~3.1:1, fails AA + violates the token's "not for body copy" rule) → switched to `--text-2` (matches `.owner-bar__disclosure`). Nits left as intentional/out-of-scope (pre-existing site-wide hero-CTA arrow text + red hover tints; Editor/Value pick pair is plan-sanctioned curation, not ranking).
+
+**Verified** — headless-Chrome screenshots: Track C cards (badges + specs + stats below), all Track B components **inside a faithful modal harness** (injects `.guide-content` innerHTML into a `.guide-modal` shell — the harder context, since modal-scoped prose rules differ from `.guide-page`), category grid desktop (6-col) + mobile (2-col), step-list badges, skeleton shimmer vs loaded. DOM-probed `scrollWidth == clientWidth == 390` (no mobile overflow). Disclosure legibility re-shot post-fix. All cache versions bumped to `v=11`.
+
+**Not done** — branded OG cards (Track A tail — deferred, owner provides imagery); commit/push (awaiting owner).

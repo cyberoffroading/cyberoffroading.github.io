@@ -45,9 +45,18 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Audiowide&family=Yellowtail&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/style.css">
+  <!-- Favicons + app icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#08090a">
+
+  <link rel="stylesheet" href="../css/style.css?v=11">
 </head>
 <body class="guide-page">
   <div class="container">
@@ -67,13 +76,13 @@
 
     <h2>The Technique</h2>
 
-    <ol>
-      <li>Drive to flat ground.</li>
-      <li>Raise suspension to <strong>Very High</strong>.</li>
-      <li>Place a roughly <strong>9.5" length of 6x6 lumber</strong> under the A-arm of the flat tire.</li>
-      <li>Drop suspension to <strong>Low</strong> — as the truck settles, the A-arm presses down on the block and lifts that wheel off the ground.</li>
-      <li>Change the tire.</li>
-      <li>Set the truck to <strong>Extract Mode</strong> to lift off the block, then pull the block out.</li>
+    <ol class="step-list">
+      <li class="step"><p>Drive to flat ground.</p></li>
+      <li class="step"><p>Raise suspension to <strong>Very High</strong>.</p></li>
+      <li class="step"><p>Place a roughly <strong>9.5" length of 6x6 lumber</strong> under the A-arm of the flat tire.</p></li>
+      <li class="step"><p>Drop suspension to <strong>Low</strong> — as the truck settles, the A-arm presses down on the block and lifts that wheel off the ground.</p></li>
+      <li class="step"><p>Change the tire.</p></li>
+      <li class="step"><p>Set the truck to <strong>Extract Mode</strong> to lift off the block, then pull the block out.</p></li>
     </ol>
 
     <p>Total time per Nadia: about 20 minutes.</p>
@@ -92,6 +101,34 @@
       <p class="info-callout__label">&#9432; Safety</p>
       <p>Flat ground only — no slopes. Chock the opposite wheels before you start. Keep all body parts out from under the truck while it's lifted on a single block; the block is a lift point, not a jack stand. Use a solid hardwood block (not pine) sized so the A-arm contacts it cleanly without slipping. Confirm the suspension is fully settled before working on the wheel.</p>
     </div>
+
+    <div class="author-box">
+      <div class="author-box__avatar">
+        <svg viewBox="0 0 64 34" fill="none" aria-hidden="true"><path d="M2 30 L28 4 L62 24 Z" stroke="#00d4ff" stroke-width="3" stroke-linejoin="miter" style="filter:drop-shadow(0 0 3px rgba(0,212,255,.6))"/><path d="M9 27 L19 14 L28 22 L38 9 L52 20" stroke="#ff2a2a" stroke-width="2.5" stroke-linejoin="miter" stroke-linecap="square"/></svg>
+      </div>
+      <div>
+        <div class="author-box__name">Built by Kevin</div>
+        <div class="author-box__role">// Cyberbeast owner</div>
+      </div>
+    </div>
+
+    <div class="related">
+      <div class="related__label">// Related</div>
+      <div class="related__grid">
+        <a class="related__card" href="winch-wiring.html" data-guide-modal>
+          <div class="related__card-tag">Build</div>
+          <div class="related__card-title">Winch Wiring Guide — 240v AC</div>
+        </a>
+        <a class="related__card" href="vault-seal.html" data-guide-modal>
+          <div class="related__card-tag">Build</div>
+          <div class="related__card-title">Sealing the Cybertruck Vault</div>
+        </a>
+        <a class="related__card" href="cabin-air-filter.html" data-guide-modal>
+          <div class="related__card-tag">Tested</div>
+          <div class="related__card-title">Cabin Air Filters — OEM vs Aftermarket</div>
+        </a>
+      </div>
+    </div>
     </article>
 
   </div>
@@ -100,6 +137,7 @@
 
   <footer class="site-footer" style="margin-top: 80px;">
     <div class="site-footer__inner">
+      <p class="wordmark site-footer__brand flick"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></p>
       <div class="site-footer__links">
         <a href="../">Home</a>
         <a href="../#articles">All Articles</a>

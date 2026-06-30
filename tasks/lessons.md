@@ -101,6 +101,27 @@ The Phase 1 image pass used `-near_lossless 60`, a near-lossless preprocessing m
 
 ---
 
+## 2026-06-29 — "Night Trail" neon relight (full visual reskin)
+
+Re-skinned the entire site (Cold Steel → neon) by rewriting `css/style.css` to a new co-primary cyan+red token system while keeping every JS-contract selector intact. Built solo for design coherence (one stylesheet = one author), then ran a 5-lens adversarial review *workflow* (fidelity / a11y / JS-integrity / cross-page / code-spec): zero P0, fixed 2 a11y P1s + 4 P2s it surfaced.
+
+- **`clip-path` clips `box-shadow` AND `outline`.** A `:focus-visible` ring drawn with `box-shadow` on a clip-path'd element is invisible — the old "box-shadow ring prevents clipping" assumption was backwards. **Rule:** set `clip-path: none` on `:focus-visible` (a clean square ring suits the zero-radius aesthetic); when a *parent* does the clipping (`.article-card__link` inside `.product-card`), un-clip the parent via `:focus-within { clip-path:none; overflow:visible }`. Verify with an `autofocus`'d control screenshot — headless treats autofocus as keyboard focus.
+- **Flex items overflow on mobile via default `min-width:auto`.** A `white-space:nowrap` hero wordmark forced `.hero__content` wider than the viewport (a flex child won't shrink below its intrinsic content width). **Rule:** add `min-width:0` to flex children holding wide nowrap content; confirm with a DOM probe (`documentElement.scrollWidth == clientWidth`), not by eyeballing screenshots.
+- **Visual verification pipeline (this repo):** `python3 -m http.server` + headless Chrome `--screenshot`, then Read the PNG. Both `--headless` and `--headless=new` capture **viewport-only**, so for full-page use a *tall* viewport (`--window-size=1440,21000 --virtual-time-budget=25000`) — that loads `loading=lazy` images and fires IntersectionObserver reveals — then `magick IN -crop 1440xH+0+OFFSET` into readable bands. Measure true height with an iframe probe AFTER images load (a short iframe undercounts: collapsed lazy-image boxes). `?query` cache-busts between shots.
+
+---
+
+## 2026-06-29 — Neon Phase 2 (extend the design language into richer components)
+
+Added guide-detail components (step-list, affiliate card, author box, related band), product-card pick badges + spec rows, a homepage category grid, and loading skeletons. 5-lens review came back 0 critical / 1 major — the major was a `--text-dim` (decorative token, ~3.1:1) used for the FTC affiliate disclosure; swapped to `--text-2` to match `.owner-bar__disclosure`.
+
+- **The guide modal injects ONLY `.guide-content`'s `innerHTML`** (`main.js` does `contentEl.innerHTML` → `#guideModalContent`). So the `.guide-content` wrapper itself is NOT in the modal, and the existing prose CSS is *duplicated* as `.guide-page X` AND `.guide-modal X` (different scopes, slightly different values). **Rule:** any component that must look identical standalone and in-modal needs **GLOBAL, un-prefixed** CSS (like `.info-callout`) — never `.guide-page`/`.guide-content`-scoped — and should use `<div>`s, not bare `<p>`/`<li>`, to dodge the scoped prose rules (or override them globally, e.g. `ol.step-list > li.step > p { margin:0 }`). Verify in a harness that injects the fragment into a real `.guide-modal` shell, because the `.guide-modal`-scoped rules are the ones the standalone screenshot does NOT exercise.
+- **A delegated `data-guide-modal` handler that `preventDefault()`s then opens a modal becomes a DEAD LINK on any page without the modal shell.** Standalone `/guides/*.html` have no `#guideModal`, so a related-card there would be swallowed (preventDefault fires, `openGuide` early-returns). **Rule:** guard delegated modal handlers with `if (!guideModal) return;` *before* `preventDefault` so the link falls through to native navigation — progressive enhancement: modal where the shell exists, real nav where it doesn't. (Guides don't even load `main.js` today, but the guard is correct belt-and-suspenders.)
+- **A loading shimmer keyed off a "loading" class must clear that class on the FAILURE path too, not just success.** Keying the skeleton off `.is-loading` removed only in the fetch `.then()` leaves it pulsing forever when the worker is unreachable (the existing `.catch` left buttons disabled). **Rule:** remove the loading-state class in BOTH the success and `catch` branches (and respect `prefers-reduced-motion` with a static fallback for the placeholder).
+- **A new homepage `<section>` that the nav scroll-spy shouldn't track must NOT use `class="section"`.** `main.js` does `querySelectorAll('.section')` and activates the pill matching the last in-view section id; a `.section` with no matching pill blanks the active pill while scrolled over it. **Rule:** give non-tracked bands their own class (e.g. `.browse-section`) and replicate only the spacing — keep them out of the `.section` set.
+
+---
+
 ## Future Entries
 
 (Added after real corrections or user feedback during implementation)
