@@ -210,18 +210,6 @@ img {
   text-shadow: 0 0 4px #fff, 0 0 14px #ffb3b3, 0 0 30px var(--red), 0 0 62px rgba(255, 42, 42, 0.46);
 }
 
-/* Mini scale — desaturated, footer meta bar */
-.wordmark--mini .wordmark__cyber {
-  font-size: 13px;
-  color: #9fb9c0;
-  text-shadow: none;
-}
-.wordmark--mini .wordmark__off {
-  font-size: 22px;
-  color: #b06a6a;
-  text-shadow: none;
-}
-
 /* ============================================================
    TOP BAR (Tesla cross-promo)
    ============================================================ */
