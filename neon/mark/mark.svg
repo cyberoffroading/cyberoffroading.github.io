@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 169" width="1200" height="169" fill="none" role="img" aria-label="CyberOffroading mark">
+  <defs><clipPath id="coWedge"><path d="M0,159 L480,10 L1200,105 Z"></path></clipPath></defs>
+  <g class="mk-cyan" stroke="#00d4ff" stroke-width="7" stroke-linejoin="miter"><path d="M0,159 L480,10 L1200,105 Z"></path></g>
+  <g class="mk-red" clip-path="url(#coWedge)" stroke="#ff2a2a" stroke-width="6" stroke-linejoin="miter">
+    <path d="M130,150 L235,106 L345,140 L470,42 L590,132 L705,74 L825,128 L945,100 L1065,126 L1165,114"></path>
+    <circle cx="470" cy="42" r="8" fill="#ff2a2a" stroke="none"></circle>
+  </g>
+</svg>
