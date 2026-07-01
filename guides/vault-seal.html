@@ -56,13 +56,13 @@
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#08090a">
 
-  <link rel="stylesheet" href="../css/style.css?v=29">
+  <link rel="stylesheet" href="../css/style.css?v=30">
 </head>
 <body class="guide-page">
 
   <nav class="category-nav" aria-label="Site">
     <div class="category-nav__bar">
-      <a href="../" class="wordmark category-nav__brand revealed" aria-label="CyberOffroading — home"><picture><source srcset="../images/brand/wordmark-nav.webp" type="image/webp"><img class="category-nav__brand__img" src="../images/brand/wordmark-nav.png" width="849" height="235" alt="" decoding="async"></picture></a>
+      <a href="../" class="wordmark category-nav__brand revealed" aria-label="CyberOffroading — home"><span class="nav-brand-stack"><picture><source srcset="../images/brand/wordmark-nav-cyber.webp" type="image/webp"><img class="nav-brand-layer flick-c" src="../images/brand/wordmark-nav-cyber.png" width="849" height="235" alt="" decoding="async"></picture><picture><source srcset="../images/brand/wordmark-nav-red.webp" type="image/webp"><img class="nav-brand-layer nav-brand-layer--over flick-o" src="../images/brand/wordmark-nav-red.png" width="849" height="235" alt="" aria-hidden="true" decoding="async"></picture></span></a>
       <div class="category-nav__inner">
         <a href="../#articles" class="nav-pill">Articles</a>
         <a href="../#offroad" class="nav-pill">Offroad</a>
@@ -243,40 +243,10 @@
 
   <footer class="site-footer" style="margin-top: 80px;">
     <div class="site-footer__inner">
-      <svg class="co-mark site-footer__brand neon" viewBox="0 0 1200 169" width="300" overflow="visible" role="img" aria-label="CyberOffroading">
-        <defs>
-          <clipPath id="coBrandWedge"><path d="M0,159 L480,10 L1200,105 Z"></path></clipPath>
-          <!-- Neon glow via SVG-native filters (renders identically on Safari,
-               Chrome and Firefox, unlike CSS drop-shadow which iOS silently drops).
-               Blur the shape ALPHA, flood it with the saturated tube colour, then
-               stack that halo under the near-white sharp core. -->
-          <filter id="coGlowC" x="-35%" y="-100%" width="170%" height="300%" color-interpolation-filters="sRGB">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="a"></feGaussianBlur>
-            <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="b"></feGaussianBlur>
-            <feGaussianBlur in="SourceAlpha" stdDeviation="26" result="c"></feGaussianBlur>
-            <feMerge result="m"><feMergeNode in="c"></feMergeNode><feMergeNode in="b"></feMergeNode><feMergeNode in="a"></feMergeNode><feMergeNode in="a"></feMergeNode></feMerge>
-            <feFlood flood-color="#00d4ff" result="fc"></feFlood>
-            <feComposite in="fc" in2="m" operator="in" result="glow"></feComposite>
-            <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-          </filter>
-          <filter id="coGlowR" x="-35%" y="-100%" width="170%" height="300%" color-interpolation-filters="sRGB">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="a"></feGaussianBlur>
-            <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="b"></feGaussianBlur>
-            <feGaussianBlur in="SourceAlpha" stdDeviation="22" result="c"></feGaussianBlur>
-            <feMerge result="m"><feMergeNode in="c"></feMergeNode><feMergeNode in="b"></feMergeNode><feMergeNode in="a"></feMergeNode><feMergeNode in="a"></feMergeNode></feMerge>
-            <feFlood flood-color="#ff2a2a" result="fc"></feFlood>
-            <feComposite in="fc" in2="m" operator="in" result="glow"></feComposite>
-            <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
-          </filter>
-        </defs>
-        <g class="mk-cyan flick-c" filter="url(#coGlowC)" fill="none" stroke="#eafdff" stroke-width="7" stroke-linejoin="miter"><path d="M0,159 L480,10 L1200,105 Z"></path></g>
-        <g class="mk-red flick-o" filter="url(#coGlowR)">
-          <g clip-path="url(#coBrandWedge)" fill="none" stroke="#ffecec" stroke-width="6" stroke-linejoin="miter">
-            <path d="M130,150 L235,106 L345,140 L470,42 L590,132 L705,74 L825,128 L945,100 L1065,126 L1165,114"></path>
-            <circle cx="470" cy="42" r="8" fill="#ffecec" stroke="none"></circle>
-          </g>
-        </g>
-      </svg>
+      <span class="site-footer__brand" role="img" aria-label="CyberOffroading">
+        <picture><source srcset="../images/brand/mark-cyan.webp" type="image/webp"><img class="co-mark__layer flick-c" src="../images/brand/mark-cyan.png" width="1338" height="315" alt="" decoding="async"></picture>
+        <picture><source srcset="../images/brand/mark-red.webp" type="image/webp"><img class="co-mark__layer co-mark__layer--over flick-o" src="../images/brand/mark-red.png" width="1338" height="315" alt="" aria-hidden="true" decoding="async"></picture>
+      </span>
       <div class="site-footer__links">
         <a href="../">Home</a>
         <a href="../#articles">All Articles</a>

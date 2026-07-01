@@ -193,31 +193,32 @@ img {
   text-shadow: 0 0 2px #fff, 0 0 6px var(--red), 0 0 12px rgba(255, 42, 42, 0.55);
 }
 
-/* Hero wordmark — shipped as ONE pre-rendered neon lockup (webp/png), NOT live
-   text-shadow. Live CSS glow rasterises slightly differently in every engine
-   (Safari vs Chrome/Firefox), so it could never be byte-identical; a baked
-   image is pixel-identical everywhere. The image is baked from the Chrome
-   render at 2.5× and includes its glow halo, so width carries the whole lockup.
-   Real H1 alt text ("CyberOffroading") preserves SEO/AX. No font dependency →
-   no FOUT gate needed. */
+/* Hero wordmark — pre-rendered neon lockup (webp/png), NOT live text-shadow.
+   Live CSS glow rasterises differently in every engine (Safari vs Chrome/
+   Firefox), so it could never be byte-identical; baked images are pixel-
+   identical everywhere. Shipped as TWO overlaid layers on a shared frame —
+   cyan CYBER + red Offroading — so each neon tube keeps its own independent
+   flicker (nflick 7s / nflick2 6.4s, out of phase) via opacity animation
+   (opacity is identical across engines). Baked from Chrome at 2.5×; the frame
+   carries the glow halo, so width carries the whole lockup. Real alt text on
+   the base layer preserves SEO/AX. No font dependency → no FOUT gate. */
 .wordmark--hero {
   display: block;
   margin-bottom: clamp(30px, 5vw, 58px);
 }
-.wordmark--hero picture { display: block; }
-.wordmark--hero__img {
+.wm-stack {
+  position: relative;
   display: block;
   width: clamp(300px, 64vw, 616px);
-  height: auto;
-  /* The baked image carries a transparent glow halo = 13% of its width on the
-     left; pull it back by that much so the glyphs sit on the hero's left edge
-     and the glow overflows (exactly as the old text-shadow did). Also pull up
-     to absorb the matching top halo. */
+  /* the shared frame carries a transparent glow halo (13% of width on the
+     left, matching top); pull it back so the glyphs sit on the hero's left
+     edge and the glow overflows, exactly as the old text-shadow did. */
   margin-left: clamp(-80px, -8.3vw, -39px);
   margin-top: clamp(-66px, -6.8vw, -30px);
 }
-/* Whole-lockup neon flicker (opacity only → identical across engines). */
-.wm-flicker { animation: nflick 7s linear infinite; }
+.wm-stack picture { display: block; }
+.wm-layer { display: block; width: 100%; height: auto; }
+.wm-layer--over { position: absolute; top: 0; left: 0; }
 
 
 /* --- Brand mark (live inline SVG): cyan wedge + red ridge, two neon tubes.
@@ -517,16 +518,19 @@ img {
   visibility: visible;
 }
 
-/* Nav logo — same baked-image treatment as the hero wordmark (pixel-identical
-   across engines). The image carries a transparent glow halo (~7% each side),
-   so a small negative margin pulls the glyphs back to the link's edges and
-   keeps the flex spacing tight, with the glow overflowing like the old glow. */
-.category-nav__brand__img {
+/* Nav logo — same baked treatment as the hero, as TWO overlaid layers (cyan +
+   red) on a shared frame so each tube flickers independently (flick-c/flick-o).
+   The frame carries a transparent glow halo, so a small negative margin pulls
+   the glyphs to the link edges and keeps flex spacing tight (glow overflows). */
+.nav-brand-stack {
+  position: relative;
   display: block;
-  height: clamp(48px, 8.6vw, 58px);
-  width: auto;
+  width: clamp(173px, 31vw, 209px);   /* → lockup ≈48–58px tall (aspect 3.61) */
   margin: -15px -16px;
 }
+.nav-brand-stack picture { display: block; }
+.nav-brand-layer { display: block; width: 100%; height: auto; }
+.nav-brand-layer--over { position: absolute; top: 0; left: 0; }
 
 /* IMPORTANT: keep position:static — ensurePillVisible()'s offset math
    (pill.offsetLeft - navInner.offsetLeft) only cancels when this is NOT
@@ -1705,14 +1709,20 @@ img {
   margin: 0 auto;
 }
 
-/* Footer brand logo — the live neon mark (cyan wedge + red ridge), or the
-   raster hero-mark.png fallback. Same footprint either way. */
+/* Footer brand mark — baked cyan-wedge + red-ridge layers (pixel-identical
+   across engines), overlaid so each tube flickers independently (flick-c/
+   flick-o). Width is set so the wedge (≈90% of the framed image) lands at the
+   old ~300px footprint; the negative margins absorb the glow halo the frame
+   carries, so the wedge sits at the footer's left edge (glow overflows). */
 .site-footer__brand {
+  position: relative;
   display: block;
-  width: clamp(220px, 38vw, 300px);
-  height: auto;
-  margin-bottom: 24px;
+  width: clamp(245px, 42vw, 334px);
+  margin: -20px 0 4px -17px;
 }
+.site-footer__brand picture { display: block; }
+.co-mark__layer { display: block; width: 100%; height: auto; }
+.co-mark__layer--over { position: absolute; top: 0; left: 0; }
 
 .site-footer__links {
   display: flex;
@@ -2027,8 +2037,8 @@ img {
 
   .hero__content { padding: 36px 26px; }
 
-  /* Baked wordmark image: size to the phone width (glow padding included). */
-  .wordmark--hero__img {
+  /* Baked wordmark: size the stack to the phone width (glow halo included). */
+  .wm-stack {
     width: min(86vw, 420px);
     margin-left: max(-46px, -11.2vw);
     margin-top: max(-40px, -9.6vw);
@@ -2448,7 +2458,7 @@ ol.step-list > li.step > p {
   .category-nav { animation: none; }
   .category-nav__brand { transition: none; }
   .flick .wordmark__cyber, .flick .wordmark__off,
-  .flick-c, .flick-o, .wm-flicker { animation: none; }
+  .flick-c, .flick-o { animation: none; }
   .hero__glow--cyan, .hero__glow--red { animation: none; }
 
   /* Reveal animations: show content immediately, no slide/fade */
