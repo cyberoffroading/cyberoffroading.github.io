@@ -974,7 +974,8 @@ img {
   gap: 11px;
 }
 
-.product-card__info h3 {
+.product-card__info h3,
+.product-card__info h2 {
   font-size: 1rem;
   line-height: 1.3;
   color: var(--text-hi);
@@ -996,25 +997,6 @@ img {
   font-family: var(--font-mono);
   font-weight: 500;
 }
-
-/* --- Pick badge (Editor's / Value's pick tab on the card image) --- */
-.product-card__pick {
-  position: absolute;
-  left: 0;
-  top: 14px;
-  z-index: 2;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--void);
-  padding: 5px 12px 5px 13px;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-.product-card__pick--editor { background: var(--cyan); box-shadow: 0 0 14px rgba(0, 212, 255, 0.45); }
-.product-card__pick--value { background: var(--red); box-shadow: 0 0 14px rgba(255, 42, 42, 0.45); }
 
 /* --- Spec-list rows on product cards --- */
 .product-card__specs {
@@ -1772,7 +1754,7 @@ img {
   font-size: 0.64rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text-2);
 }
 /* Desaturated footer wordmark — flickers (.flick) but reads as a dim sign. */
 .wordmark--footer .wordmark__cyber {
@@ -2537,6 +2519,7 @@ ol.step-list > li.step > p {
 .gallery-item:focus-visible,
 .back-to-top:focus-visible,
 .category-nav__brand:focus-visible,
+.filter-chip:focus-visible,
 .site-footer__brand:focus-visible {
   outline: none;
   clip-path: none;
