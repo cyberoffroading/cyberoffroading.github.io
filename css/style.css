@@ -206,10 +206,15 @@ img {
 .js .wordmark--hero { opacity: 0; }
 .js.fonts-ready .wordmark--hero { opacity: 1; }
 
+/* Glow blur is expressed in em so the halo scales with font-size — the neon
+   stays proportionally identical from the 60px desktop hero down to the mobile
+   crop (and renders the same intent in Safari as in Chrome/Firefox). One
+   recipe, no per-breakpoint divergence. em values = the old 60px/120px px
+   blurs divided by their font-size. */
 .wordmark--hero .wordmark__cyber {
   font-size: clamp(30px, 6.6vw, 60px);
   color: #f2feff;
-  text-shadow: 0 0 4px #fff, 0 0 14px var(--cyan-soft), 0 0 30px var(--cyan), 0 0 60px rgba(0, 212, 255, 0.5);
+  text-shadow: 0 0 0.07em #fff, 0 0 0.23em var(--cyan-soft), 0 0 0.5em var(--cyan), 0 0 1em rgba(0, 212, 255, 0.5);
 }
 
 .wordmark--hero .wordmark__off {
@@ -217,7 +222,7 @@ img {
   line-height: 0.78;
   margin-top: -2px;
   margin-left: 0;
-  text-shadow: 0 0 4px #fff, 0 0 14px #ffb3b3, 0 0 30px var(--red), 0 0 62px rgba(255, 42, 42, 0.46);
+  text-shadow: 0 0 0.035em #fff, 0 0 0.12em #ffb3b3, 0 0 0.25em var(--red), 0 0 0.52em rgba(255, 42, 42, 0.46);
 }
 
 /* --- Brand mark (live inline SVG): cyan wedge + red ridge, two neon tubes.
@@ -2026,19 +2031,15 @@ img {
 
   .hero__content { padding: 36px 26px; }
 
-  /* Keep the stacked wordmark inside the viewport (no right-edge clip) */
-  /* Lighter, tighter glow on small screens — the desktop glow (up to 60px)
-     over-blooms the small type (fuzzy) and its halo bleeds past the edge. */
-  /* Tight glow so the crisp glyph edge stays defined (a big glow floods the
-     letter counters at small sizes = fuzzy). Neon = sharp stroke + halo. */
+  /* Keep the stacked wordmark inside the viewport (no right-edge clip).
+     Glow is inherited from the base em-based recipe so it scales with these
+     smaller mobile font-sizes automatically — no separate mobile glow. */
   .wordmark--hero .wordmark__cyber {
     font-size: clamp(26px, 6.6vw, 38px);
-    text-shadow: 0 0 1px #fff, 0 0 3px var(--cyan), 0 0 9px rgba(0, 212, 255, 0.55);
   }
   .wordmark--hero .wordmark__off {
     font-size: clamp(40px, 12.4vw, 66px);
     margin-top: 7px;
-    text-shadow: 0 0 1px #fff, 0 0 4px var(--red), 0 0 13px rgba(255, 42, 42, 0.42);
   }
   .wordmark--hero { margin-bottom: 34px; }
 

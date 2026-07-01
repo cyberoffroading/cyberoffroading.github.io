@@ -122,6 +122,15 @@ Added guide-detail components (step-list, affiliate card, author box, related ba
 
 ---
 
+## 2026-06-30 — Hero wordmark neon looked wrong on mobile Safari (glow tuning)
+
+Chased the mobile wordmark glow through several rounds of tightening based on **Chrome** screenshots; the user reported it "looks terrible" on their iPhone and asked me to make mobile Safari match desktop Chrome/Firefox. Two compounding mistakes: verifying on the wrong engine, and maintaining a divergent per-breakpoint glow.
+
+- **Verify neon/text-shadow/filter rendering on the actual target engine — use the iOS Simulator (WebKit), not just headless Chrome.** Safari and Chrome rasterize `text-shadow` blur differently, so a value that looks right in a Chrome screenshot can look dead in Safari. **Rule:** for any glow/blur/filter change that ships to mobile, capture on the iOS Simulator (`xcrun simctl openurl <UDID> <url>` → `xcrun simctl io <UDID> screenshot`) before declaring it done. (Headless Chrome also *hangs on teardown* on this box but writes the PNG first — run it backgrounded and just read the file, then `pkill` the profile.)
+- **A glow blur in fixed `px` cannot serve two font-sizes.** 60px of blur is a proportional halo on 60px type but a bloom that floods 26px type — which forced a separate, tighter mobile override that then diverged and read as flat/non-neon. **Rule:** express hero glow blur in **`em`** so the halo scales with `font-size` automatically — one recipe drives every breakpoint and browser, desktop stays byte-identical (`0.07em × 60px = 4px`), and there's no per-breakpoint drift to keep in sync. Delete the media-query text-shadow overrides once the base recipe is em-based.
+
+---
+
 ## Future Entries
 
 (Added after real corrections or user feedback during implementation)
