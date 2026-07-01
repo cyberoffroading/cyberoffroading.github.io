@@ -206,11 +206,12 @@ img {
 .js .wordmark--hero { opacity: 0; }
 .js.fonts-ready .wordmark--hero { opacity: 1; }
 
-/* Glow blur is expressed in em so the halo scales with font-size — the neon
-   stays proportionally identical from the 60px desktop hero down to the mobile
-   crop (and renders the same intent in Safari as in Chrome/Firefox). One
-   recipe, no per-breakpoint divergence. em values = the old 60px/120px px
-   blurs divided by their font-size. */
+/* Desktop/base recipe — this is the "perfect" Firefox look: pale near-white
+   inner layers (#bfefff/#ffb3b3) blooming into a soft lush halo. Blur in em so
+   it scales with font-size. Mobile Safari is matched to THIS in the @media
+   block below (it renders the wordmark smaller, so the same em glow blooms more
+   relative to the thin strokes — the mobile block enlarges the type + trims the
+   glow just enough to reproduce this exact appearance at phone size). */
 .wordmark--hero .wordmark__cyber {
   font-size: clamp(30px, 6.6vw, 60px);
   color: #f2feff;
@@ -230,19 +231,12 @@ img {
    timeline. Wrap the <svg> in .neon to light it; drop .neon for the flat
    two-colour mono fallback. overflow:visible keeps the glow halo unclipped. */
 .co-mark { display: block; height: auto; overflow: visible; }
-/* NOTE: use literal hex (not var()) inside drop-shadow — iOS Safari fails to
-   resolve custom properties inside filter, which silently drops the glow. */
-.neon .mk-cyan {
-  stroke: var(--cyan-core);
-  filter: drop-shadow(0 0 1.5px #eafdff) drop-shadow(0 0 5px #00d4ff)
-          drop-shadow(0 0 13px #00d4ff) drop-shadow(0 0 26px rgba(0, 212, 255, 0.5));
-}
-.neon .mk-red {
-  stroke: var(--red-core);
-  filter: drop-shadow(0 0 1.5px #ffd9d9) drop-shadow(0 0 5px #ff2a2a)
-          drop-shadow(0 0 12px #ff2a2a) drop-shadow(0 0 24px rgba(255, 42, 42, 0.45));
-}
-.neon .mk-red circle { fill: var(--red-core); }
+/* Glow + tube colours live in the SVG markup (near-white core strokes +
+   feFlood-colourised url(#coGlowC/#coGlowR) filters) — NOT CSS
+   `filter: drop-shadow`. iOS Safari silently drops CSS filters on inline SVG
+   <g> elements (the wedge shipped un-lit on real devices), whereas SVG-native
+   filters render identically across Safari, Chrome and Firefox — so the footer
+   mark now matches on every engine. Nothing to set here beyond overflow. */
 /* Mark tubes flicker independently, reusing the wordmark's two timelines. */
 .flick-c { animation: nflick 7s linear infinite; }
 .flick-o { animation: nflick2 6.4s linear infinite 0.5s; }
@@ -2031,15 +2025,23 @@ img {
 
   .hero__content { padding: 36px 26px; }
 
-  /* Keep the stacked wordmark inside the viewport (no right-edge clip).
-     Glow is inherited from the base em-based recipe so it scales with these
-     smaller mobile font-sizes automatically — no separate mobile glow. */
+  /* Match the desktop/Firefox wordmark on mobile Safari. Two levers:
+     1. Larger type — the pale/lush base glow only reads crisp when the strokes
+        are thick enough to carry it; at ~26px it bloomed fuzzy, so render the
+        hero wordmark as large as fits the phone width.
+     2. Tighter INNER near-white layers only — WebKit rasterises the near-white
+        bloom (#fff / cyan-soft / #ffb3b3) heavier than Gecko/Blink, so it floods
+        the letter counters. Pulling just those inner radii in restores the crisp
+        core WHILE keeping the identical lush outer cyan/red halo (unchanged) —
+        i.e. same pale character as desktop, compensated for Safari's blur. */
   .wordmark--hero .wordmark__cyber {
-    font-size: clamp(26px, 6.6vw, 38px);
+    font-size: clamp(32px, 9.2vw, 44px);
+    text-shadow: 0 0 0.04em #fff, 0 0 0.15em var(--cyan-soft), 0 0 0.5em var(--cyan), 0 0 1em rgba(0, 212, 255, 0.5);
   }
   .wordmark--hero .wordmark__off {
-    font-size: clamp(40px, 12.4vw, 66px);
-    margin-top: 7px;
+    font-size: clamp(56px, 17vw, 78px);
+    margin-top: 6px;
+    text-shadow: 0 0 0.02em #fff, 0 0 0.08em #ffb3b3, 0 0 0.25em var(--red), 0 0 0.52em rgba(255, 42, 42, 0.46);
   }
   .wordmark--hero { margin-bottom: 34px; }
 
