@@ -193,38 +193,32 @@ img {
   text-shadow: 0 0 2px #fff, 0 0 6px var(--red), 0 0 12px rgba(255, 42, 42, 0.55);
 }
 
-/* Hero scale — stacked, big */
+/* Hero wordmark — shipped as ONE pre-rendered neon lockup (webp/png), NOT live
+   text-shadow. Live CSS glow rasterises slightly differently in every engine
+   (Safari vs Chrome/Firefox), so it could never be byte-identical; a baked
+   image is pixel-identical everywhere. The image is baked from the Chrome
+   render at 2.5× and includes its glow halo, so width carries the whole lockup.
+   Real H1 alt text ("CyberOffroading") preserves SEO/AX. No font dependency →
+   no FOUT gate needed. */
 .wordmark--hero {
-  flex-direction: column;
-  align-items: flex-start;
+  display: block;
   margin-bottom: clamp(30px, 5vw, 58px);
-  transition: opacity 0.35s ease;
 }
-/* Avoid the FOUT: keep the hero wordmark hidden until Audiowide + Yellowtail
-   are loaded (the inline <head> script adds .fonts-ready). Gated on .js so
-   no-JS users still see it, and the script has a 2.5s safety timeout. */
-.js .wordmark--hero { opacity: 0; }
-.js.fonts-ready .wordmark--hero { opacity: 1; }
+.wordmark--hero picture { display: block; }
+.wordmark--hero__img {
+  display: block;
+  width: clamp(300px, 64vw, 616px);
+  height: auto;
+  /* The baked image carries a transparent glow halo = 13% of its width on the
+     left; pull it back by that much so the glyphs sit on the hero's left edge
+     and the glow overflows (exactly as the old text-shadow did). Also pull up
+     to absorb the matching top halo. */
+  margin-left: clamp(-80px, -8.3vw, -39px);
+  margin-top: clamp(-66px, -6.8vw, -30px);
+}
+/* Whole-lockup neon flicker (opacity only → identical across engines). */
+.wm-flicker { animation: nflick 7s linear infinite; }
 
-/* Desktop/base recipe — this is the "perfect" Firefox look: pale near-white
-   inner layers (#bfefff/#ffb3b3) blooming into a soft lush halo. Blur in em so
-   it scales with font-size. Mobile Safari is matched to THIS in the @media
-   block below (it renders the wordmark smaller, so the same em glow blooms more
-   relative to the thin strokes — the mobile block enlarges the type + trims the
-   glow just enough to reproduce this exact appearance at phone size). */
-.wordmark--hero .wordmark__cyber {
-  font-size: clamp(30px, 6.6vw, 60px);
-  color: #f2feff;
-  text-shadow: 0 0 0.07em #fff, 0 0 0.23em var(--cyan-soft), 0 0 0.5em var(--cyan), 0 0 1em rgba(0, 212, 255, 0.5);
-}
-
-.wordmark--hero .wordmark__off {
-  font-size: clamp(56px, 12.5vw, 120px);
-  line-height: 0.78;
-  margin-top: -2px;
-  margin-left: 0;
-  text-shadow: 0 0 0.035em #fff, 0 0 0.12em #ffb3b3, 0 0 0.25em var(--red), 0 0 0.52em rgba(255, 42, 42, 0.46);
-}
 
 /* --- Brand mark (live inline SVG): cyan wedge + red ridge, two neon tubes.
    Shipped inline (not <img>) so each tube glows + flickers on its own
@@ -2025,23 +2019,11 @@ img {
 
   .hero__content { padding: 36px 26px; }
 
-  /* Match the desktop/Firefox wordmark on mobile Safari. Two levers:
-     1. Larger type — the pale/lush base glow only reads crisp when the strokes
-        are thick enough to carry it; at ~26px it bloomed fuzzy, so render the
-        hero wordmark as large as fits the phone width.
-     2. Tighter INNER near-white layers only — WebKit rasterises the near-white
-        bloom (#fff / cyan-soft / #ffb3b3) heavier than Gecko/Blink, so it floods
-        the letter counters. Pulling just those inner radii in restores the crisp
-        core WHILE keeping the identical lush outer cyan/red halo (unchanged) —
-        i.e. same pale character as desktop, compensated for Safari's blur. */
-  .wordmark--hero .wordmark__cyber {
-    font-size: clamp(32px, 9.2vw, 44px);
-    text-shadow: 0 0 0.04em #fff, 0 0 0.15em var(--cyan-soft), 0 0 0.5em var(--cyan), 0 0 1em rgba(0, 212, 255, 0.5);
-  }
-  .wordmark--hero .wordmark__off {
-    font-size: clamp(56px, 17vw, 78px);
-    margin-top: 6px;
-    text-shadow: 0 0 0.02em #fff, 0 0 0.08em #ffb3b3, 0 0 0.25em var(--red), 0 0 0.52em rgba(255, 42, 42, 0.46);
+  /* Baked wordmark image: size to the phone width (glow padding included). */
+  .wordmark--hero__img {
+    width: min(86vw, 420px);
+    margin-left: max(-46px, -11.2vw);
+    margin-top: max(-40px, -9.6vw);
   }
   .wordmark--hero { margin-bottom: 34px; }
 
@@ -2458,7 +2440,7 @@ ol.step-list > li.step > p {
   .category-nav { animation: none; }
   .category-nav__brand { transition: none; }
   .flick .wordmark__cyber, .flick .wordmark__off,
-  .flick-c, .flick-o { animation: none; }
+  .flick-c, .flick-o, .wm-flicker { animation: none; }
   .hero__glow--cyan, .hero__glow--red { animation: none; }
 
   /* Reveal animations: show content immediately, no slide/fade */
