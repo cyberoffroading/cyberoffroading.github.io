@@ -22,7 +22,9 @@
   /* Text */
   --text-hi:     #edede7;   /* headings */
   --text:        #c8c8c0;   /* body on dark */
+  --text-lede:   #bfc0be;   /* long-form prose (mid: text / text-prose) */
   --text-prose:  #b6b8bc;   /* long-form article body */
+  --text-body:   #a0a2a6;   /* primary body copy — reviews, intros, subs */
   --text-2:      #8a8c90;   /* secondary copy (AA-safe) */
   --text-mute:   #7a7c80;   /* labels, inactive nav */
   --text-dim:    #5e6066;   /* meta (decorative — not for body copy) */
@@ -807,7 +809,7 @@ img {
 
 .section__intro {
   margin-top: 14px;
-  color: var(--text-prose);
+  color: var(--text-body);
   font-size: 0.92rem;
   line-height: 1.7;
   max-width: 600px;
@@ -984,7 +986,7 @@ img {
 
 .product-card__review {
   font-size: 0.88rem;
-  color: var(--text-prose);
+  color: var(--text-body);
   line-height: 1.65;
 }
 
@@ -1480,7 +1482,7 @@ img {
 
 .guide-modal p {
   margin-bottom: 16px;
-  color: var(--text);
+  color: var(--text-lede);
   font-size: 1.02rem;
   line-height: 1.8;
 }
@@ -1812,7 +1814,7 @@ img {
 .page-head__sub {
   margin-top: 22px;
   max-width: 620px;
-  color: var(--text-prose);
+  color: var(--text-body);
   line-height: 1.7;
   font-size: 0.98rem;
 }
@@ -2115,7 +2117,7 @@ img {
 
 .guide-page p {
   margin-bottom: 16px;
-  color: var(--text);
+  color: var(--text-lede);
   font-size: 1.02rem;
   line-height: 1.8;
 }
