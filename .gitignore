@@ -13,3 +13,12 @@
 # Wrangler local caches
 .wrangler/
 worker/.wrangler/
+
+# Design inputs / handoff artifacts (reference only — not shipped; the shipped
+# brand assets are the committed neon/ kit + inlined SVG marks)
+/neon-design-system/
+/design_handoff_neon_relight/
+/claude-design-brief.txt
+/new-hero.JPG
+/images/icons/
+/images/brand/*.svg
