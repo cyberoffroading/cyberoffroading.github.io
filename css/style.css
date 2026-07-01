@@ -221,18 +221,11 @@ img {
 .wm-layer--over { position: absolute; top: 0; left: 0; }
 
 
-/* --- Brand mark (live inline SVG): cyan wedge + red ridge, two neon tubes.
-   Shipped inline (not <img>) so each tube glows + flickers on its own
-   timeline. Wrap the <svg> in .neon to light it; drop .neon for the flat
-   two-colour mono fallback. overflow:visible keeps the glow halo unclipped. */
-.co-mark { display: block; height: auto; overflow: visible; }
-/* Glow + tube colours live in the SVG markup (near-white core strokes +
-   feFlood-colourised url(#coGlowC/#coGlowR) filters) — NOT CSS
-   `filter: drop-shadow`. iOS Safari silently drops CSS filters on inline SVG
-   <g> elements (the wedge shipped un-lit on real devices), whereas SVG-native
-   filters render identically across Safari, Chrome and Firefox — so the footer
-   mark now matches on every engine. Nothing to set here beyond overflow. */
-/* Mark tubes flicker independently, reusing the wordmark's two timelines. */
+/* --- Neon flicker timelines. Every brand mark (hero wordmark, nav logo,
+   footer wedge) ships as two pre-rendered <picture>/<img> layers — a cyan
+   layer + a red layer on a shared frame (see .wm-stack / .nav-brand-stack /
+   .site-footer__brand) — so the artwork is pixel-identical across engines
+   while each tube flickers on its own timeline via these opacity animations. */
 .flick-c { animation: nflick 7s linear infinite; }
 .flick-o { animation: nflick2 6.4s linear infinite 0.5s; }
 
