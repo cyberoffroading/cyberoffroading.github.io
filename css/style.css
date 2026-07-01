@@ -198,7 +198,13 @@ img {
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: clamp(30px, 5vw, 58px);
+  transition: opacity 0.35s ease;
 }
+/* Avoid the FOUT: keep the hero wordmark hidden until Audiowide + Yellowtail
+   are loaded (the inline <head> script adds .fonts-ready). Gated on .js so
+   no-JS users still see it, and the script has a 2.5s safety timeout. */
+.js .wordmark--hero { opacity: 0; }
+.js.fonts-ready .wordmark--hero { opacity: 1; }
 
 .wordmark--hero .wordmark__cyber {
   font-size: clamp(30px, 6.6vw, 60px);
@@ -2016,11 +2022,19 @@ img {
 
   .hero { min-height: clamp(480px, 78vh, 620px); }
 
-  .hero__content { padding: 36px 22px; }
+  .hero__content { padding: 36px 26px; }
 
   /* Keep the stacked wordmark inside the viewport (no right-edge clip) */
-  .wordmark--hero .wordmark__cyber { font-size: clamp(26px, 7vw, 40px); }
-  .wordmark--hero .wordmark__off { font-size: clamp(42px, 13.5vw, 72px); }
+  /* Lighter, tighter glow on small screens — the desktop glow (up to 60px)
+     over-blooms the small type (fuzzy) and its halo bleeds past the edge. */
+  .wordmark--hero .wordmark__cyber {
+    font-size: clamp(26px, 6.6vw, 38px);
+    text-shadow: 0 0 2px #fff, 0 0 6px var(--cyan), 0 0 14px rgba(0, 212, 255, 0.5);
+  }
+  .wordmark--hero .wordmark__off {
+    font-size: clamp(40px, 12.4vw, 66px);
+    text-shadow: 0 0 2px #fff, 0 0 6px #ffb3b3, 0 0 16px var(--red), 0 0 26px rgba(255, 42, 42, 0.4);
+  }
   .wordmark--hero { margin-bottom: 34px; }
 
   .nav-pill {

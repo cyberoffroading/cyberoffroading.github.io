@@ -3,6 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script>
+    /* Mark JS present (before render) + reveal the hero wordmark only once its
+       display fonts are loaded, so it never flashes in a fallback font. */
+    (function (d) {
+      d.documentElement.className += ' js';
+      function ready() { d.documentElement.classList.add('fonts-ready'); }
+      try {
+        if (d.fonts && d.fonts.load) {
+          Promise.all([d.fonts.load('1em Audiowide'), d.fonts.load('1em Yellowtail')]).then(ready, ready);
+          setTimeout(ready, 2500);
+        } else { ready(); }
+      } catch (e) { ready(); }
+    })(document);
+  </script>
   <title>CyberOffroading — Cybertruck Off-Road Accessories &amp; Gear</title>
   <meta name="description" content="Curated Cybertruck off-road gear: recovery, tire tools, winch builds, Starlink mounts. Spec-focused reviews from an owner who actually runs this stuff.">
   <link rel="canonical" href="https://cyberoffroading.com/">
@@ -64,7 +78,7 @@
   <!-- LCP: start fetching the hero during HTML parse -->
   <link rel="preload" as="image" type="image/webp" href="images/hero/salt-flats-dusk-2000.webp" imagesrcset="images/hero/salt-flats-dusk-1200.webp 1200w, images/hero/salt-flats-dusk-2000.webp 2000w" imagesizes="100vw" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=23">
+  <link rel="stylesheet" href="css/style.css?v=24">
 </head>
 <body>
 
