@@ -225,15 +225,17 @@ img {
    timeline. Wrap the <svg> in .neon to light it; drop .neon for the flat
    two-colour mono fallback. overflow:visible keeps the glow halo unclipped. */
 .co-mark { display: block; height: auto; overflow: visible; }
+/* NOTE: use literal hex (not var()) inside drop-shadow — iOS Safari fails to
+   resolve custom properties inside filter, which silently drops the glow. */
 .neon .mk-cyan {
   stroke: var(--cyan-core);
-  filter: drop-shadow(0 0 1.5px #eafdff) drop-shadow(0 0 5px var(--cyan))
-          drop-shadow(0 0 13px var(--cyan)) drop-shadow(0 0 26px rgba(0, 212, 255, 0.5));
+  filter: drop-shadow(0 0 1.5px #eafdff) drop-shadow(0 0 5px #00d4ff)
+          drop-shadow(0 0 13px #00d4ff) drop-shadow(0 0 26px rgba(0, 212, 255, 0.5));
 }
 .neon .mk-red {
   stroke: var(--red-core);
-  filter: drop-shadow(0 0 1.5px #ffd9d9) drop-shadow(0 0 5px var(--red))
-          drop-shadow(0 0 12px var(--red)) drop-shadow(0 0 24px rgba(255, 42, 42, 0.45));
+  filter: drop-shadow(0 0 1.5px #ffd9d9) drop-shadow(0 0 5px #ff2a2a)
+          drop-shadow(0 0 12px #ff2a2a) drop-shadow(0 0 24px rgba(255, 42, 42, 0.45));
 }
 .neon .mk-red circle { fill: var(--red-core); }
 /* Mark tubes flicker independently, reusing the wordmark's two timelines. */
@@ -2027,13 +2029,16 @@ img {
   /* Keep the stacked wordmark inside the viewport (no right-edge clip) */
   /* Lighter, tighter glow on small screens — the desktop glow (up to 60px)
      over-blooms the small type (fuzzy) and its halo bleeds past the edge. */
+  /* Tight glow so the crisp glyph edge stays defined (a big glow floods the
+     letter counters at small sizes = fuzzy). Neon = sharp stroke + halo. */
   .wordmark--hero .wordmark__cyber {
     font-size: clamp(26px, 6.6vw, 38px);
-    text-shadow: 0 0 2px #fff, 0 0 6px var(--cyan), 0 0 14px rgba(0, 212, 255, 0.5);
+    text-shadow: 0 0 1px #fff, 0 0 3px var(--cyan), 0 0 9px rgba(0, 212, 255, 0.55);
   }
   .wordmark--hero .wordmark__off {
     font-size: clamp(40px, 12.4vw, 66px);
-    text-shadow: 0 0 2px #fff, 0 0 6px #ffb3b3, 0 0 16px var(--red), 0 0 26px rgba(255, 42, 42, 0.4);
+    margin-top: 7px;
+    text-shadow: 0 0 1px #fff, 0 0 4px var(--red), 0 0 13px rgba(255, 42, 42, 0.42);
   }
   .wordmark--hero { margin-bottom: 34px; }
 
