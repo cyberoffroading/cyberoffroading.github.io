@@ -77,8 +77,10 @@
 
   <!-- LCP: start fetching the hero during HTML parse -->
   <link rel="preload" as="image" type="image/webp" href="images/hero/salt-flats-dusk-2000.webp" imagesrcset="images/hero/salt-flats-dusk-1200.webp 1200w, images/hero/salt-flats-dusk-2000.webp 2000w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" type="image/webp" href="images/brand/wordmark-hero-cyber.webp">
+  <link rel="preload" as="image" type="image/webp" href="images/brand/wordmark-hero-red.webp">
 
-  <link rel="stylesheet" href="css/style.css?v=26">
+  <link rel="stylesheet" href="css/style.css?v=30">
 </head>
 <body>
 
@@ -100,7 +102,7 @@
     <div class="hero__glow hero__glow--red" aria-hidden="true"></div>
     <div class="hero__content">
       <p class="hero__tag"><span class="hero__tag-rule" aria-hidden="true"></span>// Curated Gear for the Trail</p>
-      <h1 class="wordmark wordmark--hero flick"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></h1>
+      <h1 class="wordmark--hero"><span class="wm-stack"><picture><source srcset="images/brand/wordmark-hero-cyber.webp" type="image/webp"><img class="wm-layer flick-c" src="images/brand/wordmark-hero-cyber.png" width="1540" height="796" alt="CyberOffroading" decoding="async"></picture><picture><source srcset="images/brand/wordmark-hero-red.webp" type="image/webp"><img class="wm-layer wm-layer--over flick-o" src="images/brand/wordmark-hero-red.png" width="1540" height="796" alt="" aria-hidden="true" decoding="async"></picture></span></h1>
       <p class="hero__sub">Spec-focused reviews of off-road accessories for the Cybertruck. No fluff. No affiliate spam walls. Just the gear that works.</p>
       <div class="hero__actions">
         <a href="#offroad" class="cta-button cta-button--internal hero__cta">Explore Gear &rarr;</a>
@@ -118,7 +120,7 @@
 
   <nav class="category-nav" aria-label="Site">
     <div class="category-nav__bar">
-      <a href="#top" class="wordmark category-nav__brand flick" aria-label="CyberOffroading — home"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></a>
+      <a href="#top" class="wordmark category-nav__brand" aria-label="CyberOffroading — home"><span class="nav-brand-stack"><picture><source srcset="images/brand/wordmark-nav-cyber.webp" type="image/webp"><img class="nav-brand-layer flick-c" src="images/brand/wordmark-nav-cyber.png" width="849" height="235" alt="" decoding="async"></picture><picture><source srcset="images/brand/wordmark-nav-red.webp" type="image/webp"><img class="nav-brand-layer nav-brand-layer--over flick-o" src="images/brand/wordmark-nav-red.png" width="849" height="235" alt="" aria-hidden="true" decoding="async"></picture></span></a>
       <div class="category-nav__inner">
         <a href="#articles" class="nav-pill">Articles</a>
         <a href="#offroad" class="nav-pill active">Offroad</a>
@@ -1105,14 +1107,10 @@
       </svg>
     </div>
     <div class="site-footer__inner">
-      <svg class="co-mark site-footer__brand neon" viewBox="0 0 1200 169" width="300" overflow="visible" role="img" aria-label="CyberOffroading">
-        <defs><clipPath id="coBrandWedge"><path d="M0,159 L480,10 L1200,105 Z"></path></clipPath></defs>
-        <g class="mk-cyan flick-c" fill="none" stroke="#00d4ff" stroke-width="7" stroke-linejoin="miter"><path d="M0,159 L480,10 L1200,105 Z"></path></g>
-        <g class="mk-red flick-o" clip-path="url(#coBrandWedge)" fill="none" stroke="#ff2a2a" stroke-width="6" stroke-linejoin="miter">
-          <path d="M130,150 L235,106 L345,140 L470,42 L590,132 L705,74 L825,128 L945,100 L1065,126 L1165,114"></path>
-          <circle cx="470" cy="42" r="8" fill="#ff2a2a" stroke="none"></circle>
-        </g>
-      </svg>
+      <span class="site-footer__brand" role="img" aria-label="CyberOffroading">
+        <picture><source srcset="images/brand/mark-cyan.webp" type="image/webp"><img class="co-mark__layer flick-c" src="images/brand/mark-cyan.png" width="1338" height="315" alt="" loading="lazy" decoding="async"></picture>
+        <picture><source srcset="images/brand/mark-red.webp" type="image/webp"><img class="co-mark__layer co-mark__layer--over flick-o" src="images/brand/mark-red.png" width="1338" height="315" alt="" aria-hidden="true" loading="lazy" decoding="async"></picture>
+      </span>
       <div class="site-footer__links">
         <a href="https://discord.gg/8QUfBsZeCC" target="_blank" rel="noopener noreferrer">EV Off-roading Discord</a>
         <a href="#top">Back to Top</a>

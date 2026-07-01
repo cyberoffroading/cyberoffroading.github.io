@@ -193,57 +193,39 @@ img {
   text-shadow: 0 0 2px #fff, 0 0 6px var(--red), 0 0 12px rgba(255, 42, 42, 0.55);
 }
 
-/* Hero scale — stacked, big */
+/* Hero wordmark — pre-rendered neon lockup (webp/png), NOT live text-shadow.
+   Live CSS glow rasterises differently in every engine (Safari vs Chrome/
+   Firefox), so it could never be byte-identical; baked images are pixel-
+   identical everywhere. Shipped as TWO overlaid layers on a shared frame —
+   cyan CYBER + red Offroading — so each neon tube keeps its own independent
+   flicker (nflick 7s / nflick2 6.4s, out of phase) via opacity animation
+   (opacity is identical across engines). Baked from Chrome at 2.5×; the frame
+   carries the glow halo, so width carries the whole lockup. Real alt text on
+   the base layer preserves SEO/AX. No font dependency → no FOUT gate. */
 .wordmark--hero {
-  flex-direction: column;
-  align-items: flex-start;
+  display: block;
   margin-bottom: clamp(30px, 5vw, 58px);
-  transition: opacity 0.35s ease;
 }
-/* Avoid the FOUT: keep the hero wordmark hidden until Audiowide + Yellowtail
-   are loaded (the inline <head> script adds .fonts-ready). Gated on .js so
-   no-JS users still see it, and the script has a 2.5s safety timeout. */
-.js .wordmark--hero { opacity: 0; }
-.js.fonts-ready .wordmark--hero { opacity: 1; }
+.wm-stack {
+  position: relative;
+  display: block;
+  width: clamp(300px, 64vw, 616px);
+  /* the shared frame carries a transparent glow halo (13% of width on the
+     left, matching top); pull it back so the glyphs sit on the hero's left
+     edge and the glow overflows, exactly as the old text-shadow did. */
+  margin-left: clamp(-80px, -8.3vw, -39px);
+  margin-top: clamp(-66px, -6.8vw, -30px);
+}
+.wm-stack picture { display: block; }
+.wm-layer { display: block; width: 100%; height: auto; }
+.wm-layer--over { position: absolute; top: 0; left: 0; }
 
-/* Glow blur is expressed in em so the halo scales with font-size — the neon
-   stays proportionally identical from the 60px desktop hero down to the mobile
-   crop (and renders the same intent in Safari as in Chrome/Firefox). One
-   recipe, no per-breakpoint divergence. em values = the old 60px/120px px
-   blurs divided by their font-size. */
-.wordmark--hero .wordmark__cyber {
-  font-size: clamp(30px, 6.6vw, 60px);
-  color: #f2feff;
-  text-shadow: 0 0 0.07em #fff, 0 0 0.23em var(--cyan-soft), 0 0 0.5em var(--cyan), 0 0 1em rgba(0, 212, 255, 0.5);
-}
 
-.wordmark--hero .wordmark__off {
-  font-size: clamp(56px, 12.5vw, 120px);
-  line-height: 0.78;
-  margin-top: -2px;
-  margin-left: 0;
-  text-shadow: 0 0 0.035em #fff, 0 0 0.12em #ffb3b3, 0 0 0.25em var(--red), 0 0 0.52em rgba(255, 42, 42, 0.46);
-}
-
-/* --- Brand mark (live inline SVG): cyan wedge + red ridge, two neon tubes.
-   Shipped inline (not <img>) so each tube glows + flickers on its own
-   timeline. Wrap the <svg> in .neon to light it; drop .neon for the flat
-   two-colour mono fallback. overflow:visible keeps the glow halo unclipped. */
-.co-mark { display: block; height: auto; overflow: visible; }
-/* NOTE: use literal hex (not var()) inside drop-shadow — iOS Safari fails to
-   resolve custom properties inside filter, which silently drops the glow. */
-.neon .mk-cyan {
-  stroke: var(--cyan-core);
-  filter: drop-shadow(0 0 1.5px #eafdff) drop-shadow(0 0 5px #00d4ff)
-          drop-shadow(0 0 13px #00d4ff) drop-shadow(0 0 26px rgba(0, 212, 255, 0.5));
-}
-.neon .mk-red {
-  stroke: var(--red-core);
-  filter: drop-shadow(0 0 1.5px #ffd9d9) drop-shadow(0 0 5px #ff2a2a)
-          drop-shadow(0 0 12px #ff2a2a) drop-shadow(0 0 24px rgba(255, 42, 42, 0.45));
-}
-.neon .mk-red circle { fill: var(--red-core); }
-/* Mark tubes flicker independently, reusing the wordmark's two timelines. */
+/* --- Neon flicker timelines. Every brand mark (hero wordmark, nav logo,
+   footer wedge) ships as two pre-rendered <picture>/<img> layers — a cyan
+   layer + a red layer on a shared frame (see .wm-stack / .nav-brand-stack /
+   .site-footer__brand) — so the artwork is pixel-identical across engines
+   while each tube flickers on its own timeline via these opacity animations. */
 .flick-c { animation: nflick 7s linear infinite; }
 .flick-o { animation: nflick2 6.4s linear infinite 0.5s; }
 
@@ -529,8 +511,19 @@ img {
   visibility: visible;
 }
 
-.category-nav__brand .wordmark__cyber { font-size: clamp(13px, 2.2vw, 15px); }
-.category-nav__brand .wordmark__off { font-size: clamp(22px, 4vw, 27px); }
+/* Nav logo — same baked treatment as the hero, as TWO overlaid layers (cyan +
+   red) on a shared frame so each tube flickers independently (flick-c/flick-o).
+   The frame carries a transparent glow halo, so a small negative margin pulls
+   the glyphs to the link edges and keeps flex spacing tight (glow overflows). */
+.nav-brand-stack {
+  position: relative;
+  display: block;
+  width: clamp(173px, 31vw, 209px);   /* → lockup ≈48–58px tall (aspect 3.61) */
+  margin: -15px -16px;
+}
+.nav-brand-stack picture { display: block; }
+.nav-brand-layer { display: block; width: 100%; height: auto; }
+.nav-brand-layer--over { position: absolute; top: 0; left: 0; }
 
 /* IMPORTANT: keep position:static — ensurePillVisible()'s offset math
    (pill.offsetLeft - navInner.offsetLeft) only cancels when this is NOT
@@ -1709,14 +1702,20 @@ img {
   margin: 0 auto;
 }
 
-/* Footer brand logo — the live neon mark (cyan wedge + red ridge), or the
-   raster hero-mark.png fallback. Same footprint either way. */
+/* Footer brand mark — baked cyan-wedge + red-ridge layers (pixel-identical
+   across engines), overlaid so each tube flickers independently (flick-c/
+   flick-o). Width is set so the wedge (≈90% of the framed image) lands at the
+   old ~300px footprint; the negative margins absorb the glow halo the frame
+   carries, so the wedge sits at the footer's left edge (glow overflows). */
 .site-footer__brand {
+  position: relative;
   display: block;
-  width: clamp(220px, 38vw, 300px);
-  height: auto;
-  margin-bottom: 24px;
+  width: clamp(245px, 42vw, 334px);
+  margin: -20px 0 4px -17px;
 }
+.site-footer__brand picture { display: block; }
+.co-mark__layer { display: block; width: 100%; height: auto; }
+.co-mark__layer--over { position: absolute; top: 0; left: 0; }
 
 .site-footer__links {
   display: flex;
@@ -2031,15 +2030,11 @@ img {
 
   .hero__content { padding: 36px 26px; }
 
-  /* Keep the stacked wordmark inside the viewport (no right-edge clip).
-     Glow is inherited from the base em-based recipe so it scales with these
-     smaller mobile font-sizes automatically — no separate mobile glow. */
-  .wordmark--hero .wordmark__cyber {
-    font-size: clamp(26px, 6.6vw, 38px);
-  }
-  .wordmark--hero .wordmark__off {
-    font-size: clamp(40px, 12.4vw, 66px);
-    margin-top: 7px;
+  /* Baked wordmark: size the stack to the phone width (glow halo included). */
+  .wm-stack {
+    width: min(86vw, 420px);
+    margin-left: max(-46px, -11.2vw);
+    margin-top: max(-40px, -9.6vw);
   }
   .wordmark--hero { margin-bottom: 34px; }
 
