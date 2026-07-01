@@ -45,11 +45,40 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Audiowide&family=Yellowtail&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../css/style.css">
+  <!-- Favicons + app icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#08090a">
+
+  <link rel="stylesheet" href="../css/style.css?v=20">
 </head>
 <body class="guide-page">
+
+  <nav class="category-nav" aria-label="Site">
+    <div class="category-nav__bar">
+      <a href="../" class="wordmark category-nav__brand flick revealed" aria-label="CyberOffroading — home"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></a>
+      <div class="category-nav__inner">
+        <a href="../#articles" class="nav-pill">Articles</a>
+        <a href="../#offroad" class="nav-pill">Offroad</a>
+        <a href="../#recovery" class="nav-pill nav-pill--red">Recovery</a>
+        <a href="../#flat-tire" class="nav-pill nav-pill--red">Flat Tire</a>
+        <a href="../#winter" class="nav-pill nav-pill--red">Winter</a>
+        <a href="../#winch" class="nav-pill">Winch Build</a>
+        <a href="../#starlink" class="nav-pill">Starlink</a>
+        <a href="../#comms" class="nav-pill">Comms</a>
+        <a href="../#essentials" class="nav-pill">Essentials</a>
+        <a href="../#events" class="nav-pill nav-pill--red">Events</a>
+        <a href="../#gallery" class="nav-pill">Gallery</a>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
 
     <a href="../#articles" class="guide-back">
@@ -116,12 +145,48 @@
       <p class="info-callout__label">&#9432; Note</p>
       <p>This comparison is based on real-world driving in the Pacific Northwest. The Lectron went through a West Coast road trip before failing at 6 months. The Basenor and EVAnnex were used for around-town driving only. Results may vary, but the carbon layer quality difference is visible and measurable regardless.</p>
     </div>
+
+    <div class="author-box">
+      <div class="author-box__avatar">
+        <svg viewBox="0 0 64 34" fill="none" aria-hidden="true"><path d="M2 30 L28 4 L62 24 Z" stroke="#00d4ff" stroke-width="3" stroke-linejoin="miter" style="filter:drop-shadow(0 0 3px rgba(0,212,255,.6))"/><path d="M9 27 L19 14 L28 22 L38 9 L52 20" stroke="#ff2a2a" stroke-width="2.5" stroke-linejoin="miter" stroke-linecap="square"/></svg>
+      </div>
+      <div>
+        <div class="author-box__name">Built by Kevin</div>
+        <div class="author-box__role">// Cyberbeast owner</div>
+      </div>
+    </div>
+
+    <div class="related">
+      <div class="related__label">// Related</div>
+      <div class="related__grid">
+        <a class="related__card" href="vault-seal.html" data-guide-modal>
+          <div class="related__card-tag">Build</div>
+          <div class="related__card-title">Sealing the Cybertruck Vault</div>
+        </a>
+        <a class="related__card" href="roof-glass.html" data-guide-modal>
+          <div class="related__card-tag">Reference</div>
+          <div class="related__card-title">Roof Glass &amp; Starlink Mini</div>
+        </a>
+        <a class="related__card" href="trail-lift.html" data-guide-modal>
+          <div class="related__card-tag">Field Guide</div>
+          <div class="related__card-title">Lifting on the Trail Without a Jack</div>
+        </a>
+      </div>
+    </div>
     </article>
 
   </div>
 
   <footer class="site-footer" style="margin-top: 80px;">
     <div class="site-footer__inner">
+      <svg class="co-mark site-footer__brand neon" viewBox="0 0 1200 169" width="300" overflow="visible" role="img" aria-label="CyberOffroading">
+        <defs><clipPath id="coBrandWedge"><path d="M0,159 L480,10 L1200,105 Z"></path></clipPath></defs>
+        <g class="mk-cyan flick-c" fill="none" stroke="#00d4ff" stroke-width="7" stroke-linejoin="miter"><path d="M0,159 L480,10 L1200,105 Z"></path></g>
+        <g class="mk-red flick-o" clip-path="url(#coBrandWedge)" fill="none" stroke="#ff2a2a" stroke-width="6" stroke-linejoin="miter">
+          <path d="M130,150 L235,106 L345,140 L470,42 L590,132 L705,74 L825,128 L945,100 L1065,126 L1165,114"></path>
+          <circle cx="470" cy="42" r="8" fill="#ff2a2a" stroke="none"></circle>
+        </g>
+      </svg>
       <div class="site-footer__links">
         <a href="../">Home</a>
         <a href="../#articles">All Articles</a>

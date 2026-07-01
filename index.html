@@ -6,6 +6,15 @@
   <title>CyberOffroading — Cybertruck Off-Road Accessories &amp; Gear</title>
   <meta name="description" content="Curated Cybertruck off-road gear: recovery, tire tools, winch builds, Starlink mounts. Spec-focused reviews from an owner who actually runs this stuff.">
   <link rel="canonical" href="https://cyberoffroading.com/">
+  <meta name="theme-color" content="#08090a">
+
+  <!-- Favicons + app icons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
 
   <!-- Open Graph -->
   <meta property="og:title" content="CyberOffroading — Cybertruck Off-Road Accessories">
@@ -23,15 +32,39 @@
   <meta name="twitter:description" content="Curated off-road accessories for the Cybertruck. Recovery gear, tire tools, winch builds, Starlink mounts.">
   <meta name="twitter:image" content="https://cyberoffroading.com/images/social/og-home.jpg">
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://cyberoffroading.com/#org",
+        "name": "CyberOffroading",
+        "url": "https://cyberoffroading.com/",
+        "logo": "https://cyberoffroading.com/icon-512.png",
+        "description": "Curated off-road accessories and field-tested guides for the Tesla Cybertruck.",
+        "founder": { "@type": "Person", "name": "Kevin", "url": "https://x.com/kchau" }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://cyberoffroading.com/#website",
+        "url": "https://cyberoffroading.com/",
+        "name": "CyberOffroading",
+        "publisher": { "@id": "https://cyberoffroading.com/#org" }
+      }
+    ]
+  }
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Audiowide&family=Yellowtail&display=swap" rel="stylesheet">
 
   <!-- LCP: start fetching the hero during HTML parse -->
-  <link rel="preload" as="image" type="image/webp" href="images/hero/IMG_2984-2000.webp" imagesrcset="images/hero/IMG_2984-1200.webp 1200w, images/hero/IMG_2984-2000.webp 2000w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" type="image/webp" href="images/hero/salt-flats-dusk-2000.webp" imagesrcset="images/hero/salt-flats-dusk-1200.webp 1200w, images/hero/salt-flats-dusk-2000.webp 2000w" imagesizes="100vw" fetchpriority="high">
 
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=20">
 </head>
 <body>
 
@@ -43,18 +76,22 @@
   <header class="hero" id="top">
     <div class="hero__bg">
       <picture>
-        <source type="image/webp" srcset="images/hero/IMG_2984-1200.webp 1200w, images/hero/IMG_2984-2000.webp 2000w" sizes="100vw">
-        <img src="images/hero/IMG_2984-2000.jpg" srcset="images/hero/IMG_2984-1200.jpg 1200w, images/hero/IMG_2984-2000.jpg 2000w" sizes="100vw" width="2000" height="1500" alt="Cybertruck on an off-road trail" loading="eager" fetchpriority="high">
+        <source type="image/webp" srcset="images/hero/salt-flats-dusk-1200.webp 1200w, images/hero/salt-flats-dusk-2000.webp 2000w" sizes="100vw">
+        <img src="images/hero/salt-flats-dusk-2000.jpg" srcset="images/hero/salt-flats-dusk-1200.jpg 1200w, images/hero/salt-flats-dusk-2000.jpg 2000w" sizes="100vw" width="2000" height="1331" alt="Cybertruck parked on the Bonneville salt flats at dusk, sunset glowing behind distant mountains" loading="eager" fetchpriority="high">
       </picture>
+      <div class="hero__duotone" aria-hidden="true"></div>
     </div>
+    <div class="hero__vignette" aria-hidden="true"></div>
+    <div class="hero__glow hero__glow--cyan" aria-hidden="true"></div>
+    <div class="hero__glow hero__glow--red" aria-hidden="true"></div>
     <div class="hero__content">
-      <p class="hero__tag">// Curated Gear for the Trail</p>
-      <h1>Cyber<span>Offroading</span></h1>
+      <p class="hero__tag"><span class="hero__tag-rule" aria-hidden="true"></span>// Curated Gear for the Trail</p>
+      <h1 class="wordmark wordmark--hero flick"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></h1>
       <p class="hero__sub">Spec-focused reviews of off-road accessories for the Cybertruck. No fluff. No affiliate spam walls. Just the gear that works.</p>
-      <a href="#offroad" class="hero__scroll">
-        Explore Gear
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v10M3 8l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
-      </a>
+      <div class="hero__actions">
+        <a href="#offroad" class="cta-button cta-button--internal hero__cta">Explore Gear &rarr;</a>
+        <a href="#winch" class="cta-button cta-button--secondary cta-button--internal hero__cta">Winch Build &rarr;</a>
+      </div>
     </div>
   </header>
 
@@ -63,21 +100,24 @@
        ============================================================ -->
   <div class="top-bar">Driving another Tesla? Check out <a href="https://tesla-essentials.com" target="_blank" rel="noopener noreferrer"><span>Tesla-Essentials.com</span></a> for accessories covering the rest of the lineup.</div>
 
-  <div class="owner-bar">Built by <a href="https://x.com/kchau" target="_blank" rel="noopener noreferrer"><span>Kevin</span></a> — Cyberbeast owner. Every product on this site is gear I run on my truck. <span class="owner-bar__disclosure">Affiliate links — purchases may earn a commission at no cost to you.</span></div>
+  <div class="owner-bar">Built by <a href="https://x.com/kchau" target="_blank" rel="noopener noreferrer"><span>Kevin</span></a> — Cyberbeast owner. Every product on this site is gear I run on my truck.</div>
 
-  <nav class="category-nav" aria-label="Product categories">
-    <div class="category-nav__inner">
-      <a href="#articles" class="nav-pill">Articles</a>
-      <a href="#offroad" class="nav-pill active">Offroad</a>
-      <a href="#recovery" class="nav-pill">Recovery</a>
-      <a href="#flat-tire" class="nav-pill">Flat Tire</a>
-      <a href="#winter" class="nav-pill">Winter</a>
-      <a href="#winch" class="nav-pill">Winch Build</a>
-      <a href="#starlink" class="nav-pill">Starlink</a>
-      <a href="#comms" class="nav-pill">Comms</a>
-      <a href="#essentials" class="nav-pill">Essentials</a>
-      <a href="#events" class="nav-pill">Events</a>
-      <a href="#gallery" class="nav-pill">Gallery</a>
+  <nav class="category-nav" aria-label="Site">
+    <div class="category-nav__bar">
+      <a href="#top" class="wordmark category-nav__brand flick" aria-label="CyberOffroading — home"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></a>
+      <div class="category-nav__inner">
+        <a href="#articles" class="nav-pill">Articles</a>
+        <a href="#offroad" class="nav-pill active">Offroad</a>
+        <a href="#recovery" class="nav-pill nav-pill--red">Recovery</a>
+        <a href="#flat-tire" class="nav-pill nav-pill--red">Flat Tire</a>
+        <a href="#winter" class="nav-pill nav-pill--red">Winter</a>
+        <a href="#winch" class="nav-pill">Winch Build</a>
+        <a href="#starlink" class="nav-pill">Starlink</a>
+        <a href="#comms" class="nav-pill">Comms</a>
+        <a href="#essentials" class="nav-pill">Essentials</a>
+        <a href="#events" class="nav-pill nav-pill--red">Events</a>
+        <a href="#gallery" class="nav-pill">Gallery</a>
+      </div>
     </div>
   </nav>
 
@@ -86,8 +126,10 @@
        ============================================================ -->
   <section id="articles" class="section">
     <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M5,3 L15,3 L19,7 L19,21 L5,21 Z"/><path d="M15,3 L15,7 L19,7"/><path d="M8,11 H16 M8,14 H16 M8,17 H13"/></svg><span>// Field Notes &amp; Guides</span></div>
       <h2>Articles</h2>
       <p class="section__intro">In-depth guides and walkthroughs for the Cybertruck.</p>
+      <a href="articles/" class="section__more">View all articles &rarr;</a>
     </div>
     <div class="product-grid">
 
@@ -160,12 +202,70 @@
   </section>
 
   <!-- ============================================================
+       BROWSE BY CATEGORY (homepage wayfinding)
+       ============================================================ -->
+  <section class="browse-section" aria-labelledby="browse-heading">
+    <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M4,4 H10 V10 H4 Z M14,4 H20 V10 H14 Z M4,14 H10 V20 H4 Z M14,14 H20 V20 H14 Z"/></svg><span>// Find Your Gear</span></div>
+      <h2 id="browse-heading">Browse by Category</h2>
+    </div>
+    <nav class="category-grid" aria-label="Browse sections">
+      <a class="category-tile" href="#articles">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M5,3 L15,3 L19,7 L19,21 L5,21 Z"/><path d="M15,3 L15,7 L19,7"/><path d="M8,11 H16 M8,14 H16 M8,17 H13"/></svg>
+        <span class="category-tile__label">Articles</span>
+      </a>
+      <a class="category-tile" href="#offroad">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M2,19 L8,9 L12,14 L17,5 L22,19"/><path d="M2,19 H22"/></svg>
+        <span class="category-tile__label">Offroad</span>
+      </a>
+      <a class="category-tile category-tile--red" href="#recovery">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M7,20 V10 L12,5 L17,10 V20"/><path d="M4,20 H20"/><path d="M10,20 V14 H14 V20"/></svg>
+        <span class="category-tile__label">Recovery</span>
+      </a>
+      <a class="category-tile category-tile--red" href="#flat-tire">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M9,4 L15,4 L20,9 L20,14 L18,17 L6,17 L4,14 L4,9 Z"/><path d="M12,9 L15,12 L12,15 L9,12 Z"/><path d="M5,21 H19"/></svg>
+        <span class="category-tile__label">Flat Tire</span>
+      </a>
+      <a class="category-tile category-tile--red" href="#winter">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M12,2 V22 M3.5,7 L20.5,17 M20.5,7 L3.5,17"/><path d="M12,6 L9.5,4.5 M12,6 L14.5,4.5 M12,18 L9.5,19.5 M12,18 L14.5,19.5"/></svg>
+        <span class="category-tile__label">Winter</span>
+      </a>
+      <a class="category-tile" href="#winch">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M4,8 L16,8 L16,16 L4,16 Z"/><path d="M7,8 V16 M13,8 V16"/><path d="M16,11 H21 L21,14"/></svg>
+        <span class="category-tile__label">Winch Build</span>
+      </a>
+      <a class="category-tile" href="#starlink">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M3,12 L14,6 L17,11 L6,16 Z"/><path d="M11,14 V19 M8,20 H15"/><path d="M9,9 L12,4"/></svg>
+        <span class="category-tile__label">Starlink</span>
+      </a>
+      <a class="category-tile" href="#comms">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M12,9 V21 M9,21 L12,18 L15,21"/><path d="M12,5 L13.5,7 L12,9 L10.5,7 Z"/><path d="M8,5 L5,8 M16,5 L19,8"/></svg>
+        <span class="category-tile__label">Comms</span>
+      </a>
+      <a class="category-tile" href="#essentials">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M4,9 L20,9 L20,19 L4,19 Z"/><path d="M9,9 V6 L15,6 V9"/><path d="M4,13 H20 M11,9 V13"/></svg>
+        <span class="category-tile__label">Essentials</span>
+      </a>
+      <a class="category-tile category-tile--red" href="#events">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M4,5 L20,5 L20,20 L4,20 Z"/><path d="M8,3 V7 M16,3 V7 M4,9 H20"/><path d="M9,12 L13,12 L13,16 L9,16 Z"/></svg>
+        <span class="category-tile__label">Events</span>
+      </a>
+      <a class="category-tile" href="#gallery">
+        <svg class="category-tile__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M8,4 L20,4 L20,15"/><path d="M4,8 L16,8 L16,20 L4,20 Z"/><path d="M6,17 L9,13 L11,15 L13,12 L14,17"/></svg>
+        <span class="category-tile__label">Gallery</span>
+      </a>
+    </nav>
+  </section>
+
+  <!-- ============================================================
        #offroad
        ============================================================ -->
   <section id="offroad" class="section">
     <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M2,19 L8,9 L12,14 L17,5 L22,19"/><path d="M2,19 H22"/></svg><span>// Air Down &middot; Air Up</span></div>
       <h2>Offroad Essentials</h2>
       <p class="section__intro">Tire management is everything off-road. Deflate for traction, re-inflate when you hit pavement.</p>
+      <a href="roundups/tire-inflators.html" class="section__more">Roundup: best tire inflators &rarr;</a>
     </div>
     <div class="product-grid">
 
@@ -177,6 +277,11 @@
           <h3>Tire Deflators</h3>
           <p class="product-card__price">~$30</p>
           <p class="product-card__review">Brass construction, adjustable target PSI. Set them and walk away — all 4 tires deflate simultaneously to your preset.</p>
+          <div class="product-card__specs">
+            <div class="spec-row"><span class="spec-row__k">Material</span><span class="spec-row__v">Brass</span></div>
+            <div class="spec-row"><span class="spec-row__k">Target</span><span class="spec-row__v">Adjustable PSI</span></div>
+            <div class="spec-row"><span class="spec-row__k">Tires</span><span class="spec-row__v">All 4 at once</span></div>
+          </div>
           <a href="https://amzn.to/4e2mxsB" target="_blank" rel="noopener noreferrer" class="cta-button">Deflators</a>
           <a href="https://amzn.to/3LBzMEw" target="_blank" rel="noopener noreferrer" class="cta-button">Quick Release Adapter</a>
         </div>
@@ -190,6 +295,12 @@
           <h3>Tankless Inflator Setup</h3>
           <p class="product-card__price">~$130</p>
           <p class="product-card__review">Tankless. Inflates all 4 tires 35–50psi simultaneously in 3.5 min. Runs off 120v AC from the CT bed outlet.</p>
+          <div class="product-card__specs">
+            <div class="spec-row"><span class="spec-row__k">Tires</span><span class="spec-row__v">All 4 at once</span></div>
+            <div class="spec-row"><span class="spec-row__k">Pressure</span><span class="spec-row__v">35–50 psi</span></div>
+            <div class="spec-row"><span class="spec-row__k">Time</span><span class="spec-row__v">3.5 min</span></div>
+            <div class="spec-row"><span class="spec-row__k">Power</span><span class="spec-row__v">120V AC</span></div>
+          </div>
           <a href="https://amzn.to/4phHAcE" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
       </article>
@@ -237,7 +348,8 @@
        #recovery
        ============================================================ -->
   <section id="recovery" class="section section--alt">
-    <div class="section__header">
+    <div class="section__header section__header--trail">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M7,20 V10 L12,5 L17,10 V20"/><path d="M4,20 H20"/><path d="M10,20 V14 H14 V20"/></svg><span>// When You're Stuck</span></div>
       <h2>Recovery Gear</h2>
       <p class="section__intro">When you're stuck, you need gear you can trust. Don't cheap out here.</p>
     </div>
@@ -349,7 +461,8 @@
        #flat-tire
        ============================================================ -->
   <section id="flat-tire" class="section">
-    <div class="section__header">
+    <div class="section__header section__header--trail">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M9,4 L15,4 L20,9 L20,14 L18,17 L6,17 L4,14 L4,9 Z"/><path d="M12,9 L15,12 L12,15 L9,12 Z"/><path d="M5,21 H19"/></svg><span>// Trailside Repair</span></div>
       <h2>Flat Tire Kit</h2>
       <p class="section__intro">Off-road means sharp rocks. Carry the tools to get yourself out without cell service.</p>
     </div>
@@ -405,7 +518,8 @@
        #winter
        ============================================================ -->
   <section id="winter" class="section section--alt">
-    <div class="section__header">
+    <div class="section__header section__header--trail">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M12,2 V22 M3.5,7 L20.5,17 M20.5,7 L3.5,17"/><path d="M12,6 L9.5,4.5 M12,6 L14.5,4.5 M12,18 L9.5,19.5 M12,18 L14.5,19.5"/></svg><span>// Snow &amp; Ice</span></div>
       <h2>Winter Gear</h2>
       <p class="section__intro">Snow, ice, and frozen mud. The CT handles it well with the right traction aids.</p>
     </div>
@@ -463,6 +577,7 @@
        ============================================================ -->
   <section id="winch" class="section">
     <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M4,8 L16,8 L16,16 L4,16 Z"/><path d="M7,8 V16 M13,8 V16"/><path d="M16,11 H21 L21,14"/></svg><span>// 240V Trail Power</span></div>
       <h2>Winch Build</h2>
       <p class="section__intro">A full DIY winch setup powered by the CT's 240v 50A plug. Split to 4 power supplies.</p>
     </div>
@@ -488,6 +603,11 @@
         <div class="product-card__info">
           <h3>12,000 lb Winch</h3>
           <p class="product-card__review">Badland 12k with synthetic rope and wireless remote. Proven workhorse at a fraction of brand-name pricing.</p>
+          <div class="product-card__specs">
+            <div class="spec-row"><span class="spec-row__k">Capacity</span><span class="spec-row__v">12,000 lb</span></div>
+            <div class="spec-row"><span class="spec-row__k">Rope</span><span class="spec-row__v">Synthetic</span></div>
+            <div class="spec-row"><span class="spec-row__k">Remote</span><span class="spec-row__v">Wireless</span></div>
+          </div>
           <a href="https://harborfreight.com/12000-lb-winch-with-synthetic-rope-and-wireless-remote-56385.html" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price at Harbor Freight</a>
         </div>
       </article>
@@ -511,6 +631,11 @@
           <h3>Power Supplies</h3>
           <p class="product-card__qty">Need: 4x</p>
           <p class="product-card__review">240v AC → 12v DC converters. Four units wired in parallel off the CT's 240v 50A plug to deliver enough current for the winch motor.</p>
+          <div class="product-card__specs">
+            <div class="spec-row"><span class="spec-row__k">Input</span><span class="spec-row__v">240V AC</span></div>
+            <div class="spec-row"><span class="spec-row__k">Output</span><span class="spec-row__v">12V DC</span></div>
+            <div class="spec-row"><span class="spec-row__k">Source</span><span class="spec-row__v">CT 240V 50A</span></div>
+          </div>
           <a href="https://amzn.to/4pYPpVS" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
       </article>
@@ -593,6 +718,7 @@
        ============================================================ -->
   <section id="starlink" class="section section--alt">
     <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M3,12 L14,6 L17,11 L6,16 Z"/><path d="M11,14 V19 M8,20 H15"/><path d="M9,9 L12,4"/></svg><span>// Connectivity</span></div>
       <h2>Starlink Mini Setup</h2>
       <p class="section__intro">Internet anywhere. Mount options for interior glass or exterior roof, plus the power cable that actually works.</p>
     </div>
@@ -661,6 +787,11 @@
           <h3>USB-C Power Cable (60W PD)</h3>
           <p class="product-card__review">Powers the Starlink Mini from the truck's USB-C port. Starlink Mini negotiates a <strong>60W PD profile</strong> — generic 65W or 100W cables won't deliver power. This one is matched to 60W and works.</p>
           <p class="product-card__review"><strong>Heads up:</strong> if all 3 USB-C ports are in use at once, the truck drops each port to a 42W profile and the Mini won't power on. Leave at least one port free.</p>
+          <div class="product-card__specs">
+            <div class="spec-row"><span class="spec-row__k">Profile</span><span class="spec-row__v">60W PD</span></div>
+            <div class="spec-row"><span class="spec-row__k">Connector</span><span class="spec-row__v">USB-C → DC barrel</span></div>
+            <div class="spec-row"><span class="spec-row__k">Length</span><span class="spec-row__v">10 ft</span></div>
+          </div>
           <a href="https://amzn.to/4cDtVtB" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
       </article>
@@ -673,6 +804,7 @@
        ============================================================ -->
   <section id="comms" class="section">
     <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M12,9 V21 M9,21 L12,18 L15,21"/><path d="M12,5 L13.5,7 L12,9 L10.5,7 Z"/><path d="M8,5 L5,8 M16,5 L19,8"/></svg><span>// Stay in Contact</span></div>
       <h2>Communications</h2>
       <p class="section__intro">Cell service dies fast on the trail. GMRS radios keep your group connected.</p>
     </div>
@@ -685,6 +817,12 @@
         <div class="product-card__info">
           <h3>Rocky Talkies — 5W</h3>
           <p class="product-card__review">5W GMRS radio. 5+ mile range in open terrain. USB-C charging. Waterproof. The go-to for off-road groups.</p>
+          <div class="product-card__specs">
+            <div class="spec-row"><span class="spec-row__k">Power</span><span class="spec-row__v">5W</span></div>
+            <div class="spec-row"><span class="spec-row__k">Band</span><span class="spec-row__v">GMRS</span></div>
+            <div class="spec-row"><span class="spec-row__k">Range</span><span class="spec-row__v">5+ mi open</span></div>
+            <div class="spec-row"><span class="spec-row__k">Charging</span><span class="spec-row__v">USB-C</span></div>
+          </div>
           <a href="https://amzn.to/3KXD9FX" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price on Amazon</a>
         </div>
       </article>
@@ -708,6 +846,7 @@
        ============================================================ -->
   <section id="essentials" class="section">
     <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M4,9 L20,9 L20,19 L4,19 Z"/><path d="M9,9 V6 L15,6 V9"/><path d="M4,13 H20 M11,9 V13"/></svg><span>// Maintenance &amp; Safety</span></div>
       <h2>Essentials &amp; Maintenance</h2>
       <p class="section__intro">Safety gear, MOLLE organization, Cyberbeast-specific fixes, and maintenance items for trail days.</p>
     </div>
@@ -721,6 +860,11 @@
           <h3>Cabin Air Filter (HEPA)</h3>
           <p class="product-card__price">~$100</p>
           <p class="product-card__review">Get the Tesla OEM filter — not third party. I've tried multiple aftermarket HEPA filters and they all stop filtering out gas and diesel fumes after a few months. The Tesla unit is the only one that actually holds up. All-in-one HEPA + carbon combo. Replace every 2 years.</p>
+          <div class="product-card__specs">
+            <div class="spec-row"><span class="spec-row__k">Type</span><span class="spec-row__v">HEPA + carbon</span></div>
+            <div class="spec-row"><span class="spec-row__k">Source</span><span class="spec-row__v">Tesla OEM</span></div>
+            <div class="spec-row"><span class="spec-row__k">Replace</span><span class="spec-row__v">Every 2 yrs</span></div>
+          </div>
           <a href="https://shop.tesla.com/product/cybertruck-hepa-filter?sku=1874737-00-B" target="_blank" rel="noopener noreferrer" class="cta-button">Check Price at Tesla Shop</a>
           <a href="guides/cabin-air-filter.html" data-guide-modal class="cta-button cta-button--internal">Why not aftermarket? &rarr;</a>
         </div>
@@ -885,7 +1029,8 @@
        #events
        ============================================================ -->
   <section id="events" class="section section--events">
-    <div class="section__header">
+    <div class="section__header section__header--trail">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M4,5 L20,5 L20,20 L4,20 Z"/><path d="M8,3 V7 M16,3 V7 M4,9 H20"/><path d="M9,12 L13,12 L13,16 L9,16 Z"/></svg><span>// Get Together</span></div>
       <h2>Off-Road Events</h2>
       <p class="section__intro">Group runs, meetups, and Cybertruck off-road rallies.</p>
     </div>
@@ -894,7 +1039,7 @@
         <p class="events-cta__label">// Cybertrex Events</p>
         <p class="events-cta__text">Find upcoming Cybertruck off-road events, group runs, and meetups. The main hub for organized CT trail runs.</p>
         <a href="https://www.cybertrexevents.com/" target="_blank" rel="noopener noreferrer" class="cta-button events-cta__button">
-          View Events &rarr;
+          View Events
         </a>
       </div>
     </div>
@@ -905,21 +1050,22 @@
        ============================================================ -->
   <section id="gallery" class="section section--alt">
     <div class="section__header">
+      <div class="section__eyebrow"><svg class="section__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="miter" aria-hidden="true"><path d="M8,4 L20,4 L20,15"/><path d="M4,8 L16,8 L16,20 L4,20 Z"/><path d="M6,17 L9,13 L11,15 L13,12 L14,17"/></svg><span>// In Its Habitat</span></div>
       <h2>On The Trail</h2>
       <p class="section__intro">The Cybertruck in its natural habitat.</p>
     </div>
     <div class="gallery-grid">
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9261-1200.webp"><img src="images/gallery/IMG_9261-1200.jpg" alt="Cybertruck off-road trail run through forest" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_2847-1200.webp"><img src="images/gallery/IMG_2847-1200.jpg" alt="Cybertruck on rugged mountain terrain" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9378-1200.webp"><img src="images/gallery/IMG_9378-1200.jpg" alt="Cybertruck trail adventure through trees" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_0867-1200.webp"><img src="images/gallery/IMG_0867-1200.jpg" alt="Cybertruck in the wild off-road" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9375-1200.webp"><img src="images/gallery/IMG_9375-1200.jpg" alt="Cybertruck off-road action shot" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_2049-1200.webp"><img src="images/gallery/IMG_2049-1200.jpg" alt="Cybertruck trail scenery overlook" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9367-1200.webp"><img src="images/gallery/IMG_9367-1200.jpg" alt="Cybertruck off-road exploration" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_0841-1200.webp"><img src="images/gallery/IMG_0841-1200.jpg" alt="Cybertruck on mountain trail" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9290-1200.webp"><img src="images/gallery/IMG_9290-1200.jpg" alt="Cybertruck dirt trail run" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_2869-1200.webp"><img src="images/gallery/IMG_2869-1200.jpg" alt="Cybertruck outdoor adventure" width="1200" height="675" loading="lazy" decoding="async"></picture></figure>
-      <figure class="gallery-item"><picture><source type="image/webp" srcset="images/gallery/IMG_9142-1200.webp"><img src="images/gallery/IMG_9142-1200.jpg" alt="Cybertruck off-road trail" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_9261-1200.webp"><img src="images/gallery/IMG_9261-1200.jpg" alt="Cybertruck off-road trail run through forest" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_2847-1200.webp"><img src="images/gallery/IMG_2847-1200.jpg" alt="Cybertruck on rugged mountain terrain" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_9378-1200.webp"><img src="images/gallery/IMG_9378-1200.jpg" alt="Cybertruck trail adventure through trees" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_0867-1200.webp"><img src="images/gallery/IMG_0867-1200.jpg" alt="Cybertruck in the wild off-road" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_9375-1200.webp"><img src="images/gallery/IMG_9375-1200.jpg" alt="Cybertruck off-road action shot" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_2049-1200.webp"><img src="images/gallery/IMG_2049-1200.jpg" alt="Cybertruck trail scenery overlook" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_9367-1200.webp"><img src="images/gallery/IMG_9367-1200.jpg" alt="Cybertruck off-road exploration" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_0841-1200.webp"><img src="images/gallery/IMG_0841-1200.jpg" alt="Cybertruck on mountain trail" width="1200" height="1600" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_9290-1200.webp"><img src="images/gallery/IMG_9290-1200.jpg" alt="Cybertruck dirt trail run" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_2869-1200.webp"><img src="images/gallery/IMG_2869-1200.jpg" alt="Cybertruck outdoor adventure" width="1200" height="675" loading="lazy" decoding="async"></picture></figure>
+      <figure class="gallery-item" tabindex="0" role="button" aria-label="Open photo in fullscreen viewer"><picture><source type="image/webp" srcset="images/gallery/IMG_9142-1200.webp"><img src="images/gallery/IMG_9142-1200.jpg" alt="Cybertruck off-road trail" width="1200" height="900" loading="lazy" decoding="async"></picture></figure>
     </div>
 
     <!-- Lightbox -->
@@ -936,8 +1082,23 @@
        FOOTER
        ============================================================ -->
   <footer class="site-footer">
+    <div class="site-footer__watermark" aria-hidden="true">
+      <svg viewBox="-14 -16 1228 201" width="100%">
+        <defs><clipPath id="footMark"><path d="M0,159 L480,10 L1200,105 Z"></path></clipPath></defs>
+        <g fill="none" stroke="#143842" stroke-width="6" stroke-linejoin="miter"><path d="M0,159 L480,10 L1200,105 Z"></path></g>
+        <g clip-path="url(#footMark)"><path fill="none" stroke="#3a1416" stroke-width="5" stroke-linejoin="miter" d="M130,150 L235,106 L345,140 L470,42 L590,132 L705,74 L825,128 L945,100 L1065,126 L1165,114"></path></g>
+        <circle cx="470" cy="42" r="7" fill="#143842"></circle>
+      </svg>
+    </div>
     <div class="site-footer__inner">
-      <p class="site-footer__brand">CYBER<span class="text-cyber">OFFROADING</span></p>
+      <svg class="co-mark site-footer__brand neon" viewBox="0 0 1200 169" width="300" overflow="visible" role="img" aria-label="CyberOffroading">
+        <defs><clipPath id="coBrandWedge"><path d="M0,159 L480,10 L1200,105 Z"></path></clipPath></defs>
+        <g class="mk-cyan flick-c" fill="none" stroke="#00d4ff" stroke-width="7" stroke-linejoin="miter"><path d="M0,159 L480,10 L1200,105 Z"></path></g>
+        <g class="mk-red flick-o" clip-path="url(#coBrandWedge)" fill="none" stroke="#ff2a2a" stroke-width="6" stroke-linejoin="miter">
+          <path d="M130,150 L235,106 L345,140 L470,42 L590,132 L705,74 L825,128 L945,100 L1065,126 L1165,114"></path>
+          <circle cx="470" cy="42" r="8" fill="#ff2a2a" stroke="none"></circle>
+        </g>
+      </svg>
       <div class="site-footer__links">
         <a href="https://discord.gg/8QUfBsZeCC" target="_blank" rel="noopener noreferrer">EV Off-roading Discord</a>
         <a href="#top">Back to Top</a>
@@ -945,7 +1106,10 @@
       <p class="site-footer__disclaimer">
         CyberOffroading.com is a participant in the Amazon Services LLC Associates Program and other affiliate programs. Links on this site may earn us a commission at no extra cost to you. We only recommend products we personally use or have thoroughly researched. Always verify product compatibility with your specific Cybertruck configuration before purchasing.
       </p>
-      <p class="site-footer__copyright">&copy; 2026 CyberOffroading.com</p>
+      <div class="site-footer__meta">
+        <span class="wordmark wordmark--footer flick" aria-hidden="true"><span class="wordmark__cyber">Cyber</span><span class="wordmark__off">Offroading</span></span>
+        <span class="site-footer__metaline">// affiliate-supported &middot; est. 2026 &middot; &copy; 2026 cyberoffroading.com</span>
+      </div>
     </div>
   </footer>
 
@@ -965,6 +1129,6 @@
   </div>
 
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  <script src="js/main.js?v=8"></script>
+  <script src="js/main.js?v=11"></script>
 </body>
 </html>
