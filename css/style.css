@@ -68,7 +68,7 @@ html {
 
 body {
   font-family: var(--font-mono);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.7;
   letter-spacing: 0.01em;
   color: var(--text);
@@ -445,7 +445,7 @@ img {
 }
 
 .hero__sub {
-  font-size: clamp(0.85rem, 2.1vw, 1rem);
+  font-size: clamp(0.92rem, 2.2vw, 1.06rem);
   color: var(--text);
   max-width: 520px;
   line-height: 1.75;
@@ -807,8 +807,8 @@ img {
 
 .section__intro {
   margin-top: 14px;
-  color: var(--text-2);
-  font-size: 0.85rem;
+  color: var(--text-prose);
+  font-size: 0.92rem;
   line-height: 1.7;
   max-width: 600px;
 }
@@ -983,8 +983,8 @@ img {
 }
 
 .product-card__review {
-  font-size: 0.8rem;
-  color: var(--text-2);
+  font-size: 0.88rem;
+  color: var(--text-prose);
   line-height: 1.65;
 }
 
@@ -1480,9 +1480,9 @@ img {
 
 .guide-modal p {
   margin-bottom: 16px;
-  color: var(--text-prose);
-  font-size: 0.95rem;
-  line-height: 1.85;
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.8;
 }
 
 .guide-modal strong { color: var(--text-hi); }
@@ -1812,9 +1812,9 @@ img {
 .page-head__sub {
   margin-top: 22px;
   max-width: 620px;
-  color: var(--text-2);
+  color: var(--text-prose);
   line-height: 1.7;
-  font-size: 0.92rem;
+  font-size: 0.98rem;
 }
 
 /* Filter chips — angular, cyan-fill when active (canonical 7px chip cut) */
@@ -2034,14 +2034,14 @@ img {
   }
 
   .product-card__review {
-    font-size: 0.84rem;
+    font-size: 0.9rem;
     line-height: 1.65;
   }
 
   .product-card__qty,
   .product-card__price { font-size: 0.75rem; }
 
-  .section__intro { font-size: 0.88rem; }
+  .section__intro { font-size: 0.94rem; }
 
   .cta-button {
     width: 100%;
@@ -2115,9 +2115,9 @@ img {
 
 .guide-page p {
   margin-bottom: 16px;
-  color: var(--text-prose);
-  font-size: 0.95rem;
-  line-height: 1.85;
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.8;
 }
 
 .guide-page strong { color: var(--text-hi); }
