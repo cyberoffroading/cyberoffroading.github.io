@@ -517,8 +517,16 @@ img {
   visibility: visible;
 }
 
-.category-nav__brand .wordmark__cyber { font-size: clamp(13px, 2.2vw, 15px); }
-.category-nav__brand .wordmark__off { font-size: clamp(22px, 4vw, 27px); }
+/* Nav logo — same baked-image treatment as the hero wordmark (pixel-identical
+   across engines). The image carries a transparent glow halo (~7% each side),
+   so a small negative margin pulls the glyphs back to the link's edges and
+   keeps the flex spacing tight, with the glow overflowing like the old glow. */
+.category-nav__brand__img {
+  display: block;
+  height: clamp(48px, 8.6vw, 58px);
+  width: auto;
+  margin: -15px -16px;
+}
 
 /* IMPORTANT: keep position:static — ensurePillVisible()'s offset math
    (pill.offsetLeft - navInner.offsetLeft) only cancels when this is NOT
