@@ -1,0 +1,22 @@
+{
+  "name": "@cyberoffroading/night-trail",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Night Trail — React adapters over the CyberOffroading.com neon design system. Thin wrappers that emit the site's exact markup and classes; all styling comes verbatim from the site's css/style.css.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "cp ../../css/style.css styles/site.css && tsc -p ."
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "typescript": "^5.6.0"
+  }
+}
