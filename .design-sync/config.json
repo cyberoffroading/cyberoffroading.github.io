@@ -1,0 +1,14 @@
+{
+  "projectId": "9fe9ebc0-eed3-435d-a7b5-bc7b533d1172",
+  "shape": "package",
+  "pkg": "@cyberoffroading/night-trail",
+  "globalName": "NightTrail",
+  "entry": ".design-sync/adapter/dist/index.js",
+  "buildCmd": "cd .design-sync/adapter && npm run build",
+  "cssEntry": "styles/site.css",
+  "extraFonts": ["styles/fonts.css"],
+  "guidelinesGlob": [],
+  "docsDir": "docs",
+  "readmeHeader": ".design-sync/conventions.md",
+  "provider": { "component": "NightStage" }
+}

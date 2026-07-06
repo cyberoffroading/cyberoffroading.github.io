@@ -14,6 +14,16 @@
 .wrangler/
 worker/.wrangler/
 
+# design-sync (claude.ai/design) — staged scripts, build output, machine state
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+.design-sync/adapter/dist/
+.design-sync/adapter/styles/site.css
+node_modules/
+
 # Design inputs / handoff artifacts (reference only — not shipped; the shipped
 # brand assets are the committed neon/ kit + inlined SVG marks)
 /neon-design-system/
