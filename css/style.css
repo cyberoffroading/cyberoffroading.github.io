@@ -259,6 +259,85 @@ img {
 .top-bar span { color: var(--cyan); }
 
 /* ============================================================
+   REFERRAL MARQUEE — neon strip at the very top of the page.
+   Signage, not UI: a lit tube offer, so it earns glow and the
+   brand's rare flicker (stretched nflick2 timeline).
+   ============================================================ */
+.referral-bar {
+  display: block;
+  position: relative;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--border-cyan);
+  text-decoration: none;
+  transition: border-color 0.16s ease;
+}
+
+/* Cyan wash pooling up from the bottom seam, like light spilling
+   from a tube mounted under the strip. */
+.referral-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 212, 255, 0.08), transparent 65%);
+  pointer-events: none;
+}
+
+.referral-bar__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.referral-bar__q {
+  color: var(--text-2);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.referral-bar__offer {
+  color: var(--cyan-soft);
+  text-shadow:
+    0 0 6px rgba(0, 212, 255, 0.55),
+    0 0 18px rgba(0, 212, 255, 0.25);
+  animation: nflick2 9.6s linear infinite 2s;
+  transition: color 0.16s ease, text-shadow 0.16s ease;
+}
+
+.referral-bar__arrow {
+  display: inline-block; /* inline elements ignore transform */
+  transition: transform 0.2s ease;
+}
+
+.referral-bar:hover,
+.referral-bar:focus-visible {
+  border-bottom-color: rgba(0, 212, 255, 0.55);
+}
+
+.referral-bar:hover .referral-bar__offer,
+.referral-bar:focus-visible .referral-bar__offer {
+  color: var(--cyan-core);
+  text-shadow:
+    0 0 6px rgba(0, 212, 255, 0.9),
+    0 0 24px rgba(0, 212, 255, 0.45);
+}
+
+.referral-bar:hover .referral-bar__arrow,
+.referral-bar:focus-visible .referral-bar__arrow {
+  transform: translateX(4px);
+}
+
+/* ============================================================
    OWNER BAR (Built by Kevin)
    ============================================================ */
 .owner-bar {
@@ -2453,6 +2532,8 @@ ol.step-list > li.step > p {
   .flick .wordmark__cyber, .flick .wordmark__off,
   .flick-c, .flick-o { animation: none; }
   .hero__glow--cyan, .hero__glow--red { animation: none; }
+  .referral-bar__offer { animation: none; }
+  .referral-bar__arrow { transition: none; }
 
   /* Reveal animations: show content immediately, no slide/fade */
   .product-card,
