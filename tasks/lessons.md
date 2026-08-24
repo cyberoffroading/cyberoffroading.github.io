@@ -145,3 +145,42 @@ Chased the mobile wordmark glow through several rounds of tightening based on **
 ---
 
 *This file is the project's self-improvement memory. Review at the start of any non-trivial work session.*
+---
+
+**2026-08-24 — `<picture>` silently breaks `height: 100%` on card images**
+
+Building the full-width hero card for `#overlanding`, the photo letterboxed inside its box
+(692px container, 481px image) despite `object-fit: cover` and `width/height: 100%` on the
+`<img>`. Cause: the site's cards wrap images in `<picture>`, so **`<picture>` is the flex
+child of `.product-card__image`, not the `<img>`**. The img's `height: 100%` resolved against
+`<picture>`, which has auto height, so it fell back to the natural aspect ratio.
+
+It never showed up before because every other card sets a fixed `aspect-ratio` on the image
+box with `object-fit: contain` — the letterboxing *is* the intended look there. It only bites
+when `aspect-ratio` is `auto` and you actually need the image to fill.
+
+**Rule**: When an image must fill a container of unknown height, style the `<picture>`, not
+just the `<img>` — `picture { position: absolute; inset: 0; display: block; }` on a
+`position: relative` box, then `width/height: 100%` on the img. Verify by DOM-probing that
+the image's rendered box equals its container's (`fills = |boxH - imgH| < 2`), not by eye —
+a 200px letterbox on a dark photo against a dark card is easy to miss in a screenshot.
+
+**Follow-on**: the same bug hides in *every* `<picture>`-wrapped card, just less visibly —
+the img sizes to its intrinsic ratio inside the 16px `product-stage` padding instead of
+filling, so a lifestyle photo gets a light frame around it. Only the plain-`<img>` cards
+(e.g. `bed-mat`) actually fill. The fix is now factored into `.product-card__image--photo`;
+reach for that class on any lifestyle photo rather than re-patching per card.
+
+---
+
+**2026-08-24 — Semantic color: don't reach for `--secondary` just because you need a second button**
+
+The hero card needed a quieter companion to its primary CTA, so `.cta-button--secondary` was
+the obvious pick — but that modifier is **red**, and in this design system red is a domain
+signal (recovery / flat-tire / winter / events / hazard), not a hierarchy signal. A red
+"Browse All Urander" button inside a cyan overlanding section reads as a warning.
+
+**Rule**: Before reusing a modifier, check whether it encodes *hierarchy* or *meaning*. In
+this codebase red = domain, glow = interactive/brand. If you need a neutral secondary in a
+cyan section, use `.cta-button--ghost` (added for exactly this) rather than borrowing the red
+one. Adding a correctly-scoped variant beats misusing an existing one.

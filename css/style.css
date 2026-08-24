@@ -1085,6 +1085,134 @@ img {
   font-weight: 500;
 }
 
+/* ------------------------------------------------------------
+   HERO PRODUCT CARD — one flagship product per section, spanning
+   the full grid. Used by #overlanding (Urander bed cap).
+   ------------------------------------------------------------ */
+.product-card--hero {
+  grid-column: 1 / -1;
+  border-color: var(--border-cyan);
+}
+
+/* --- Lifestyle-photo image treatment ---
+   The default .product-card__image is a light "brushed steel product stage"
+   (contain + 16px padding) built for white-background affiliate shots. A
+   lifestyle photo wants the opposite: dark ground, edge to edge, no frame.
+
+   NOTE: <picture> is the flex child, not the <img>, so `height: 100%` on the
+   img resolves against an auto-height parent and the photo sizes itself by its
+   intrinsic ratio (letterboxed in the hero, inset by the padding elsewhere).
+   Pinning the <picture> gives the img a definite box to cover. */
+.product-card__image--photo { background: var(--void); }
+
+.product-card__image--photo picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.product-card__image--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  padding: 0;
+}
+
+.product-card--hero .product-card__image { aspect-ratio: 3 / 2; }
+
+.product-card--hero .product-card__info h3 {
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  line-height: 1.25;
+}
+
+.product-card--hero .product-card__review { font-size: 0.94rem; }
+
+/* Corner tag over the hero photo — signage, so it gets the cyan glow. */
+.product-card__badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 7px 16px 7px 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--void);
+  background: var(--cyan);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.55);
+}
+
+/* Desktop: photo left, copy right. Below this the card stacks like any other. */
+@media (min-width: 1024px) {
+  .product-card--hero {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    align-items: stretch;
+  }
+  .product-card--hero .product-card__image {
+    aspect-ratio: auto;
+    height: 100%;
+    border-bottom: none;
+    border-right: 1px solid var(--border);
+  }
+  .product-card--hero .product-card__info {
+    padding: 30px 30px 32px;
+    justify-content: center;
+  }
+}
+
+/* --- CTA group — two-up button rows ---
+   For cards offering several variants of one product, where a stack of
+   full-width buttons would eat the card. Buttons share a row; add
+   .cta-button--full to force one onto its own line (long labels). */
+.cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cta-group .cta-button {
+  flex: 1 1 calc(50% - 4px);
+  width: auto; /* beats the mobile `.cta-button { width: 100% }` rule */
+  min-width: 0;
+  margin-top: 0;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.cta-group .cta-button--full { flex-basis: 100%; }
+
+/* --- Coupon code badge (affiliate discount codes) --- */
+.coupon {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.coupon__code {
+  color: var(--cyan);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  padding: 7px 13px;
+  border: 1px dashed var(--cyan);
+  background: rgba(0, 212, 255, 0.07);
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+  clip-path: polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+}
+
+.coupon__note { color: var(--text-mute); }
+
 /* --- Spec-list rows on product cards --- */
 .product-card__specs {
   display: flex;
@@ -1150,6 +1278,24 @@ img {
   border: 1px solid var(--red);
   box-shadow: inset 0 0 18px rgba(255, 42, 42, 0.14);
   margin-top: 8px;
+}
+
+/* Ghost CTA — quiet cyan-outline companion to a primary button. Use when a
+   section needs a secondary action but is NOT in the red domain (recovery /
+   hazard / events), where .cta-button--secondary would misread as a warning. */
+.cta-button--ghost {
+  color: var(--cyan);
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid var(--border-cyan);
+  box-shadow: inset 0 0 18px rgba(0, 212, 255, 0.10);
+  margin-top: 8px;
+}
+
+.cta-button--ghost:hover {
+  color: var(--cyan);
+  background: rgba(0, 212, 255, 0.12);
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 22px rgba(0, 212, 255, 0.18), 0 0 22px rgba(0, 212, 255, 0.35);
 }
 
 .cta-button--secondary:hover {

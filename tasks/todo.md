@@ -359,3 +359,33 @@ Pushed the Night Trail language into richer components per the approved plan (`d
 **Verified** — headless-Chrome screenshots: Track C cards (badges + specs + stats below), all Track B components **inside a faithful modal harness** (injects `.guide-content` innerHTML into a `.guide-modal` shell — the harder context, since modal-scoped prose rules differ from `.guide-page`), category grid desktop (6-col) + mobile (2-col), step-list badges, skeleton shimmer vs loaded. DOM-probed `scrollWidth == clientWidth == 390` (no mobile overflow). Disclosure legibility re-shot post-fix. All cache versions bumped to `v=11`.
 
 **Not done** — branded OG cards (Track A tail — deferred, owner provides imagery); commit/push (awaiting owner).
+
+---
+
+## Execution Review (2026-08-24) — New `#overlanding` section (Urander hero)
+
+**Why** — Camping/basecamp gear was scattered at the bottom of `#essentials` (stepladder, RinseKit) with no home, and a new Urander affiliate relationship (bed cap + rack kit, CyberCamp tents) needed prominent placement.
+
+**Built** — New `<section id="overlanding" class="section section--alt">` inserted between the `.browse-section` index and `#offroad`, making it the **first gear section** on the page. Four cards: `urander-bed-cap` (hero), `urander-rooftop-tent`, plus `stepladder` and `rinsekit-pro` **moved** (not copied) out of `#essentials`. Added a matching nav pill + `.category-tile`, both in first position after Articles.
+
+**New CSS components** (`css/style.css`):
+- `.product-card--hero` — `grid-column: 1 / -1` full-width flagship card; two-column photo/copy split at ≥1024px, stacks below.
+- `.product-card__image--photo` — lifestyle-photo treatment: dark ground + edge-to-edge `object-fit: cover`, replacing the light "product stage" gradient + 16px inset that white-background affiliate shots need. Applied to the hero and the tent card.
+- `.cta-group` (+ `.cta-button--full`) — two-up button rows for cards offering several variants of one product. Used on the tent card so SkyLounge/Pano share a line and Stargazer spans below: 3 stacked buttons → 2 rows. Overrides the mobile `.cta-button { width: 100% }` rule by specificity, so it stays two-up down to 375px.
+- `.product-card__badge` — angular cyan corner tag (`// Featured`).
+- `.coupon` / `.coupon__code` — dashed cyan chip for affiliate discount codes. Static text, not click-to-copy, so it adds no interactive element (and no new `:focus-visible` obligation).
+- `.cta-button--ghost` — quiet **cyan**-outline secondary CTA. Added because `.cta-button--secondary` is red, and red is reserved for the recovery/hazard/events domain — it misread as a warning inside a cyan section.
+
+**Gotcha worth remembering** — `<picture>` is the flex child of `.product-card__image`, not the `<img>`. So `height: 100%` on the img resolved against an auto-height parent and letterboxed the hero photo (692px box, 481px image). Fixed by pinning the `<picture>` with `position:absolute; inset:0`. Only bites when `aspect-ratio` is `auto`, which is why normal cards never showed it.
+
+**Images** — `images/products/overlanding/`. Hero from `DSCF9347.webp` (2000×1500, kept as source of truth) → `urander-bed-cap-1200.{webp,jpg}` (142K/191K). Tent card from `SL-1-2.webp` (1680×1344, owner-supplied SkyLounge shot; kept as source of truth), cropped 5:4 → 4:3 with **`magick -crop 1680x1260+0+84`** (drops empty sky off the top) → `urander-rooftop-tent-800.{webp,jpg}` (53K/77K). WebP smaller than JPEG in both cases (size check per `lessons.md`). The tent card originally used a crop of the hero frame; replaced once the owner supplied a dedicated SkyLounge photo.
+
+**Affiliate** — All Urander CTAs deep-link to product pages (`/products/bed-rack`, `/products/skylounge`, `/products/cybercamp-pano`, `/products/cybercamp-stargazer`) with the full `sca_ref=12146932.IuSImq2ZfZ&utm_*` query string. Coupon code **`CYBEROFFROADING`** on both Urander cards.
+
+**Verified** — Playwright headless at 1440/820/375: zero horizontal overflow at all three; hero *and* tent images fill their boxes exactly (`fills=true`) at each; tent CTAs measured at exactly 2 rows with no label clipping at every breakpoint; vote/click rows injected into all 4 cards; all 7 CTAs carry `target="_blank" rel="noopener noreferrer"` and show a focus ring; all 4 images serve WebP with explicit dims + `decoding="async"`; zero console errors and zero failed requests; CSS brace-balanced with a late rule still applying (no unclosed block); `#essentials` confirmed clean of the moved cards (13 remaining).
+
+**Cache** — `style.css?v=31` → `?v=32` across all 8 HTML files. `main.js` unchanged (`?v=11`) — the vote/click and scroll-spy code is generic over `.product-card[data-product-id]` and `.section`, so the new section wired itself up with no JS edit.
+
+**Owner action** — Spot-check that one Urander referral registers in UpPromote. Deep-linking the `sca_ref` param onto product URLs (rather than the bare storefront link) is the one assumption not verifiable from the code.
+
+**Not done** — commit/push (awaiting owner).
