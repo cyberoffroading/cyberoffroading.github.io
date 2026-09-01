@@ -15,7 +15,7 @@ It is **completely optional** for the core site experience. If the worker is dow
 
 | Method | Path                  | Purpose                              | Notes |
 |--------|-----------------------|--------------------------------------|-------|
-| GET    | `/votes`              | Returns `{ votes: {...}, clicks: {...} }` | Cached 60s (in-worker + `Cache-Control: public, max-age=60`) |
+| GET    | `/votes`              | Returns `{ votes: {...}, clicks: {...} }` | Served from the `snapshot` key (1 KV read); cached 60s (in-worker + `Cache-Control: public, max-age=60`) |
 | POST   | `/vote/:productId`    | Increment vote count for a product   | Rate-limited (1 per IP per product, 365 days) |
 | POST   | `/unvote/:productId`  | Decrement vote (only if this IP previously voted) | Clamped at 0; requires prior vote from same IP |
 | POST   | `/click/:productId`   | Record an affiliate link click       | **POST only** (client uses `sendBeacon`, which POSTs). GET returns 404. |
@@ -33,6 +33,7 @@ Keys stored in the `VOTES` namespace:
 - `count:${productId}` — plain integer as a string (vote total for one product)
 - `clicks:${productId}` — plain integer as a string (click total for one product)
 - `voted:${sha256hex(ip + ':' + productId)}` — string value `"1"`, TTL 365 days (one-vote-per-IP-per-product rate limit)
+- `snapshot` — JSON `{ votes: {...}, clicks: {...}, builtAt: <ms epoch> }`; the pre-merged `/votes` payload (see **KV Budget** below)
 - `counts` / `clicks` — **legacy** monolithic JSON blobs `{ "product-id": number }`, kept read-only for migration (see below)
 
 IP is taken from `CF-Connecting-IP` (Cloudflare edge). The IP is **only ever stored as a SHA-256 hash** combined with the product ID — never in plaintext.
@@ -42,7 +43,7 @@ IP is taken from `CF-Connecting-IP` (Cloudflare edge). The IP is **only ever sto
 Counters used to live in two monolithic JSON blobs (`counts`, `clicks`), which made concurrent writes to *different* products clobber each other. They are now per-product keys, migrated lazily:
 
 - **On write** (`/vote`, `/unvote`, `/click`): if `count:${id}` / `clicks:${id}` doesn't exist yet, the value is seeded from the legacy blob, then incremented and written as a per-product key.
-- **On read** (`/votes`): per-product keys are listed (`count:` / `clicks:` prefixes) and merged **over** the legacy blobs — for any id present in both, the per-product value wins.
+- **On read** (`/votes`): the `snapshot` key is served as-is. When the snapshot is (re)built, per-product keys are listed (`count:` / `clicks:` prefixes) and merged **over** the legacy blobs — for any id present in both, the per-product value wins.
 - The legacy blobs are never written again; once every product has been touched they're dead weight and can be deleted manually.
 - Old plaintext `voted:${ip}:${productId}` keys from before IP hashing are orphans — they simply expire via their 365-day TTL. Worst case, a previous voter can vote once more under the new hashed key. Acceptable.
 
@@ -50,14 +51,36 @@ Counters used to live in two monolithic JSON blobs (`counts`, `clicks`), which m
 
 Workers KV has no compare-and-swap. Two **concurrent** increments of the *same* product can still lose one update (read-modify-write race). This is an accepted limitation for low-stakes social-proof counters; exact counters would require Durable Objects. Per-product keys do guarantee that writes to **different** products never collide.
 
+## KV Budget (why the `snapshot` key exists)
+
+The Workers KV **free tier** allows, per day: 100,000 reads, 1,000 writes, 1,000 deletes, **1,000 list operations**.
+
+`GET /votes` used to rebuild the whole payload on every cache miss: 2 list ops + one read per product key (~110 ops with 53 products). Cloudflare's 60s in-isolate cache barely helps on a low-traffic site because isolates are recycled constantly, so **~450 cache-missing page loads a day hit 90% of the list cap** (Sept 2026 alert). That's a worker-efficiency problem, not a traffic milestone.
+
+Now the merged payload is persisted as a single `snapshot` key:
+
+| Operation | KV ops | Notes |
+|---|---|---|
+| `GET /votes` (isolate cache warm) | 0 | |
+| `GET /votes` (cache miss, snapshot fresh) | 1 read | ~100k homepage loads/day of free-tier headroom |
+| `GET /votes` (snapshot missing) | 2 lists + ~1 read/product + 1 write | First request after deploy; blocks on the rebuild |
+| `GET /votes` (snapshot older than 1 hour) | same as above | Stale snapshot served immediately; rebuild runs via `ctx.waitUntil` |
+| `POST /click/:id` | 2 reads, 2 writes | per-product key + snapshot mirror |
+| `POST /vote/:id` | 3 reads, 3 writes | + the `voted:` rate-limit key |
+| `POST /unvote/:id` | 3 reads, 2 writes, 1 delete | |
+
+Writes are now the tightest budget: roughly **400–500 clicks+votes a day** fits the free tier. If the site ever sustains that, upgrade to Workers Paid ($5/mo) rather than chasing further savings.
+
+**Consistency**: the per-product keys remain the source of truth. Mirroring into the snapshot is a read-modify-write on one blob, so two concurrent writes can drop one product's update *in the snapshot only*; the hourly rebuild (triggered lazily by the next `GET /votes`) repairs any drift from the per-product keys. A snapshot that's missing or unparseable is simply rebuilt.
+
 ## Caching
 
-`GET /votes` is cached two ways:
+`GET /votes` is cached two ways on top of the snapshot:
 
-1. **In-worker**: a module-scope cache of the merged payload, 60s TTL per isolate (invalidated within an isolate when that isolate handles a write).
+1. **In-worker**: a module-scope cache of the merged payload, 60s TTL per isolate (invalidated within an isolate when that isolate handles a write or finishes a background rebuild).
 2. **HTTP**: `Cache-Control: public, max-age=60` so browsers/CDN reuse the response.
 
-Counters may therefore lag up to ~60s. Fine for this use case.
+Counters may therefore lag up to ~60s (and up to an hour for the rare lost snapshot update described above). Fine for this use case.
 
 ## Privacy Note
 
@@ -115,4 +138,4 @@ After deploy, the new version is live immediately at the `.workers.dev` subdomai
 
 ---
 
-**Last updated**: 2026-06 hardening pass (CORS exact-match, ID validation, hashed IP keys, per-product counters, POST-only /click, /votes caching).
+**Last updated**: 2026-09 — `snapshot` key so `/votes` costs 1 KV read instead of ~110 ops (free-tier list cap alert). Previous: 2026-06 hardening pass (CORS exact-match, ID validation, hashed IP keys, per-product counters, POST-only /click, /votes caching).

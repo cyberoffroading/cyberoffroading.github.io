@@ -16,6 +16,17 @@ let votesCache = null;
 let votesCacheTime = 0;
 const VOTES_CACHE_TTL_MS = 60 * 1000;
 
+// KV budget: the free tier allows 1,000 list ops and 100k reads per day.
+// Rebuilding the /votes payload from per-product keys costs 2 lists + one
+// get per key (~110 ops with 53 products), so a few hundred cache-missing
+// page loads a day blew the cap. Instead, the merged payload is persisted
+// as ONE key (`snapshot`) that writes keep current, so an uncached GET is a
+// single KV read. The expensive full rebuild only runs when the snapshot is
+// missing or older than SNAPSHOT_MAX_AGE_MS (self-heals any drift from
+// lost snapshot updates — see updateSnapshot).
+const SNAPSHOT_KEY = 'snapshot';
+const SNAPSHOT_MAX_AGE_MS = 60 * 60 * 1000;
+
 function isAllowedOrigin(origin) {
   // Exact match for production origins — no prefix matching, so
   // https://cyberoffroading.com.evil.io is rejected.
@@ -65,8 +76,26 @@ async function bumpCounter(env, prefix, legacyKey, productId, delta) {
   const current = await readCounter(env, prefix, legacyKey, productId);
   const next = Math.max(current + delta, 0);
   await env.VOTES.put(`${prefix}${productId}`, String(next));
+  await updateSnapshot(env, prefix === 'count:' ? 'votes' : 'clicks', productId, next);
   votesCache = null; // keep this isolate's /votes cache fresh
   return next;
+}
+
+// Mirror a per-product counter into the persisted snapshot (1 read + 1 write).
+// Two concurrent writes can race on the snapshot blob and drop one product's
+// new value, but the per-product key is still the source of truth and the
+// hourly rebuild in loadSnapshot repairs the snapshot. If no snapshot exists
+// yet, do nothing — the next GET /votes builds it from scratch.
+async function updateSnapshot(env, kind, productId, value) {
+  let snap = null;
+  try {
+    snap = await env.VOTES.get(SNAPSHOT_KEY, 'json');
+  } catch {
+    return; // unparseable — the next GET /votes rebuilds it
+  }
+  if (!snap || typeof snap !== 'object') return;
+  snap[kind] = { ...(snap[kind] || {}), [productId]: value };
+  await env.VOTES.put(SNAPSHOT_KEY, JSON.stringify(snap));
 }
 
 // List all per-product counters under a prefix and resolve their values.
@@ -84,8 +113,46 @@ async function collectPrefix(env, prefix) {
   return out;
 }
 
+// Full rebuild from per-product keys + legacy blobs (2 lists + ~1 get per
+// product). Expensive — only called by loadSnapshot, at most about hourly.
+async function buildSnapshot(env) {
+  const [legacyVotes, legacyClicks, votes, clicks] = await Promise.all([
+    env.VOTES.get('counts', 'json').then(v => v || {}),
+    env.VOTES.get('clicks', 'json').then(v => v || {}),
+    collectPrefix(env, 'count:'),
+    collectPrefix(env, 'clicks:'),
+  ]);
+  // Per-product keys win over the legacy blobs for any id present in both.
+  const snap = {
+    votes: { ...legacyVotes, ...votes },
+    clicks: { ...legacyClicks, ...clicks },
+    builtAt: Date.now(),
+  };
+  await env.VOTES.put(SNAPSHOT_KEY, JSON.stringify(snap));
+  return snap;
+}
+
+// Return the persisted snapshot (1 KV read). Missing snapshot → build it
+// inline. Stale snapshot → serve it now and rebuild in the background.
+async function loadSnapshot(env, ctx) {
+  let snap = null;
+  try {
+    snap = await env.VOTES.get(SNAPSHOT_KEY, 'json');
+  } catch {
+    // Unparseable snapshot value — treat as missing and rebuild below.
+  }
+  if (!snap || typeof snap !== 'object' || typeof snap.builtAt !== 'number') {
+    return buildSnapshot(env);
+  }
+  if (Date.now() - snap.builtAt > SNAPSHOT_MAX_AGE_MS) {
+    const rebuild = buildSnapshot(env).then(() => { votesCache = null; });
+    if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(rebuild);
+  }
+  return snap;
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders(request) });
     }
@@ -99,17 +166,8 @@ export default {
       if (votesCache && Date.now() - votesCacheTime < VOTES_CACHE_TTL_MS) {
         return Response.json(votesCache, { headers });
       }
-      const [legacyVotes, legacyClicks, votes, clicks] = await Promise.all([
-        env.VOTES.get('counts', 'json').then(v => v || {}),
-        env.VOTES.get('clicks', 'json').then(v => v || {}),
-        collectPrefix(env, 'count:'),
-        collectPrefix(env, 'clicks:'),
-      ]);
-      // Per-product keys win over the legacy blobs for any id present in both.
-      const payload = {
-        votes: { ...legacyVotes, ...votes },
-        clicks: { ...legacyClicks, ...clicks },
-      };
+      const snap = await loadSnapshot(env, ctx);
+      const payload = { votes: snap.votes || {}, clicks: snap.clicks || {} };
       votesCache = payload;
       votesCacheTime = Date.now();
       return Response.json(payload, { headers });

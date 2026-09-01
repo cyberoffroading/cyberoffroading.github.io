@@ -184,3 +184,12 @@ signal (recovery / flat-tire / winter / events / hazard), not a hierarchy signal
 this codebase red = domain, glow = interactive/brand. If you need a neutral secondary in a
 cyan section, use `.cta-button--ghost` (added for exactly this) rather than borrowing the red
 one. Adding a correctly-scoped variant beats misusing an existing one.
+
+---
+
+## 2026-09-01 — Cloudflare "KV daily operation limit 90%" alert
+
+**A free-tier cap alert is a per-request-cost problem before it is a traffic problem.**  
+`GET /votes` rebuilt the whole payload on every isolate cache miss: 2 KV list ops + one read per product key (~110 ops). The free tier allows only 1,000 list ops/day, so roughly 450 cache-missing homepage loads (humans plus JS-rendering crawlers) were enough to trigger the alert — nowhere near a traffic milestone. Fixed by persisting the merged payload as one `snapshot` key (1 read per miss) with an hourly self-healing rebuild.
+
+**Rule**: Anything in the worker that runs on the hot path must cost O(1) KV operations per request. Never list keys or fan out per-product reads on a request path; do that work once and persist the result. Check `worker/README.md` → "KV Budget" before adding a KV call, and install Cloudflare Web Analytics (still open in `tasks/todo.md`, Phase 4) so "are we getting real traffic?" has a direct answer instead of an inference from a quota alert.

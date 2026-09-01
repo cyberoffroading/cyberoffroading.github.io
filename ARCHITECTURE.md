@@ -75,7 +75,7 @@ Every product card with `data-product-id` gets two interactive elements injected
 - Deployed separately as a Cloudflare Worker (`cyberoffroading-votes.chaukevin.workers.dev`).
 - Uses Workers KV (`VOTES` binding) with **per-product keys** (`count:${id}`, `clicks:${id}`) so concurrent writes to different products never collide. Same-product increments can still race (KV has no compare-and-swap); exact counters would need Durable Objects — accepted limitation at this traffic level.
 - Endpoints:
-  - `GET /votes` → `{ votes, clicks }` (60s in-isolate cache + `Cache-Control: max-age=60`)
+  - `GET /votes` → `{ votes, clicks }` served from a single persisted `snapshot` key (1 KV read per cache miss; writes mirror into it, full rebuild from per-product keys at most hourly) + 60s in-isolate cache + `Cache-Control: max-age=60`. The free tier's 1,000 list ops/day made the old list-and-read-everything approach trip Cloudflare's cap at ~450 uncached page loads/day.
   - `POST /vote/:id` and `/unvote/:id` (1 vote per IP per product, 365 day TTL)
   - `POST /click/:id` (fire-and-forget; GET is rejected so crawlers can't inflate the counter)
 - Product IDs validated against `^[a-z0-9-]{1,64}$` — junk IDs get a 400.
