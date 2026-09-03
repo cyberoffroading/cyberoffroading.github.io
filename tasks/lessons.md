@@ -193,3 +193,22 @@ one. Adding a correctly-scoped variant beats misusing an existing one.
 `GET /votes` rebuilt the whole payload on every isolate cache miss: 2 KV list ops + one read per product key (~110 ops). The free tier allows only 1,000 list ops/day, so roughly 450 cache-missing homepage loads (humans plus JS-rendering crawlers) were enough to trigger the alert — nowhere near a traffic milestone. Fixed by persisting the merged payload as one `snapshot` key (1 read per miss) with an hourly self-healing rebuild.
 
 **Rule**: Anything in the worker that runs on the hot path must cost O(1) KV operations per request. Never list keys or fan out per-product reads on a request path; do that work once and persist the result. Check `worker/README.md` → "KV Budget" before adding a KV call, and install Cloudflare Web Analytics (still open in `tasks/todo.md`, Phase 4) so "are we getting real traffic?" has a direct answer instead of an inference from a quota alert.
+
+---
+
+**2026-09-02 — Measure the rendered image box before cropping a photo for a card**
+
+Swapping the Overlanding hero to a portrait photo, I pre-cropped it to 3:2 because the
+mobile rule says `aspect-ratio: 3 / 2` and the old hero was landscape. But on desktop the
+hero image column is `height: 100%` of the copy beside it, so the box is 642×692 (0.93:1)
+at 1280–1920 and 533×789 (0.67:1) at 1024 — under `object-fit: cover` a 3:2 crop threw away
+~38% of its width exactly where most visitors see it. The full portrait frame fit every
+breakpoint (mobile's cover crop is the same centre band the hand crop had chosen).
+
+**Rule**: Before cropping a photo to "fit" a card, measure the real box at 375 / 1024 /
+1280 / 1440 (`getBoundingClientRect()` on `.product-card__image`) — the hero's shape follows
+its copy length, not a fixed ratio. Pick the source ratio that covers the widest spread of
+boxes and let `object-fit: cover` do the rest; only pre-crop to drop content you never want
+shown. Tooling note: the Browser pane's scaled-viewport screenshots (an emulated size larger
+than the pane) come back solid black — use the headless Playwright install in
+`.ds-sync/node_modules` (`NODE_PATH=.ds-sync/node_modules node shot.js`) for desktop-width proof.
