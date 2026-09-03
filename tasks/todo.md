@@ -164,7 +164,7 @@ Still many more to go (remaining gallery images, vault-seal guides, etc.), but t
   - `Product` + `Offer` on every product card (use `data-product-id` as identifier)
   - `Article` on guide pages (and ensure modal-injected content doesn't duplicate)
   - `WebSite` + `Organization` + optional `Person` (Kevin) on homepage
-- [ ] Implement Cloudflare Web Analytics (one `<script>` in `<head>`, privacy-friendly, matches original PLAN).
+- [x] Analytics — went with **Google Analytics 4** rather than Cloudflare Web Analytics (2026-09-03). `js/analytics.js` is loaded from `<head>` on all 9 public pages (root-absolute `/js/analytics.js?v=N`, so it also works from `404.html` at any path); the Measurement ID lives only in that file; localhost is skipped so previews don't pollute the data. GA account **CyberOffroading** (owned by chaukevin@gmail.com — not the chaufamtesla account Chrome signs into by default), property **cyberoffroading.com**, web stream `cyberoffroading.com` (stream ID 15714329297), Measurement ID `G-PB7ZDBE1VK`. GA4 enhanced measurement covers outbound (affiliate) clicks, scroll depth and pushState guide-modal page changes without custom events.
 - [ ] (Future) Consider surfacing "Top Voted" or "Most Clicked" derived views using the existing public counters.
 
 ---

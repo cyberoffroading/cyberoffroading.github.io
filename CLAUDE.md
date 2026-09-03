@@ -22,6 +22,7 @@ See `ARCHITECTURE.md` for the full current system description.
 - `index.html` — The entire site + all interactive UI.
 - `css/style.css` — Complete design system (brutalist angular aesthetic with clip-paths).
 - `js/main.js` — Nav highlighting, card reveals, guide modals, gallery lightbox, voting, click tracking (single IIFE).
+- `js/analytics.js` — Google Analytics 4 loader; the only place the Measurement ID lives. Every public page loads it from `<head>` as `/js/analytics.js?v=N` (bump N on change). Skips localhost.
 - `ARCHITECTURE.md` — **Primary reference** for current 2026 architecture.
 - `ORIGINAL-PLAN-2024.md` — Original 2024 vision document (historical).
 - `tasks/todo.md` — Living prioritized improvement backlog with review notes.

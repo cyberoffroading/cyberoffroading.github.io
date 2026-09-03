@@ -87,7 +87,7 @@ Counters may therefore lag up to ~60s (and up to an hour for the rare lost snaps
 - IP addresses are **never stored in plaintext** — only SHA-256 hashes of `ip:productId`, used solely for rate limiting.
 - This data expires after 365 days.
 - No other personal data is collected by this worker.
-- The main site itself uses no third-party analytics cookies (Cloudflare Web Analytics is planned but not yet implemented).
+- The main site uses Google Analytics 4 (`js/analytics.js`, loaded on every public page), which sets first-party `_ga` cookies. That is entirely separate from this worker, which sets no cookies.
 
 If you are privacy-sensitive, you can safely block the worker domain; the site remains fully functional.
 

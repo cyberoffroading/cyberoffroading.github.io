@@ -121,6 +121,7 @@ No border-radius anywhere.
 - **404.html**: Uses the shared design system (`error-page` classes in `style.css`).
 - **Accessibility**: skip link, `role="dialog"`/`aria-modal` on modal + lightbox, labelled vote buttons/click counters, shared polite live region for vote feedback, full `prefers-reduced-motion` coverage, ≥44px touch targets on interactive chips and mobile nav pills.
 - **SEO**: Article JSON-LD + Twitter cards + og:image on all 5 guides; dedicated social-share images; per-page `lastmod` in sitemap.xml.
+- **Analytics**: Google Analytics 4 via `js/analytics.js` (added 2026-09-03) — every public page loads it from `<head>` as root-absolute `/js/analytics.js?v=N`; the Measurement ID lives only in that file; localhost is skipped. Enhanced measurement covers outbound (affiliate) clicks, scroll depth and the pushState guide-modal page changes.
 
 ## Development & Contribution
 
@@ -149,7 +150,6 @@ No border-radius anywhere.
 ## Known Gaps / Future Work (as of 2026-06)
 
 - **Deploy the hardened worker**: `worker/index.js` (validation, hashed IPs, per-product keys, exact CORS) is tested locally but needs `npx wrangler login` + `npx wrangler deploy` from the worker directory.
-- **Cloudflare Web Analytics**: one privacy-friendly `<script>` in `<head>` — still not added.
 - **Exact counters**: KV increments can still race per product; migrate to Durable Objects/D1 only if vote volume ever makes it matter.
 - **AVIF tier**: `<picture>` makes adding an AVIF `<source>` trivial if further savings are wanted.
 - **Self-host fonts**: Google Fonts CSS is still a render-blocking third-party request.
