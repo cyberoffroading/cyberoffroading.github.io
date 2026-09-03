@@ -212,3 +212,18 @@ boxes and let `object-fit: cover` do the rest; only pre-crop to drop content you
 shown. Tooling note: the Browser pane's scaled-viewport screenshots (an emulated size larger
 than the pane) come back solid black — use the headless Playwright install in
 `.ds-sync/node_modules` (`NODE_PATH=.ds-sync/node_modules node shot.js`) for desktop-width proof.
+
+---
+
+**2026-09-02 — Replacing an image at the same path does not replace it on the live site for hours**
+
+The Urander photo swap reused the existing `-1200`/`-800` filenames. GitHub Pages deployed in
+under a minute, but Cloudflare kept serving the old bytes from the edge (`cf-cache-status: HIT`,
+`cache-control: max-age=14400`) — the new HTML pointed at 4-hour-stale images. Worse, my own
+"is it live yet?" poll fetched the old file from origin before the deploy landed and re-warmed
+the edge cache with it.
+
+**Rule**: When a photo is replaced in place, change its URL in the same commit — bump a `?v=N`
+on the `src`/`srcset` (the same convention as `style.css?v=N`) or give the variant a new name.
+Verify go-live against the *new* URL, not the old one, and never poll an image URL you expect
+to change before the deploy is confirmed (`gh api .../pages/builds/latest` says `built`).
